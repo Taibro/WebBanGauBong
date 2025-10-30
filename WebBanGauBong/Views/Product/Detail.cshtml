@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    List<WebBanGauBong.Models.ProductImages> ListAnhPhu = ViewBag.ListHinhAnhPhu as List<WebBanGauBong.Models.ProductImages>;
+}
+
+@model WebBanGauBong.Models.Product
+
+<div class="row mt-2">
+    <div class="col-6">
+
+        <!--Anh san pham-->
+        <div class="carousel slide" id="carouselDemo"
+             data-bs-wrap="true"
+             data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+                <div class="carousel-item active"
+                     data-bs-interval="2500">
+                    <img src="@Url.Content("~/Content/Images/" + ListAnhPhu[0].ImageURL)" alt="" class="w-100">
+                    <div class="carousel-caption">
+                    </div>
+                </div>
+                @foreach (var item in ListAnhPhu.Skip(1))
+                {
+                    <div class="carousel-item"
+                         data-bs-interval="2500">
+                        <img src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="" class="w-100">
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <img src="@Url.Content("~/Content/Images/product-footer.jpg")" alt="khuyến mãi" class="w-100 rounded-bottom" />
+
+            <button class="carousel-control-prev" type="button"
+                    data-bs-target="#carouselDemo"
+                    data-bs-slide="prev">
+                <i class="bi bi-chevron-left fa-5x"></i>
+            </button>
+
+            <button class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselDemo"
+                    data-bs-slide="next">
+                <i class="bi bi-chevron-right fa-5x"></i>
+            </button>
+
+            <div class="carousel-indicators ">
+                <button type="button" class="me-2 active"
+                        data-bs-target="#carouselDemo"
+                        data-bs-slide-to="0"
+                        aria-current="true">
+                    <img src="@Url.Content("~/Content/Images/" + ListAnhPhu[0].ImageURL)" alt="">
+                </button>
+
+                @{ int i = 1;}
+
+                @foreach (var item in ListAnhPhu.Skip(1))
+                {
+                    <button type="button" class="me-2"
+                            data-bs-target="#carouselDemo"
+                            data-bs-slide-to="@i">
+                        <img src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="">
+                    </button>
+                    i++;
+                }
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="col-6">
+        <h3><a href="#">@Model.ProductName</a></h3>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@model List<WebBanGauBong.Models.Product>
+<div class="row mt-2">
+    <!-- Menu trái -->
+    <aside class="col-md-4 col-lg-3 mb-4">
+        @Html.Action("HienThiMenu", "Product")
+
+    </aside>
+
+    <!--Hiển thị sản phẩm-->
+    <main class="col-md-8 col-lg-9">
+        Hiển thị sản phẩm
+        <a href="#" class="link-index">
+            <h3 class="mb-3"><b>@ViewBag.Ten</b></h3>
+        </a>
+
+        <div class="row row-cols-4 gx-2 gy-0">
+            <!-- Card  -->
+
+            @foreach (var item in Model)
+            {
+                var firstImage = item.ProductImages.FirstOrDefault();
+                var Size = item.ProductSize.ToList();
+
+                <div class="col ">
+                    <div class="card h-100 w-100" style="border:none;">
+                        <div class="image-link">
+                            <a href="@Url.Action("Detail", "Product", new {id = item.ProductID.Trim()})">
+                                <img src="@Url.Content("~/Content/Images/" + firstImage.ImageURL)" class="card-img-top" alt="@item.ProductName">
+                                <img src="@Url.Content("~/Content/Images/product-footer.jpg")" alt="khuyến mãi" class="w-100 rounded-bottom" height=34 />
+
+                            </a>
+                            <a href="#" class="btn rounded-4">
+                                <i class="bi bi-bag-plus"></i> <span>Mua Ngay</span>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            @{
+                                string priceTargetId = "price-" + item.ProductID;
+                            }
+
+                            <div class="size-scroll-container d-flex flex-nowrap overflow-auto mb-2">
+                                <button type="button" class="btn btnSizeCard flex-shrink-0 active"
+                                        data-price="@Size[0].Price.Value.ToString("N0")"
+                                        data-target="@priceTargetId"
+                                        style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                                    @Size[0].SizeName.ToString()<span>cm</span>
+                                </button>
+
+                                @foreach (var size in Size.Skip(1))
+                                {
+                                    float s = float.Parse(size.SizeName.ToString());
+                                    string sizeName = s.ToString();
+                                    if (s >= 200)
+                                    {
+                                        sizeName = "2m" + (s % 200).ToString();
+                                    }
+                                    else if (s >= 100)
+                                    {
+                                        sizeName = "1m" + (s % 100).ToString();
+                                    }
+                                    else
+                                    {
+                                        sizeName = s.ToString() + "cm";
+                                    }
+                                    <button type="button" class="btn btnSizeCard flex-shrink-0"
+                                            data-price="@size.Price.Value.ToString("N0")"
+                                            data-target="@priceTargetId"
+                                            style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                                        @sizeName
+                                    </button>
+                                }
+                            </div>
+
+                            <h6 class="card-title"><a href="@Url.Action("Detail", "Product", new {id = item.ProductID.Trim()})">@item.ProductName</a></h6>
+                            <div class="text-danger fw-bold text-color-theme">
+                                <p id="@priceTargetId">@Size[0].Price.Value.ToString("N0")đ</p>
+
+                                <a href="#" class="btn rounded-circle ms-auto"><i class="bi bi-bag-plus"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div class="my-4">
+            <nav aria-label="pagination" class="pagination">
+                <ul class="pagination">
+                    <li>
+                        <a href="">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="visuallyhidden">previous set of pages</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=""><span class="visuallyhidden">page </span>1</a>
+                    </li>
+                    <li>
+                        <a href="" aria-current="page">
+                            <span class="visuallyhidden">page </span>2
+                        </a>
+                    </li>
+                    <li>
+                        <a href=""> <span class="visuallyhidden">page </span>3 </a>
+                    </li>
+                    <li>
+                        <a href=""> <span class="visuallyhidden">page </span>4 </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="visuallyhidden">next set of pages</span><span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </main>
+
+</div>

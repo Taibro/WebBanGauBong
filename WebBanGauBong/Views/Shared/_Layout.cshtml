@@ -1,0 +1,253 @@
+﻿@{
+    ViewBag.Title = "Gấu Bông Cao Cấp, Shop Gấu Bông Đẹp, Cao Cấp TP.HCM";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Images/favicon.ico")" rel="icon" type="image/x-icon" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg color-theme" style="padding-left: 100px; padding-right: 100px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="@Url.Content("~/Content/Images/logo.png")" alt="logo" height=50 />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fw-bold text-white" aria-current="page" href="#">BỘ SƯU TẬP</a>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold text-white" href="#">GẤU TEDDY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold text-white" href="#">THÚ BÔNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold text-white" href="#">GẤU BÔNG HOẠT HÌNH</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold text-white" href="#">GẤU MỀN 2IN1</a>
+                    </li>
+                </ul>
+                <!--Search bar-->
+                <div class="search-container position-relative">
+                    <div class="d-flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="search-icon feather feather-search">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input class="form-control search-input ps-5" type="search"
+                               placeholder="Tìm kiếm sản phẩm..." aria-label="Search" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <!--Main search bar-->
+                            <div class="main-search-container">
+                                <div class="search-wrapper">
+                                    <div class="search-header">
+                                        @using (Html.BeginForm("TimKiemSanPham", "Home", FormMethod.Post, new { name = "name" }))
+                                        {
+                                            <div class="search-input-group">
+                                                <input type="text" class="search-input form-control" placeholder="Tìm kiếm sản phẩm..." name="name">
+                                                <i class="fas fa-search search-icon"></i>
+                                            </div>
+                                        }
+                                        <div class="quick-filters">
+                                            <span class="quick-filter">Price: Low to High</span>
+                                            <span class="quick-filter">Best Rated</span>
+                                            <span class="quick-filter">New Arrivals</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="category-filters">
+                                        <div class="filter-chip active">
+                                            <i class="fas fa-globe"></i> All
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-laptop"></i> Electronics
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-tshirt"></i> Fashion
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-home"></i> Home & Living
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-dumbbell"></i> Sports
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-book"></i> Books
+                                        </div>
+                                        <div class="filter-chip">
+                                            <i class="fas fa-gamepad"></i> Gaming
+                                        </div>
+
+                                        <div class="suggestions">
+                                            <div class="suggestion-item">
+                                                Wireless Headphones <span class="suggestion-category">in Electronics</span>
+                                            </div>
+                                            <div class="suggestion-item">
+                                                Running Shoes <span class="suggestion-category">in Sports</span>
+                                            </div>
+                                            <div class="suggestion-item">
+                                                Smart Watch <span class="suggestion-category">in Electronics</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="row">
+            @RenderBody()
+        </div>
+
+        <!--Button back to top-->
+        <button type="button"
+                class="btn btn-floating bg-white rounded-circle"
+                id="btn-back-to-top">
+            <i class="bi bi-chevron-up text-color-theme"></i>
+        </button>
+
+    </div>
+    <footer class="color-theme-1 pb-4">
+        <div class="container pt-4 text-white">
+            <div class="row row-cols-3 ">
+                <div class="col">
+                    <h5><b>Xem Điểm Tích Lũy</b></h5>
+
+                    <div class="input-group mb-3">
+                        <button class="btn color-theme rounded-start-pill text-white ps-3" type="button" id="button-addon1">SĐT</button>
+                        <input type="text" class="form-control rounded-end-pill" placeholder="Nhập SĐT mua hàng" style="border: 2px solid #fe2e70;">
+                    </div>
+
+                    <p style="font-size:12px;">Hãy nhập SĐT mua hàng để xem điểm tích lũy, với mỗi đơn hàng khách hàng sẽ được tích lũy điểm 3% giá trị đơn hàng đã mua</p>
+                    <button type="submit" class="btn color-theme rounded-pill text-white py-3 px-4" style="border:none;">
+                        XEM ĐIỂM <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="col">
+                    <div>
+                        <img src="@Url.Content("~/Content/Icons/icon-hotline.svg")" alt="icon" style="float:left;" class="pe-4" />
+                        <div>
+                            <p>
+                                Zalo / Hotline (9:00 - 21:30) <br />
+                                <b>0967110738</b>
+                            </p>
+                            <p></p>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 15px;">
+                        <img src="@Url.Content("~/Content/Icons/icon-email.svg")" alt="icon" style="float:left;" class="pe-4" />
+                        <div>
+                            <p>Cửa Hàng (9:00 - 21:30) <br /><b>486 Lê Văn Sỹ, P.14, Quận 3, TP.HCM</b></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col d-flex align-items-center">
+                    <a href="https://www.facebook.com/gaubongcaocapcom" class="pe-4">
+                        <img src="@Url.Content("~/Content/Icons/icon-facebook.png")" alt="icon" height=50 />
+                    </a>
+                    <a href="https://id.zalo.me/account?continue=http%3A%2F%2Fzalo.me%2F0967110738" class="pe-4">
+                        <img src="@Url.Content("~/Content/Icons/icon-zalo-white.png")" alt="icon"
+                             height=50 />
+                    </a>
+                    <a href="@Html.Raw("https://www.tiktok.com/@gaubongcaocap")" class="pe-4">
+                        <img src="@Url.Content("~/Content/Icons/icon-tiktok-white.png")" alt="icon" height=50 />
+                    </a>
+                    <a href="https://www.instagram.com/gaubongcaocap" class="pe-4">
+                        <img src="@Url.Content("~/Content/Icons/icon-instar.svg")" alt="icon" height=50 />
+                    </a>
+                    <a href="@Html.Raw("https://www.youtube.com/@gaubongcaocapcom")" class="pe-4">
+                        <img src="@Url.Content("~/Content/Icons/icon-youtube.svg")" alt="icon" height=50 />
+                    </a>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="row row-cols-5">
+                <div class="col">
+                    <p style="font-size: 14px;"><b>CHÍNH SÁCH</b></p>
+                    <a href="#" class="link-footer">Bảo Hành &Aacute; đổi trả</a><br />
+                    <a href="#" class="link-footer">Dịch vụ giao hàng</a><br />
+                    <a href="#" class="link-footer">Chính sách bảo mật</a>
+                </div>
+
+                <div class="col">
+                    <p style="font-size: 14px;"><b>DỊCH VỤ KHÁCH HÀNG</b></p>
+                    <a href="#" class="link-footer">Tích điểm mua hàng</a>
+                </div>
+
+                <div class="col">
+                    <a href="#">
+                        <img src="@Url.Content("~/Content/Icons/logo.png")" alt="icon" height=60 />
+                    </a>
+                    <p><b>GẤU BÔNG CAO CẤP</b></p>
+                    <p style="font-size: 12px; line-height: 2em;">Shop chuyên các Sản Phẩm Gấu Bông với chất liệu cao cấp. Gấu Bông luôn được Shop cập nhật đầy đủ các mẫu Gấu Hot Trend & nhập về phiên bản Original nhất. Gấu Bông sẽ được bảo hành đường chỉ may trọn đời tại cửa hàng, Khách mua hàng sẽ được tích lũy điểm 3% giá trị đơn hàng đã mua. Khách mua hàng đơn >300k sẽ được Giảm ngay 30k phí ship. Shop Gói Quà & Hút chân không miễn phí + Tặng thiệp gửi lời yêu thương.</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div style="font-size: 13px;">
+                <p>@@ HKD GẤU BÔNG CAO CẤP</p>
+                <p>Số ĐKKD: 41C8025705. Do UBND QUẬN 3 cấp ngày 19/01/2022</p>
+                <p>Người đại diện: Nguyễn Thị Thu Hằng</p>
+                <p>Địa Chỉ: 486 Lê Văn Sỹ, P14, Quận 3, TP.HCM</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="~/Scripts/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <script src="~/Scripts/script.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

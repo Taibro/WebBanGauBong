@@ -1,0 +1,368 @@
+﻿
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+/*-------------------------------------------------*/
+:root {
+    --primary-color: #fe2e70;
+    --secondary-color: #5d59f3;
+}
+
+.color-theme {
+    background-color: var(--primary-color) !important;
+}
+
+.text-color-theme {
+    color: var(--primary-color) !important;
+}
+
+.color-theme-1 {
+    background-color: var(--secondary-color);
+}
+
+/*---------------------nav-bar----------------------------*/
+
+.navbar .navbar-nav .nav-link {
+    padding: 1em;
+    position: relative;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    font-size: 15px;
+}
+
+    .navbar .navbar-nav .nav-link:hover {
+        background-color: #323232;
+        color: white;
+    }
+
+    .navbar .navbar-nav .nav-link:after {
+        content: '';
+        opacity: 0;
+        transition: all 0.2s;
+        height: 2px;
+        width: 100%;
+        background-color: #9e0636;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .navbar .navbar-nav .nav-link:hover::after {
+        opacity: 1;
+    }
+
+@media screen and (min-width:992px) {
+    .navbar {
+        padding: 0px;
+    }
+}
+
+@media screen and (max-width:991px) {
+    .navbar-brand {
+        padding-left: .7em;
+    }
+}
+@media (min-width: 992px) {
+    .navbar .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+
+    .dropdown-menu{
+        width: 1298px;
+        position: absolute;
+        left: -170px;
+    }
+}
+/*---------------------search bar----------------------------*/
+.search-container {
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    max-width: 250px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+    .search-container:hover {
+        box-shadow: 40px 40px 40px rgba(0, 0, 0, 0.15);
+    }
+
+.form-control.search-input {
+    border: none;
+    background: transparent;
+    padding-left: 20px;
+    font-size: 1rem;
+    height: 50px;
+}
+
+    .form-control.search-input:focus {
+        box-shadow: none;
+        outline: none;
+    }
+
+.search-icon {
+    color: #6c757d;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/*---------------------Main search bar----------------------------*/
+
+.main-search-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+    /* Các lớp con đã được đặt tiền tố để không xung đột với Search Bar nhỏ */
+    .main-search-container .search-wrapper {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .main-search-container .search-header {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .main-search-container .search-input-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    /* INPUT của thanh lớn */
+    .main-search-container .search-input {
+        border: 2px solid #eee;
+        border-radius: 30px;
+        padding: 15px 25px;
+        padding-right: 50px;
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+        .main-search-container .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+        }
+
+ 
+    .main-search-container .search-icon {
+        position: absolute;
+        right: 20px;
+        color: #666;
+    }
+
+    .main-search-container .category-filters {
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .main-search-container .filter-chip {
+        display: inline-block;
+        padding: 8px 15px;
+        margin: 5px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .main-search-container .filter-chip:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .main-search-container .filter-chip.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    
+    .main-search-container .quick-filters {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .main-search-container .quick-filter {
+        padding: 5px 12px;
+        background: #e9ecef;
+        border-radius: 15px;
+        font-size: 0.9em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .main-search-container .quick-filter:hover {
+            background: #dee2e6;
+        }
+
+    .main-search-container .suggestions {
+        margin-top: 10px;
+        padding: 10px 0;
+        border-top: 1px solid #eee;
+    }
+
+    .main-search-container .suggestion-item {
+        padding: 8px 20px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .main-search-container .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+    .main-search-container .suggestion-category {
+        font-size: 0.8em;
+        color: #666;
+        margin-left: 5px;
+    }
+
+/*---------------------card----------------------------*/
+.card-body {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 5px;
+}
+.card {
+    position: relative;
+    transition: all 0.3s;
+}
+
+.image-link {
+    position: relative;
+    overflow: hidden;
+}
+
+.card .image-link .btn {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #706cfb;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    z-index: 10;
+    width: 130px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+    .card .image-link .btn:hover {
+        background-color: #3f3aef;
+    }
+
+.card:hover .image-link .btn {
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 14px;
+}
+
+.card-title a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+    .card-title a:hover {
+        color: #6d68fb;
+    }
+
+.btn.btnSizeCard {
+    border: 1px solid #929292;
+    color: black;
+    font-weight: bold;
+}
+
+    .btn.btnSizeCard.active {
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+.size-scroll-container {
+    overflow-x: auto;
+    gap: 5px;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+    .size-scroll-container::-webkit-scrollbar {
+        display: none;
+    }
+/*-------------------------------------------------*/
+.btn.rounded-pill {
+    border: 1px solid black;
+    background-color: white;
+}
+
+    .btn.rounded-pill:hover {
+        background-color: var(--primary-color);
+    }
+
+a.link-index {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+    a.link-index:hover {
+        color: #5d59f3;
+    }
+/*---------------------footer----------------------------*/
+a.link-footer {
+    font-size: 13px;
+    color: #ebebeb;
+    text-decoration: none;
+}
+
+    a.link-footer:hover {
+        color: #edf147;
+    }
+/*---------------------button back to top----------------------------*/
+#btn-back-to-top {
+    position: fixed;
+    padding: 10px 15px;
+    bottom: 400px;
+    right: 20px;
+    display: none;
+    border: 2px solid #fe2e70;
+}
+
+

@@ -9,11 +9,9 @@ namespace WebBanGauBong.Models
     [Table("Discount")]
     public partial class Discount
     {
-        [StringLength(10)]
-        public string DiscountID { get; set; }
+        public int DiscountID { get; set; }
 
-        [StringLength(10)]
-        public string ProductID { get; set; }
+        public int? ProductID { get; set; }
 
         [StringLength(50)]
         public string DiscountName { get; set; }

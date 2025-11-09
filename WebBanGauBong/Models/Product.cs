@@ -16,18 +16,13 @@ namespace WebBanGauBong.Models
             ProductImages = new HashSet<ProductImages>();
             ProductSize = new HashSet<ProductSize>();
             Rating = new HashSet<Rating>();
+            Category = new HashSet<Category>();
         }
 
-        [StringLength(10)]
-        public string ProductID { get; set; }
-
-        [StringLength(10)]
-        public string CategoryID { get; set; }
+        public int ProductID { get; set; }
 
         [StringLength(100)]
         public string ProductName { get; set; }
-
-        public virtual Category Category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discount> Discount { get; set; }
@@ -40,5 +35,8 @@ namespace WebBanGauBong.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Rating { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Category> Category { get; set; }
     }
 }

@@ -11,13 +11,13 @@ namespace WebBanGauBong.Models
     {
         [Key]
         [Column(Order = 0)]
-        [StringLength(10)]
-        public string ShoppingCartID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ShoppingCartID { get; set; }
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(10)]
-        public string ProductSizeID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int ProductSizeID { get; set; }
 
         public int? Quantity { get; set; }
 

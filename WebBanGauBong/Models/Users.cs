@@ -12,27 +12,29 @@ namespace WebBanGauBong.Models
         public Users()
         {
             Orders = new HashSet<Orders>();
+            Rating = new HashSet<Rating>();
             ShoppingCart = new HashSet<ShoppingCart>();
         }
 
         [Key]
-        [StringLength(10)]
-        public string UserID { get; set; }
+        public int UserID { get; set; }
 
-        [StringLength(10)]
-        public string RoleID { get; set; }
+        public int? RoleID { get; set; }
 
         [StringLength(50)]
         public string Name { get; set; }
 
-        [StringLength(50)]
-        public string Email { get; set; }
+        [StringLength(20)]
+        public string SDT { get; set; }
 
         [StringLength(255)]
         public string Password { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rating> Rating { get; set; }
 
         public virtual Roles Roles { get; set; }
 

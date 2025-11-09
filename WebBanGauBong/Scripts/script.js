@@ -31,29 +31,30 @@ $(document).ready(function () {
     // Lắng nghe sự kiện click trên bất kỳ nút nào có class .btnSizeCard
     $('.btnSizeCard').on('click', function () {
 
-        // 'this' là nút vừa được click
         var $clickedButton = $(this);
 
-        // --- 1. Xử lý Active Class ---
-
-        // Tìm đến thẻ .card-body chứa nút này
         var $cardBody = $clickedButton.closest('.card-body');
 
-        // Xóa class 'active' khỏi tất cả các nút kích thước CÙNG card-body
         $cardBody.find('.btnSizeCard').removeClass('active');
 
-        // Thêm class 'active' CHỈ cho nút vừa được click
         $clickedButton.addClass('active');
 
-        // --- 2. Xử lý Cập nhật Giá ---
+        //Xử lý Cập nhật Giá 
         var newPrice = $clickedButton.data('price');
         var rawTargetId = $clickedButton.data('target');
-
-        // QUAN TRỌNG: Thêm lại ký tự # vào đầu chuỗi để tạo bộ chọn ID hợp lệ
-        var targetPriceElementSelector = '#' + rawTargetId;
-
-        // Cập nhật nội dung text của thẻ giá đó
-        $(targetPriceElementSelector).text(newPrice + 'đ');
+        var discount = $clickedButton.data('discount');
+        
+        var targetPriceAfterDiscount = '#after-' + rawTargetId;
+       
+        if (discount != 0) {
+            var targetPrice = '#' + rawTargetId;
+            var newPriceAfterDiscount = newPrice * (100.0 - discount) / 100.0;
+            $(targetPrice).text(newPrice + 'đ');
+            $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
+        }
+        else {
+            $(targetPriceAfterDiscount).text(newPrice.toLocaleString('vi-VN') + 'đ');
+        }
     });
 });
 /////////////////////////////////////////
@@ -85,3 +86,38 @@ $(document).ready(function () {
         $('#filterForm').submit();
     });
 });
+
+//////////////////////////////////////////
+// Nút đổi giá  trang Detail
+$(document).ready(function () {
+
+    // Lắng nghe sự kiện click trên bất kỳ nút nào có class .btnSizeDetail
+    $('.btnSizeDetail').on('click', function () {
+
+        var $clickedButton = $(this);
+
+        var $cardBody = $clickedButton.closest('.cardBodyDetail');
+
+        $cardBody.find('.btnSizeDetail').removeClass('active');
+
+        // Thêm class 'active' chỉ cho nút vừa được click
+        $clickedButton.addClass('active');
+
+        //Xử lý Cập nhật Giá 
+        var newPrice = $clickedButton.data('price');
+        var rawTargetId = $clickedButton.data('target');
+        var discount = $clickedButton.data('discount');
+        var size = $clickedButton.data('size');
+
+        var targetPrice = '#' + rawTargetId;
+        var targetPriceAfterDiscount = '#after-' + rawTargetId;
+        var tagSizeDetail = '#tagSizeDetail';
+
+        newPriceAfterDiscount = newPrice * (100 - discount) / 100;
+        $(tagSizeDetail).text(size);
+        $(targetPrice).text(newPrice + 'đ');
+        $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
+    });
+});
+/////////
+// Sao đánh giá

@@ -307,4 +307,6 @@ values
 ('H0058', 'SP0025', 'gaubong-lotso-goi-om-dai-1.jpg'),
 ('H0059', 'SP0025', 'gau-bong-lotso-mau-do-nam-long-smooth-8.jpg')
 
+
+
 SELECT * FROM Product

@@ -15,8 +15,7 @@ namespace WebBanGauBong.Models
         }
 
         [Key]
-        [StringLength(10)]
-        public string RoleID { get; set; }
+        public int RoleID { get; set; }
 
         [StringLength(50)]
         public string RoleName { get; set; }

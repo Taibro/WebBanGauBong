@@ -52,7 +52,7 @@ textarea {
     position: relative;
     padding-top: 2em;
     padding-bottom: 2em;
-    font-size: 14px;
+    font-size: 15px;
 }
 
     .navbar .navbar-nav .nav-link:hover {
@@ -89,7 +89,7 @@ textarea {
 }
 /*---------------------Mega menu----------------------------*/
 .navbar-nav li:hover .mega-box {
-    top: 77px;
+    top: 82px;
     opacity: 1;
     visibility: visible;
     transition: all 0.25s ease;
@@ -165,7 +165,7 @@ textarea {
 
     .row .mega-links li a {
         text-decoration: none;
-        padding: 10px 20px;
+        padding: 5px 20px;
         color: black;
         font-size: 13px;
         display: block;
@@ -180,7 +180,7 @@ textarea {
             height: 32px;
             width: 32px;
             margin-right: 10px;
-        }
+}
 
         .row .mega-links li a:hover img {
             border: 3px solid var(--primary-color);
@@ -223,10 +223,11 @@ textarea {
 /*---------------------Main search bar----------------------------*/
 
 .main-search-container {
-    width: 1530px;
+    width: 1030px;
     margin: 0 auto;
 }
 
+    /* Các lớp con đã được đặt tiền tố để không xung đột với Search Bar nhỏ */
     .main-search-container .search-wrapper {
         background: white;
         border-radius: 15px;
@@ -236,6 +237,7 @@ textarea {
 
     .main-search-container .search-header {
         padding: 20px;
+        border-bottom: 1px solid #eee;
     }
 
     .main-search-container .search-input-group {
@@ -304,11 +306,29 @@ textarea {
             border-color: var(--primary-color);
         }
 
+    .main-search-container .quick-filter:hover {
+        background: #dee2e6;
+    }
 
-/*---------------------Modal search bar----------------------------*/
-.modal-xl {
-    max-width: 2000px;
 }
+
+.main-search-container .suggestion-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .main-search-container .suggestion-item:hover {
+        background: #f8f9fa;
+    }
+
+.main-search-container .suggestion-category {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 5px;
+}
+
+
 /*---------------------card----------------------------*/
 .card-body {
     padding-left: 0;
@@ -358,15 +378,15 @@ textarea {
     font-size: 14px;
 }
 
-    .card-title a {
-        text-decoration: none;
-        font-weight: bold;
-        color: black;
-    }
+.card-title a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
 
-        .card-title a:hover {
-            color: #6d68fb;
-        }
+    .card-title a:hover {
+        color: #6d68fb;
+    }
 
 .btn.btnSizeCard {
     border: 1px solid #929292;
@@ -382,8 +402,8 @@ textarea {
 .size-scroll-container {
     overflow-x: auto;
     gap: 5px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
 }
 
     .size-scroll-container::-webkit-scrollbar {
@@ -404,12 +424,13 @@ textarea {
     color: white;
 }
 /*----------------------Button xem them---------------------------*/
-.btn.rounded-pill {
+
+.xemThem.btn.rounded-pill {
     border: 1px solid black;
     background-color: white;
 }
 
-    .btn.rounded-pill:hover {
+    .xemThem.btn.rounded-pill:hover {
         background-color: var(--primary-color);
     }
 
@@ -574,3 +595,38 @@ nav.pagination {
 .carousel-indicators {
     position: unset;
 }
+
+/*---------------------Detail button size----------------------------*/
+
+
+/*---------------------Star rating small----------------------------*/
+
+
+.rating__average .star-outer {
+    position: relative;
+    font-size: 24px;
+    display: inline-block;
+}
+
+    .rating__average .star-outer::before {
+        content: "\2605 \2605 \2605 \2605 \2605";
+        color: white;
+    }
+
+ .rating__average .star-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+    .rating__average .star-inner::before {
+        content: "\2605 \2605 \2605 \2605 \2605";
+        color: black;
+    }
+
+.rating__average span {
+    margin-top: .7rem;
+    letter-spacing: .2rem;
+}
+

@@ -16,11 +16,9 @@ namespace WebBanGauBong.Models
             ShoppingCartItem = new HashSet<ShoppingCartItem>();
         }
 
-        [StringLength(10)]
-        public string ProductSizeID { get; set; }
+        public int ProductSizeID { get; set; }
 
-        [StringLength(10)]
-        public string ProductID { get; set; }
+        public int? ProductID { get; set; }
 
         public int? SizeName { get; set; }
 

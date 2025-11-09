@@ -12,7 +12,7 @@
 
 @model List<WebBanGauBong.Models.Category>
 
-@using (Html.BeginForm("TimKiemTheoLoai", "Product", FormMethod.Post, new { id = "filterForm" }))
+@using (Html.BeginForm("TimKiemNangCao", "Product", FormMethod.Post, new { id = "filterForm" }))
 {
     <div id="scroll-menu">
         <!--Range slider-->
@@ -43,9 +43,30 @@
             <div class="row row-cols-4 mt-1 ms-2">
                 @foreach (var item in ViewBag.KichThuocNut)
                 {
+                    string sizeName;
+
+                    if (item >= 100)
+                    {
+                        int soMet = item / 100;
+                        int soDu = item % 100;
+
+                        if (soDu == 0)
+                        {
+                            sizeName = $"{soMet}m";
+                        }
+                        else
+                        {
+                            sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                        }
+                    }
+                    else
+                    {
+                        sizeName = item + "cm";
+                    }
+
                     <button class="btn btn-outline-secondary col button-size @(buttonSizeClicked != null && buttonSizeClicked.Contains(item) ? "active" : "")"
                             name="size" type="submit" value="@item">
-                        @item<span>cm</span>
+                        @sizeName
                     </button>
                 }
             </div>
@@ -68,7 +89,7 @@
 
                         <input type="checkbox"
                                class="checkbox-round" id="@item.CategoryID"
-                               value="@item.CategoryID" 
+                               value="@item.CategoryID"
                                name="loai"
                                @if (isChecked == true) { <text> checked </text> } />
                         <label for="@item.CategoryID" class="checkbox-label"

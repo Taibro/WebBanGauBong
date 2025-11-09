@@ -9,11 +9,9 @@ namespace WebBanGauBong.Models
     public partial class ProductImages
     {
         [Key]
-        [StringLength(10)]
-        public string ProductImageID { get; set; }
+        public int ProductImageID { get; set; }
 
-        [StringLength(10)]
-        public string ProductID { get; set; }
+        public int? ProductID { get; set; }
 
         [StringLength(500)]
         public string ImageURL { get; set; }

@@ -15,11 +15,9 @@ namespace WebBanGauBong.Models
         }
 
         [Key]
-        [StringLength(10)]
-        public string OrderID { get; set; }
+        public int OrderID { get; set; }
 
-        [StringLength(10)]
-        public string UserID { get; set; }
+        public int? UserID { get; set; }
 
         public DateTime? OrderDate { get; set; }
 

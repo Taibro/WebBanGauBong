@@ -15,11 +15,9 @@ namespace WebBanGauBong.Models
             ShoppingCartItem = new HashSet<ShoppingCartItem>();
         }
 
-        [StringLength(10)]
-        public string ShoppingCartID { get; set; }
+        public int ShoppingCartID { get; set; }
 
-        [StringLength(10)]
-        public string UserID { get; set; }
+        public int? UserID { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ShoppingCartItem> ShoppingCartItem { get; set; }

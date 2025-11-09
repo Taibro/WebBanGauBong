@@ -9,14 +9,11 @@ namespace WebBanGauBong.Models
     [Table("Rating")]
     public partial class Rating
     {
-        [StringLength(10)]
-        public string RatingID { get; set; }
+        public int RatingID { get; set; }
 
-        [StringLength(10)]
-        public string ProductID { get; set; }
+        public int? ProductID { get; set; }
 
-        [StringLength(10)]
-        public string UserID { get; set; }
+        public int? UserID { get; set; }
 
         public double? Star { get; set; }
 
@@ -24,5 +21,7 @@ namespace WebBanGauBong.Models
         public string Comment { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public virtual Users Users { get; set; }
     }
 }

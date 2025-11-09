@@ -22,7 +22,7 @@
 
     <nav class="navbar navbar-expand-lg color-theme" style="padding-left: 100px; padding-right: 100px;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+            <a class="navbar-brand" href="@Url.Action("HomePage", "Home")">
                 <img src="@Url.Content("~/Content/Images/logo.png")" alt="logo" height=50 />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,24 +31,24 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold text-white" aria-current="page" href="#">BỘ SƯU TẬP</a>
+                        <a class="nav-link fw-bold text-white" aria-current="page" href="@Url.Action("Index", "Home")">BỘ SƯU TẬP</a>
 
                         <!--Mega menu-->
                         <div class="mega-box">
                             <div class="content">
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">GẤU BÔNG THEO KÍCH THƯỚC</a>
+                                        <a href="@Url.Action("Index", "Product")">GẤU BÔNG THEO KÍCH THƯỚC</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoSize", "Product", new {min = 80, max = 200})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="sizelon"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-stitch-cosplay-monster-3.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Size Lớn
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoSize", "Product", new {min = 30, max = 60})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="sizenho"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-baby-three-cosplay-shiba-2-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Size Nhỏ
                                             </a>
@@ -82,23 +82,23 @@
                                 </div>
                                 <div class="row">
                                     <div class="header">
-                                        <a href="@Url.Action("")">GẤU BÔNG TẶNG NGÀY LỄ</a>
+                                        <a href="@Url.Action("Index", "Product")">GẤU BÔNG TẶNG NGÀY LỄ</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Sinh Nhật"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="sinhnhat"})">
                                                 <img src="@Url.Content("~/Content/Images/gaubong-capybara-sinh-nhat-om-banh-kem-2-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Sinh Nhật
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Tốt Nghiệp"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="totnghiep"})">
                                                 <img src="@Url.Content("~/Content/Images/gaubong-teddy-tot-nghiep-2-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Tốt Nghiệp
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Noel"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="noel"})">
                                                 <img src="@Url.Content("~/Content/Images/gaubong-ong-gia-noel-goi-om-dut-tay-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Noel
                                             </a>
@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">GẤU BÔNG GIÁ RẺ THEO NGÂN SÁCH</a>
+                                        <a href="@Url.Action("Index", "Product")">GẤU BÔNG GIÁ RẺ THEO NGÂN SÁCH</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
@@ -139,10 +139,9 @@
 
                             </div>
                         </div>
-
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold text-white" href="@Url.Action("TimKiemTheoTen", "Product", new {name="Teddy"})">GẤU TEDDY</a>
+                        <a class="nav-link fw-bold text-white" href="@Url.Action("TimKiemTheoLoai", "Product", new {id="teddy"})">GẤU TEDDY</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-bold text-white" href="@Url.Action("Index", "Product")">THÚ BÔNG</a>
@@ -151,23 +150,23 @@
                             <div class="content">
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">GẤU BÔNG THÚ CƯNG</a>
+                                        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="thucung"})">GẤU BÔNG THÚ CƯNG</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Mèo"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="meo"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-baby-three-meo-than-tai-lucky-cat-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Mèo Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Heo"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="heo"})">
                                                 <img src="@Url.Content("~/Content/Images/heo-bong-om-binh-sua-4-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Heo Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Chó"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="cho"})">
                                                 <img src="@Url.Content("~/Content/Images/cho-bong-gromit-om-dau-2-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Chó Bông
                                             </a>
@@ -177,59 +176,59 @@
                                 </div>
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">THÚ NHỒI BÔNG</a>
+                                        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="thunhoibong"})">THÚ NHỒI BÔNG</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Capybara"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="capybara"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-capybara-angel-om-tim-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Capybara
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Hươu Cao Cổ"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="huoucaoco"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-huou-cao-co-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Hươu Cao Cổ
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Chim Cánh Cụt"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="chimcanhcut"}))">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-chim-canh-cut-deo-ca-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Chim Cánh Cụt
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Thỏ"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="tho"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-kuromi-bigsize-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Thỏ Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Vịt"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="vit"})">
                                                 <img src="@Url.Content("~/Content/Images/vit-tram-cam-cosplay-ong-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Vịt Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Rái Cá"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="raica"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-ra-ca-deo-headphone-xanh-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Rái Cá Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Voi"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="voi"})">
                                                 <img src="@Url.Content("~/Content/Images/voi-bong-mac-yem-hong-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Voi Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Panda"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="panda"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-panda-gau-truc-bong-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Panda
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Hải Cẩu"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="haicau"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-hai-cau-sushi-ca-hoi-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Hải Cẩu
                                             </a>
@@ -238,69 +237,74 @@
                                 </div>
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">TRÁI CÂY BÔNG</a>
+                                        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="traicaybong"})">TRÁI CÂY BÔNG</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Dưa Hấu"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="duahau"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-dua-hau-tron-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Dưa Hấu Bông
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Trái Sầu Riêng"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="saurieng"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-trai-sau-rieng-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Trái Sầu Riêng
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold text-white" href="#">GẤU BÔNG HOẠT HÌNH</a>
+                        <a class="nav-link fw-bold text-white" href="@Url.Action("TimKiemTheoLoai", "Product", new {id="hoathinh"})">GẤU BÔNG HOẠT HÌNH</a>
                         <!--Mega menu-->
                         <div class="mega-box">
                             <div class="content">
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">GẤU BÔNG HOT TREND</a>
+                                        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="hoathinh"})">GẤU BÔNG HOT TREND</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Shin"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="babythree"})">
+                                                <img src="@Url.Content("~/Content/Images/gaubong-baby-three-hong-4-768x512.jpg")" alt="" class="rounded-circle" />
+                                                Gấu Bông Baby Three
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="shin"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-shin-mac-do-ngu-form-dai-3-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Shin
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Doraemon"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="doraemon"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-doremon-cosplay-lotso-3-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Doraemon
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Labubu"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="labubu"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-labubu-cosplay-ca-map-2-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Labubu
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Loopy"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="loopy"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-loopy-cosplay-ca-map-hong-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Hải Ly Loopy
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Lotso"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="lotso"})">
                                                 <img src="@Url.Content("~/Content/Images/gaubong-lotso-om-tim-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Lotso
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Lena"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="lena"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-lena-nam-cosplay-lotso-hong-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Lena
                                             </a>
@@ -309,35 +313,35 @@
                                 </div>
                                 <div class="row">
                                     <div class="header">
-                                        <a href="#">GẤU BÔNG PHIM HOẠT HÌNH</a>
+                                        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="hoathinh"})">GẤU BÔNG PHIM HOẠT HÌNH</a>
                                     </div>
                                     <ul class="mega-links">
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Stitch"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="stitch"})">
                                                 <img src="@Url.Content("~/Content/Images/gaubong-stitch-xanh-om-vit-co-men-2in1-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Stitch
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Kuromi"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="kuromi"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-kuromi-om-tim-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Kuromi
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Hello Kitty"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="kitty"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-kitty-mac-dam-om-tim-1-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Gấu Bông Hello Kitty
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Melody"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="melody"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-melody-cosplay-ca-map-xanh-1-300x300.jpg")" alt="" class="rounded-circle" />
                                                 Thỏ Bông Melody
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="@Url.Action("TimKiemTheoTen", "Product", new {name="Cinnamoroll"})">
+                                            <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id="cinnamoroll"})">
                                                 <img src="@Url.Content("~/Content/Images/gau-bong-Cinnamoroll-co-men-2in1-galaxy-400x400.jpg")" alt="" class="rounded-circle" />
                                                 Thỏ Bông Cinnamoroll
                                             </a>
@@ -349,7 +353,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold text-white" href="@Url.Action("TimKiemTheoTen", "Product", new {name="Mền 2in1"})">GẤU MỀN 2IN1</a>
+                        <a class="nav-link fw-bold text-white" href="@Url.Action("TimKiemTheoLoai", "Product", new {id="2in1"})">GẤU MỀN 2IN1</a>
                     </li>
                 </ul>
 

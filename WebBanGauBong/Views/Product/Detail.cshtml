@@ -2,18 +2,40 @@
 @{
     ViewBag.Title = "Detail";
     List<WebBanGauBong.Models.ProductImages> ListAnhPhu = ViewBag.ListHinhAnhPhu as List<WebBanGauBong.Models.ProductImages>;
+    WebBanGauBong.Models.Category Loai = ViewBag.Loai as WebBanGauBong.Models.Category;
+
+    double starAvg = Model.Rating != null ? (double)Math.Round(Model.Rating.Average(t => t.Star).Value, 1) : 0;
+
+    List<WebBanGauBong.Models.ProductSize> Size = Model.ProductSize != null ? Model.ProductSize.ToList() : null;
+
+    string priceTargetId = "price-" + Model.ProductID;
+
+    decimal discountRate = Model.Discount.Count() != 0 ? (decimal)Model.Discount.First().DiscountRate.Value : 0;
 }
 
 @model WebBanGauBong.Models.Product
 
-<div class="row mt-2">
+<div class="row mt-3">
+    <!--Breadcrumb-->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("HomePage","Home")">Trang Chủ</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("Index","Product")">Gấu Bông Cao Cấp</a></li>
+            @foreach (var item in ViewBag.BreadCrumbLoai as List<WebBanGauBong.Models.Category>)
+            {
+                <li class="breadcrumb-item"><a href="@Url.Action("TimKiemTheoLoai","Product", new {id = item.CategoryID})">@item.CategoryName</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Model.ProductName</li>
+        </ol>
+    </nav>
+
     <div class="col-6">
 
         <!--Anh san pham-->
         <div class="carousel slide" id="carouselDemo"
              data-bs-wrap="true"
              data-bs-ride="carousel">
-            <div class="carousel-inner">
+            <div class="carousel-inner rounded-top-2">
 
                 <div class="carousel-item active"
                      data-bs-interval="2500">
@@ -25,12 +47,11 @@
                 {
                     <div class="carousel-item"
                          data-bs-interval="2500">
-                        <img src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="" class="w-100">
+                        <img src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="" class="w-100 ">
                         <div class="carousel-caption">
                         </div>
                     </div>
                 }
-
 
             </div>
             <img src="@Url.Content("~/Content/Images/product-footer.jpg")" alt="khuyến mãi" class="w-100 rounded-bottom" />
@@ -66,6 +87,7 @@
                         <img src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="">
                     </button>
                     i++;
+                    if (i == 5) { break; }
                 }
             </div>
 
@@ -74,7 +96,377 @@
 
     </div>
 
-    <div class="col-6">
-        <h3><a href="#">@Model.ProductName</a></h3>
+    <div class="col-6 cardBodyDetail">
+        <h4 style="font-weight:bold;"><a href="#">@Model.ProductName</a></h4>
+        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id = Loai.CategoryID})">@Loai.CategoryName</a>
+
+        <div class="small-star rating">
+            <!--Sao đánh giá-->
+            <div class="rating__average">
+                <div class="star-outer">
+                    <div class="star-inner"></div>
+                    <span style="font-size:14px; font-weight: bold;">4.5</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            @{
+                decimal tienChuaGiam = Size[0].Price.Value;
+                if (discountRate != 0)
+                {
+                    decimal tienSauGiam = tienChuaGiam * (100 - discountRate) / 100;
+
+                    <p style="text-decoration: line-through;" id="@priceTargetId">
+                        @tienChuaGiam.ToString("N0")đ
+                    </p>
+                    <h4>
+                        <span id="after-@priceTargetId" style="font-weight:bold;">@tienSauGiam.ToString("N0")đ</span> <span class="badge text-bg-secondary">-@discountRate%</span>
+                    </h4>
+                }
+                else
+                {
+                    <h4 id="after-@priceTargetId">
+                        @tienChuaGiam.ToString("N0")đ
+                    </h4>
+                }
+            }
+
+        </div>
+
+        <div>
+            <img src="@Url.Content("~/Content/Icons/icon-car.svg")" alt="" />
+            HCM Ship Siêu Tốc 60p
+        </div>
+        <div>Kích thước: <span id="tagSizeDetail">@Size[0].SizeName.Value.ToString()cm</span></div>
+
+        <!--Nút size đổi giá-->
+        <div class="size-scroll-container d-flex flex-nowrap mb-2">
+            <!--Nut size-->
+            @{
+                int s = int.Parse(Size[0].SizeName.ToString());
+                string sizeName = s.ToString();
+                if (s >= 100)
+                {
+                    int soMet = s / 100;
+                    int soDu = s % 100;
+
+                    if (soDu == 0)
+                    {
+                        sizeName = $"{soMet}m";
+                    }
+                    else
+                    {
+                        sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                    }
+                }
+                else
+                {
+                    sizeName = s.ToString() + "cm";
+                }
+            }
+            <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0 active"
+                    data-price="@Size[0].Price.Value"
+                    data-target="@priceTargetId"
+                    data-discount="@discountRate"
+                    data-size="@sizeName"
+                    style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                @sizeName
+            </button>
+
+            @foreach (var size in Size.Skip(1))
+            {
+                s = int.Parse(size.SizeName.ToString());
+                sizeName = s.ToString();
+                if (s >= 100)
+                {
+                    int soMet = s / 100;
+                    int soDu = s % 100;
+
+                    if (soDu == 0)
+                    {
+                        sizeName = $"{soMet}m";
+                    }
+                    else
+                    {
+                        sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                    }
+                }
+                else
+                {
+                    sizeName = s.ToString() + "cm";
+                }
+                <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0"
+                        data-price="@size.Price.Value"
+                        data-target="@priceTargetId"
+                        data-discount="@discountRate"
+                        data-size="@sizeName"
+                        style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                    @sizeName
+                </button>
+            }
+        </div>
+
+        <!--Nút tăng giảm số lượng, thêm giỏ hàng, mua-->
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-row mb-3 border rounded-pill">
+                <button type="button" class="btn">-</button>
+                <div class="p-2">1</div>
+                <button type="button" class="btn">+</button>
+            </div>
+
+            <button class="btn rounded-circle px-3" style="background-color:#b7b7b7;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-handbag" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
+                </svg>
+            </button>
+
+            <button class="btn color-theme px-5 rounded-pill text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
+                    <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A3 3 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43zM9 3h2.932l.023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z" />
+                </svg> Gửi Tặng
+            </button>
+
+            <button class="btn color-theme-1 px-5 rounded-pill text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
+                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                </svg> Mua Ngay
+            </button>
+        </div>
+
+        <a href="https://id.zalo.me/account?continue=http%3A%2F%2Fzalo.me%2F0967110738">
+            <img src="@Url.Content("~/Content/Icons/zalo.svg")" alt="" height=30 />
+            Chat với Shop để được hỗ trợ / tư vấn <i class="bi bi-arrow-right"></i>
+        </a>
+        <!--Voucher mã khuyến mãi-->
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-row">
+                <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
+                <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
+                    <div>
+                        <b>GIAM50K</b>
+                        <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 1tr</p>
+                    </div>
+                    <input type="radio" style="float:left;" />
+                </div>
+            </div>
+
+            <div class="d-flex flex-row ms-3">
+                <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
+                <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
+                    <div>
+                        <b>GIAM30K</b>
+                        <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 300k</p>
+                    </div>
+                    <input type="radio" style="float:left;" />
+                </div>
+            </div>
+
+        </div>
+
+        <!--Săn voucher giảm giá-->
+        <div class="d-flex flex-row rounded-3 p-2" style="background-color: #ffe2e2; color: var(--primary-color); ">
+            <img src="@Url.Content("~/Content/Icons/giftbox.png")" alt="" height=24 />
+            <span>Săn thêm <b>Voucher Giảm Giá</b></span>
+            <button type="button" class="rounded-pill color-theme text-white ms-auto border-0 h-25">
+                Săn ngay <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
+
+        <!--Chính sách-->
+        <div class="row row-cols-2">
+            <div class="d-flex flex-row mb-3 col">
+                <img src="@Url.Content("~/Content/Icons/return.svg")" alt="" />
+                <span>
+                    Đổi Hàng trong 3 ngày <br />
+                    qua số điện thoại
+                </span>
+            </div>
+
+            <div class="d-flex flex-row mb-3 col">
+                <img src="@Url.Content("~/Content/Icons/return-60.svg")" alt="" />
+                <span>
+                    HCM Hỏa Tốc 60p <br />
+                    Ship Tỉnh 2-4 ngày
+                </span>
+            </div>
+
+            <div class="d-flex flex-row mb-3 col">
+                <img src="@Url.Content("~/Content/Icons/phone.svg")" alt="" />
+                <span>
+                    Zalo/Hotline: 0967110738 <br />
+                    hỗ trợ từ 9h - 21h30
+                </span>
+            </div>
+
+            <div class="d-flex flex-row mb-3 col">
+                <img src="@Url.Content("~/Content/Icons/location.svg")" alt="" />
+                <span>
+                    Cửa Hàng: <br />
+                    486 Lê Văn Sỹ, P.14, Q.3, HCM
+                </span>
+            </div>
+        </div>
+        <hr />
+
+        <!--Xem tichs diem-->
+        <div style="background-color: #f2f2fe;" class="rounded-4 p-3">
+            <span class="mb-2">Tích Điểm 3% khi mua hàng <b style="color: var(--primary-color);">Xem Điểm Tích Lũy</b></span>
+
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item rounded-4">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button color-theme-1 text-white rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <span>🜲 Tích Điểm <span class="fw-bold">3%</span> giá trị Đơn hàng đã mua</span>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show " data-bs-parent="#accordionExample">
+                        <div class="accordion-body color-theme-1 text-white rounded-bottom-4">
+                            Đơn hàng sau khi hoàn thành, Khách hàng sẽ được tích lũy điểm = 3% giá trị đơn hàng đã mua. Điểm tích lũy sẽ được qui đổi giảm giá cho lần mua kế tiếp
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Đặc điểm nổi bật-->
+        <div>
+            <p class="d-inline-flex gap-1">
+                <a class="btn border-0" data-bs-toggle="collapse" href="#collapseDacDiem">
+                    Đặc điểm nổi bật
+                </a>
+            </p>
+            <div class="collapse" id="collapseDacDiem">
+                <div class="card card-body border-0">
+                    <span>- <b style="color: var(--primary-color);">Miễn Phí Gói Quà</b> Túi Kiếng & Nơ</span> <br />
+                    <span>- <b style="color: var(--primary-color);">Hỏa Tốc</b> Ship HCM 45-60p</span> <br />
+                    <span>- Gấu nhồi 100% gòn Trắng đàn hồi tinh khiết</span> <br />
+                    <span>- <b style="color: var(--primary-color);">Bảo Hành</b> Gấu được bảo hành đường chỉ may Vĩnh Viễn tại cửa hàng</span> <br />
+                    <span>- <b style="color: var(--primary-color);">Tích Điểm</b> Khách hàng sẽ được tích lũy điểm = 3% giá trị đơn hàng đã mua</span> <br />
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-row align-items-center text-primary bg-primary-subtle rounded-3 p-2" style="font-size: 15px;">
+            <img src="@Url.Content("~/Content/Icons/icon-check.png")" alt="" height=40 />
+            <span>Tất cả hình ảnh SP đều là Hình Thật Shop tự chụp.</span>
+        </div>
     </div>
 </div>
+
+<!--Chi tiết sản phẩm-->
+<div class="my-5">
+    <center><h2 style="font-weight:bold;">CHI TIẾT SẢN PHẨM</h2></center>
+
+    <div class="collapse" id="productDetailCollapse">
+        <div class="card card-body border-0">
+            @foreach (var item in ListAnhPhu)
+            {
+                <center class="mb-3">
+                    <img class="rounded-5" src="@Url.Content("~/Content/Images/" + item.ImageURL)" alt="@Model.ProductName" height=600 />
+                    <div>@Model.ProductName</div>
+                </center>
+            }
+
+            <p class="mt-4">
+                @Model.ProductName đang nằm trong danh sách những sản phẩm <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id = Loai.CategoryID})" style="text-decoration:none; color: var(--primary-color);">@Loai.CategoryName</a> BÁN CHẠY và đang được các bạn trẻ YÊU THÍCH NHẤT.<br />
+
+                <a href="" style="text-decoration:none; color: var(--primary-color);">@Model.ProductName</a> cosplay Monster được thiết kế với 1 kích thước Gấu Bông lớn nhỏ khác nhau: 95cm<br />
+
+                <b>Cách đo Size Gấu Bông:</b>
+                <ul>
+                    <li>
+                        Gấu Ngồi (có chân): được đo từ đầu đến mông + từ mông đến chân (Theo chữ L)
+                    </li>
+                    <li>
+                        Gấu Dài: được đo từ đầu đến phần dài cuối cùng
+                    </li>
+                </ul>
+
+                <b>Chất Liệu:</b> Gấu Bông Stitch Xanh cosplay Monster được làm từ chất liệu lông cao cấp, bên trong Gấu được nhồi 100% gòn trắng đàn hồi tinh khiết, giúp Gấu Bông Stitch Xanh cosplay Monster rất căng bông, êm ái và cực kì an toàn cho sức khỏe.
+
+                <br />
+                <b>Hoàn Tiền - Tích Điểm:</b> Các Sản Phẩm Gấu Bông Stitch khi mua hàng bạn sẽ được đăng ký thông tin vào hệ thống, ngay lập tức bạn sẽ được tích lũy điểm = 3% giá trị đơn hàng đã mua cho lần mua kế tiếp.
+
+                <br />
+                <b>Bảo Hành:</b> Đặc biệt, với số điện thoại đã đăng ký, Gấu Bông của bạn mua sẽ được bảo hành đường chỉ may trọn đời tại Shop. Gấu của bạn bị bung chỉ? bạn cứ mang gấu đến cửa hàng & cung cấp số di động là xong. Shop sẽ chăm sóc Gấu của bạn tận tình.
+
+                <br />
+                <a href="" style="text-decoration:none; color: var(--primary-color);">@Model.ProductName</a> sẽ là món quà tặng vô cùng Dễ Thương dành cho người thân yêu của bạn!
+                <br />
+                Hình ảnh @Model.ProductName, hình ảnh này là hình THẬT do Shop TỰ CHỤP.
+            </p>
+        </div>
+    </div>
+    <p class="d-flex justify-content-center mt-3 ">
+        <a class="btn border rounded-pill px-5"
+           href="#productDetailCollapse" role="button"
+           data-bs-toggle="collapse">
+            Xem thêm
+        </a>
+    </p>
+
+</div>
+
+<!--Gợi ý sản phâm-->
+<div class="">
+    <h2 style="font-weight:bold;" class="text-center">GỢI Ý SẢN PHẨM</h2>
+
+    <h4 class="mt-4">
+        <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id = Loai.CategoryID})" style="text-decoration:none;" class="my-3 fw-bold">
+            GẤU BÔNG CÙNG LOẠI
+        </a>
+    </h4>
+
+    <img src="@Url.Content("~/Content/Images/cat-thubong-bn.jpg")" alt="" class="mb-3 rounded-4" />
+
+    <!--Sản phẩm liên qua-->
+    <div class="row row-cols-5">
+        @foreach (var item in Loai.Product.ToList().Take(10))
+        {
+            if (item.ProductID != Model.ProductID)
+            {
+                @Html.Action("CardSanPham", "Home", new { id = item.ProductID })
+            }
+        }
+    </div>
+    <center class="mb-3">
+        <a href="#" class="xemThem btn rounded-pill px-5 py-3 text-center">
+            XEM THÊM <i class="bi bi-chevron-right"></i>
+        </a>
+    </center>
+</div>
+
+<!--Đánh giá, bình luận-->
+<div class="d-flex flex-row mb-3">
+
+    <div class="app">
+        <div class="rating">
+            <div class="rating__average">
+                <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+                <h1>4.5</h1>
+                <div class="star-outer">
+                    <div class="star-inner"></div>
+                </div>
+                <p class="fst-italic">230.881</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="p-2">Flex item 2</div>
+    <div class="p-2">Flex item 3</div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelector('.small-star .rating__average span').innerHTML = '(' + @starAvg + ')';
+
+        document.querySelector('.small-star .star-inner').style.width = (@starAvg / 6.0) * 100.0 + '%';
+
+    });
+
+</script>

@@ -13,20 +13,21 @@ namespace WebBanGauBong.Controllers
         QL_THU_BONG csdl = new QL_THU_BONG();
         public ActionResult Index()
         {
+            ViewBag.TenLoai = "GẤU BÔNG CAO CẤP";
             return View(csdl.Product.ToList());
         }
 
         public ActionResult HienThiMenu()
         {
-            ViewBag.KichThuocNut = new List<int> { 30, 32, 33, 35, 37, 38, 40, 42, 43, 45, 47, 48, 50, 52, 53, 54, 55, 57, 58, 60, 63, 65, 68, 70, 72, 75, 78, 80, 85, 90, 95, 100, 105, 110, 115, 115, 120, 125, 125, 130, 135, 140, 150, 160, 165, 170, 175, 180, 200 };
+            ViewBag.KichThuocNut = new List<int> { 20, 30, 32, 33, 35, 37, 38, 40, 42, 43, 45, 47, 48, 50, 52, 53, 54, 55, 57, 58, 60, 63, 65, 68, 70, 72, 75, 78, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 150, 160, 165, 170, 175, 180, 200 };
             return PartialView(csdl.Category.ToList());
         }
 
         [HttpPost]
-        public ActionResult TimKiemTheoLoai(FormCollection form)
+        public ActionResult TimKiemNangCao(FormCollection form)
         {
             List<Product> sanPhamHienTai = Session["DanhSachSanPhamHienTai"] != null ? Session["DanhSachSanPhamHienTai"] as List<Product> : csdl.Product.ToList();
-            List<Product> sanPhamTheoLoai = null;
+            List<Product> sanPhamTheoLoai = new List<Product>();
             List<Product> sanPhamTheoGia = new List<Product>();
             List<Product> sanPhamTheoSize = new List<Product>();
 
@@ -47,8 +48,25 @@ namespace WebBanGauBong.Controllers
 
             Session["Sizes"] = dsSize;
 
+            // Lọc theo loại
+            if (idLoai != null)
+            {
+                List<string> dsLoai = idLoai.Split(',').ToList();
+                TempData["CheckedLoai"] = dsLoai;
+                foreach (var cat in csdl.Category.ToList().FindAll(t => dsLoai.Contains(t.CategoryID)))
+                {
+                    sanPhamTheoLoai = sanPhamTheoLoai.Concat(cat.Product).ToList();
+                }
+
+                sanPhamTheoLoai = sanPhamTheoLoai.Concat(sanPhamHienTai).ToList();
+            }
+            else
+            {
+                sanPhamTheoLoai = sanPhamHienTai;
+            }
+
             // Lọc theo giá
-            foreach (Product sp in sanPhamHienTai)
+            foreach (Product sp in sanPhamTheoLoai)
             {
                 foreach (var size in sp.ProductSize.ToList())
                 {
@@ -62,43 +80,27 @@ namespace WebBanGauBong.Controllers
             }
 
             // Lọc theo size
-            foreach (Product sp in sanPhamHienTai)
+            if (dsSize.Count == 0)
             {
-                foreach (ProductSize size in sp.ProductSize.ToList())
+                sanPhamTheoSize = sanPhamTheoLoai;
+            }
+            else
+            {
+                foreach (Product sp in sanPhamTheoLoai)
                 {
-                    if (dsSize.Contains((int)size.SizeName))
+                    foreach (ProductSize size in sp.ProductSize.ToList())
                     {
-                        sanPhamTheoSize.Add(sp);
-                        break;
+                        if (dsSize.Contains((int)size.SizeName))
+                        {
+                            sanPhamTheoSize.Add(sp);
+                            break;
+                        }
+
                     }
-
-                }
-            }
-            // Lọc theo loại
-            if (idLoai != null)
-            {
-                List<string> dsLoai = idLoai.Split(',').ToList();
-                TempData["CheckedLoai"] = dsLoai;
-                sanPhamTheoLoai = csdl.Product.ToList().FindAll(t => dsLoai.Contains(t.CategoryID.ToString()));
-
-                if (Session["DanhSachSanPhamHienTai"] != null)
-                {
-                    return View("Index", sanPhamTheoLoai);
                 }
             }
 
-            else
-            {
-                sanPhamTheoLoai = sanPhamHienTai;
-            }
-
-            List<Product> finals = null;
-            if (sanPhamTheoSize.Count > 0)
-                finals = sanPhamTheoLoai.Intersect(sanPhamTheoGia).Intersect(sanPhamTheoSize).ToList();
-            else
-            {
-                finals = sanPhamTheoLoai.Intersect(sanPhamTheoGia).ToList();
-            }
+            List<Product> finals = sanPhamTheoSize.Intersect(sanPhamTheoGia).ToList();
 
             return View("Index", finals);
         }
@@ -107,6 +109,7 @@ namespace WebBanGauBong.Controllers
         {
             List<Product> ds = csdl.Product.ToList().FindAll(sp => sp.ProductName.ToLower().Trim().Contains(name.ToLower().Trim()));
             Session["DanhSachSanPhamHienTai"] = ds;
+            Session["Sizes"] = null;
 
             return View("Index", ds);
         }
@@ -152,12 +155,57 @@ namespace WebBanGauBong.Controllers
             return View("Index", ds);
         }
 
-
-        public ActionResult Detail(string id)
+        public ActionResult TimKiemTheoLoai(string id)
         {
-            Product sp = csdl.Product.ToList().Find(t => t.ProductID.ToLower().Trim() == id.ToLower().Trim());
-            
+            Category cat = csdl.Category.FirstOrDefault(t => t.CategoryID.Equals(id));
+            List<Product> dssp = new List<Product>();
+            ViewBag.TenLoai = cat.CategoryName.ToUpper();
+
+            ViewBag.DanhSachLoaiCon = null;
+            if (cat.Category2 != null)
+            {
+                ViewBag.DanhSachLoaiCon = cat.Category2.Category1.ToList();
+            }
+            else if (cat.Category1 != null)
+            {
+                ViewBag.DanhSachLoaiCon = cat.Category1.ToList();
+            }
+
+            if (cat.Product != null)
+            {
+                dssp = dssp.Concat(cat.Product).ToList();
+            }
+            if (cat.Category1 != null)
+            {
+                foreach (var c in cat.Category1)
+                {
+                    dssp = dssp.Concat(c.Product).ToList();
+                }
+            }
+
+            Session["DanhSachSanPhamHienTai"] = dssp;
+
+            return View("Index", dssp);
+        }
+
+        public ActionResult Detail(int id)
+        {
+            Product sp = csdl.Product.ToList().Find(t => t.ProductID == id);
+
             ViewBag.ListHinhAnhPhu = sp.ProductImages.ToList();
+
+            List<Category> dsLoai = new List<Category>();
+            Category loai = sp.Category.First();
+            ViewBag.Loai = loai;
+            dsLoai.Add(loai);
+            while (loai.Category2 != null)
+            {
+                dsLoai.Add(loai.Category2);
+                loai = loai.Category2;
+            }
+            dsLoai.Reverse();
+            ViewBag.BreadCrumbLoai = dsLoai;
+
             return View(sp);
         }
 

@@ -52,7 +52,7 @@ textarea {
     position: relative;
     padding-top: 2em;
     padding-bottom: 2em;
-    font-size: 14px;
+    font-size: 15px;
 }
 
     .navbar .navbar-nav .nav-link:hover {
@@ -60,12 +60,8 @@ textarea {
         color: white;
     }
 
-    /*Tạo underline khi hover*/
-    .navbar .navbar-nav .nav-link::after {
         content: '';
-        position: absolute;
         height: 2px;
-        background-color: var(--primary-color);
         bottom: 0;
         left: 0;
         width: 0;
@@ -73,7 +69,6 @@ textarea {
     }
 
     .navbar .navbar-nav .nav-link:hover::after {
-        width: 100%;
     }
 
 @media screen and (min-width:992px) {
@@ -87,100 +82,16 @@ textarea {
         padding-left: .7em;
     }
 }
-/*---------------------Mega menu----------------------------*/
-.navbar-nav li:hover .mega-box {
-    top: 77px;
-    opacity: 1;
-    visibility: visible;
-    transition: all 0.25s ease;
-    z-index: 999;
-}
-
-.mega-box {
-    position: absolute;
-    top: 95px;
-    background-color: #f3f4f6;
-    width: 1295px;
-    left: 113px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-    .mega-box .content {
-        background-color: #f3f4f6;
-        padding: 25px 20px;
-        display: flex;
-        width: 100%;
-        align-items: flex-start;
-    }
-
-.content .row {
-    width: calc(30% - 30px);
-    line-height: 40px;
-}
-
-    .content .row .header a {
-        color: black;
-        font-size: 14px;
-        font-weight: bold;
-        text-decoration: none;
-        position: relative;
-        display: inline-block;
-    }
-
-        .content .row .header a:hover {
-            color: var(--secondary-color);
-        }
-
-        .content .row .header a::after {
-            content: '';
-            position: absolute;
-            height: 1.5px;
-            background-color: var(--primary-color);
-            bottom: 0;
-            left: 0;
-            width: 0;
-            transition: width 0.15s ease-out;
-        }
-
-        .content .row .header a:hover::after {
-            width: 100%;
-        }
-
-    .content .row .mega-links {
-        margin-left: -40px;
-        border-left: 1px solid rgba(255, 255, 255, 0.09);
-    }
-
-    .content .row:nth-child(1),
-    .content .row:nth-child(2) {
-        border-left: 0px;
-    }
-
-.row .mega-links li {
-    list-style: none;
-    padding: 0 20px;
-}
-
-    .row .mega-links li a {
-        text-decoration: none;
-        padding: 10px 20px;
-        color: black;
-        font-size: 13px;
         display: block;
-        font-weight: 550;
     }
 
-        .row .mega-links li a:hover {
-            color: var(--primary-color);
-        }
+    }
 
         .row .mega-links li a img {
             height: 32px;
             width: 32px;
             margin-right: 10px;
-        }
+}
 
         .row .mega-links li a:hover img {
             border: 3px solid var(--primary-color);
@@ -223,10 +134,10 @@ textarea {
 /*---------------------Main search bar----------------------------*/
 
 .main-search-container {
-    width: 1530px;
     margin: 0 auto;
 }
 
+    /* Các lớp con đã được đặt tiền tố để không xung đột với Search Bar nhỏ */
     .main-search-container .search-wrapper {
         background: white;
         border-radius: 15px;
@@ -236,6 +147,7 @@ textarea {
 
     .main-search-container .search-header {
         padding: 20px;
+        border-bottom: 1px solid #eee;
     }
 
     .main-search-container .search-input-group {
@@ -266,16 +178,14 @@ textarea {
         position: absolute;
         left: 300px;
     }
-
+ 
     .main-search-container .search-icon {
         position: absolute;
-        left: 250px;
         color: #666;
     }
 
     .main-search-container .category-filters {
         padding: 15px 20px;
-        background: white;
         border-radius: 0 0 15px 15px;
     }
 
@@ -293,22 +203,35 @@ textarea {
     }
 
         .main-search-container .filter-chip:hover {
-            background: var(--primary-color);
             color: white;
-            border-color: var(--primary-color);
         }
 
         .main-search-container .filter-chip.active {
-            background: var(--primary-color);
             color: white;
-            border-color: var(--primary-color);
+    }
+
+        .main-search-container .quick-filter:hover {
+            background: #dee2e6;
         }
 
+    }
 
-/*---------------------Modal search bar----------------------------*/
-.modal-xl {
-    max-width: 2000px;
-}
+    .main-search-container .suggestion-item {
+        padding: 8px 20px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .main-search-container .suggestion-item:hover {
+            background: #f8f9fa;
+        }
+
+    .main-search-container .suggestion-category {
+        font-size: 0.8em;
+        color: #666;
+        margin-left: 5px;
+    }
+
 /*---------------------card----------------------------*/
 .card-body {
     padding-left: 0;
@@ -333,7 +256,6 @@ textarea {
     transform: translateX(-50%);
     background-color: #706cfb;
     color: white;
-    transition: all 0.2s ease-in-out;
     z-index: 10;
     width: 130px;
     padding-top: 10px;
@@ -358,15 +280,15 @@ textarea {
     font-size: 14px;
 }
 
-    .card-title a {
-        text-decoration: none;
-        font-weight: bold;
-        color: black;
-    }
+.card-title a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
 
-        .card-title a:hover {
-            color: #6d68fb;
-        }
+    .card-title a:hover {
+        color: #6d68fb;
+    }
 
 .btn.btnSizeCard {
     border: 1px solid #929292;
@@ -382,28 +304,13 @@ textarea {
 .size-scroll-container {
     overflow-x: auto;
     gap: 5px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
 }
 
     .size-scroll-container::-webkit-scrollbar {
         display: none;
     }
-
-.card .btn.rounded-circle {
-    border: 0.5px solid #b3b3b3;
-    color: black;
-    padding: 3px 8px 3px 8px;
-    position: absolute;
-    right: 0;
-    bottom: 27px;
-}
-
-.card:hover .btn.rounded-circle {
-    background-color: var(--primary-color);
-    color: white;
-}
-/*----------------------Button xem them---------------------------*/
 .btn.rounded-pill {
     border: 1px solid black;
     background-color: white;

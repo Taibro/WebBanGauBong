@@ -268,7 +268,7 @@ textarea {
         position: absolute;
         left: 300px;
     }
-
+ 
     .main-search-container .search-icon {
         position: absolute;
         left: 250px;
@@ -600,33 +600,75 @@ nav.pagination {
 
 
 /*---------------------Star rating small----------------------------*/
-
-
-.rating__average .star-outer {
+.small-star .rating__average .star-outer {
     position: relative;
-    font-size: 24px;
+    font-size: 25px;
     display: inline-block;
 }
 
-    .rating__average .star-outer::before {
+    .small-star .rating__average .star-outer::before {
         content: "\2605 \2605 \2605 \2605 \2605";
-        color: white;
+        color: #b4b4b4;
     }
 
- .rating__average .star-inner {
+.small-star .rating__average .star-inner {
     position: absolute;
     top: 0;
     left: 0;
     overflow: hidden;
 }
 
-    .rating__average .star-inner::before {
+    .small-star .rating__average .star-inner::before {
         content: "\2605 \2605 \2605 \2605 \2605";
         color: black;
     }
 
-.rating__average span {
+.small-star .rating__average span {
     margin-top: .7rem;
     letter-spacing: .2rem;
 }
+/*---------------------Star rating big----------------------------*/
+.big-star .rating {
+    width: 500px;
+    align-items: center;
+}
 
+.big-star .rating__average {
+    width: 100%;
+    background-color: #f1f1f1;
+    padding: 10px 30px 10px 30px;
+    border-radius: .8rem;
+    text-align: center;
+}
+
+    .big-star .rating__average h1 {
+        font-size: 4rem;
+        font-weight: 1000;
+    }
+
+    .big-star .rating__average .star-outer {
+        position: relative;
+        font-size: 3rem;
+        display: inline-block;
+    }
+
+        .big-star .rating__average .star-outer::before {
+            content: "\2605 \2605 \2605 \2605 \2605";
+            color: #939393;
+        }
+
+    .big-star .rating__average .star-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+
+        .big-star .rating__average .star-inner::before {
+            content: "\2605 \2605 \2605 \2605 \2605";
+            color: #ffb502;
+        }
+
+    .big-star .rating__average p {
+        font-size: 14px;
+    }

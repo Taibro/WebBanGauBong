@@ -5,6 +5,7 @@
     WebBanGauBong.Models.Category Loai = ViewBag.Loai as WebBanGauBong.Models.Category;
 
     double starAvg = Model.Rating != null ? (double)Math.Round(Model.Rating.Average(t => t.Star).Value, 1) : 0;
+    int starSum = Model.Rating != null ? (int)Model.Rating.Sum(t => t.Star) : 0;
 
     List<WebBanGauBong.Models.ProductSize> Size = Model.ProductSize != null ? Model.ProductSize.ToList() : null;
 
@@ -317,7 +318,7 @@
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item rounded-4">
                     <h2 class="accordion-header">
-                        <button class="accordion-button color-theme-1 text-white rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button color-theme-1 text-white rounded-top-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <span>🜲 Tích Điểm <span class="fw-bold">3%</span> giá trị Đơn hàng đã mua</span>
                         </button>
                     </h2>
@@ -441,19 +442,20 @@
 <!--Đánh giá, bình luận-->
 <div class="d-flex flex-row mb-3">
 
-    <div class="app">
-        <div class="rating">
+        <div class="big-star rating">
             <div class="rating__average">
-                <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+                <h4 class="mt-4">ĐÁNH GIÁ SẢN PHẨM</h4>
                 <h1>4.5</h1>
                 <div class="star-outer">
                     <div class="star-inner"></div>
                 </div>
                 <p class="fst-italic">230.881</p>
+                <button type="button" class="btn btn-secondary rounded-pill">
+                    <i class="bi bi-star-fill"></i> Gửi Đánh Giá
+                </button>
             </div>
-
         </div>
-    </div>
+   
 
     <div class="p-2">Flex item 2</div>
     <div class="p-2">Flex item 3</div>
@@ -461,12 +463,22 @@
 
 
 <script>
+    // Sao đánh giá nhỏ
     document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector('.small-star .rating__average span').innerHTML = '(' + @starAvg + ')';
 
-        document.querySelector('.small-star .star-inner').style.width = (@starAvg / 6.0) * 100.0 + '%';
+        document.querySelector('.small-star .star-inner').style.width = (@starAvg / 5) * 100 + '%';
 
+    });
+
+    // Sao đánh giá nhỏ lớn
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector('.big-star .rating__average h1').innerHTML = @starAvg;
+
+        document.querySelector('.big-star .rating__average p').innerHTML = @starSum + ' đánh giá';
+
+        document.querySelector('.big-star .star-inner').style.width = (@starAvg / 5) * 100 + '%';
     });
 
 </script>

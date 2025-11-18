@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -205,8 +206,55 @@ namespace WebBanGauBong.Controllers
             }
             dsLoai.Reverse();
             ViewBag.BreadCrumbLoai = dsLoai;
+            if (TempData["TempID"] != null && int.Parse(TempData["TempID"].ToString()) == id)
+            {
+                TempData.Keep("ListTempRating");
+            }
+            else
+            {
+                TempData["ListTempRating"] = null;
+            }
+                return View(sp);
+        }
 
-            return View(sp);
+        [HttpPost]
+        public ActionResult RatingOnSubmit(FormCollection form, int id, HttpPostedFileBase Image)
+        {
+            List<TempRating> rateList = TempData["ListTempRating"] != null ? TempData["ListTempRating"] as List<TempRating> : new List<TempRating>();
+            TempData["TempID"] = id;
+            if (ModelState.IsValid)
+            {
+                string FileName = "";
+                string Dir = "/Content/Images/";
+                if (Image != null && Image.ContentLength > 0)
+                {
+                    FileName = Path.GetFileName(Image.FileName);
+                    string physicalDir = Server.MapPath(Dir);
+                    if (!Directory.Exists(physicalDir))
+                    {
+                        Directory.CreateDirectory(physicalDir);
+                    }
+                    string path = Path.Combine(Server.MapPath(Dir), FileName);
+                    Image.SaveAs(path);
+                }
+                TempRating rate = new TempRating();
+                if (!string.IsNullOrEmpty(form["rating"]))
+                {
+                    rate.Star = int.Parse(form["rating"]);
+                }
+                else
+                {
+                    rate.Star = 5; // Mặc định 5 sao nếu không chọn (hoặc xử lý lỗi tùy bạn)
+                }
+                rate.Name = form["name"];
+                rate.Email = form["email"];
+                rate.Comment = form["comment"];
+                rate.Image = FileName;
+                rate.RateDate = DateTime.Now;
+                rateList.Add(rate);
+                TempData["ListTempRating"] = rateList;
+            }
+            return RedirectToAction("Detail", new {id = id});
         }
 
     }

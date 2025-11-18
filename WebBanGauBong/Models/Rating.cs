@@ -15,11 +15,12 @@ namespace WebBanGauBong.Models
 
         public int? UserID { get; set; }
 
-        public double? Star { get; set; }
+        public int? Star { get; set; }
 
         [StringLength(500)]
         public string Comment { get; set; }
-
+        public int? ProductSizeName { get; set; }
+        public DateTime RatingDate { get; set; }
         public virtual Product Product { get; set; }
 
         public virtual Users Users { get; set; }

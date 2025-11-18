@@ -4,6 +4,8 @@
     List<WebBanGauBong.Models.ProductImages> ListAnhPhu = ViewBag.ListHinhAnhPhu as List<WebBanGauBong.Models.ProductImages>;
     WebBanGauBong.Models.Category Loai = ViewBag.Loai as WebBanGauBong.Models.Category;
 
+    List<WebBanGauBong.Models.Rating> ListRating = Model.Rating != null ? Model.Rating.ToList() : new List<WebBanGauBong.Models.Rating>();
+
     double starAvg = Model.Rating != null ? (double)Math.Round(Model.Rating.Average(t => t.Star).Value, 1) : 0;
     int starSum = Model.Rating != null ? (int)Model.Rating.Sum(t => t.Star) : 0;
 
@@ -105,9 +107,10 @@
             <!--Sao đánh giá-->
             <div class="rating__average">
                 <div class="star-outer">
-                    <div class="star-inner"></div>
-                    <span style="font-size:14px; font-weight: bold;">4.5</span>
+                    <div class="star-inner"
+                         style="width: @(starAvg/ 5.0 * 100.0)%"></div>
                 </div>
+                <span style="font-size:14px; font-weight: bold;">@starAvg</span>
             </div>
         </div>
 
@@ -440,39 +443,182 @@
 </div>
 
 <!--Đánh giá, bình luận-->
-<div class="d-flex flex-row mb-3">
+<div class="row mb-3">
 
-        <div class="big-star rating">
-            <div class="rating__average">
-                <h4 class="mt-4">ĐÁNH GIÁ SẢN PHẨM</h4>
-                <h1>4.5</h1>
-                <div class="star-outer">
-                    <div class="star-inner"></div>
-                </div>
-                <p class="fst-italic">230.881</p>
-                <button type="button" class="btn btn-secondary rounded-pill">
-                    <i class="bi bi-star-fill"></i> Gửi Đánh Giá
-                </button>
+    <!--Card sao lon trung binh-->
+    <div class="col-4 big-star rating position-sticky">
+        <div class="rating__average">
+            <h4 class="mt-4">ĐÁNH GIÁ SẢN PHẨM</h4>
+            <h1>4.5</h1>
+            <div class="star-outer">
+                <div class="star-inner"></div>
             </div>
+            <p class="fst-italic">230.881</p>
+            <button type="button" class="btn btn-secondary rounded-pill"
+                    data-bs-toggle="modal" data-bs-target="#sendRating">
+                <i class="bi bi-star-fill"></i> Gửi Đánh Giá
+            </button>
         </div>
-   
+    </div>
+    <!--Modal rating-->
+    <div class="modal fade "
+         id="sendRating"
+         tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg ">
+            @using (Html.BeginForm("RatingOnSubmit", "Product", new { id = Model.ProductID }, FormMethod.Post, new{ enctype="multipart/form-data"}))
+            {
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            ĐÁNH GIÁ REVIEW SẢN PHẨM
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--Click sao-->
+                        <div class="rating-star-click">
+                            <!-- Notice that the stars are in reverse order -->
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1"><i class="fa-solid fa-star"></i></label>
+                        </div>
 
-    <div class="p-2">Flex item 2</div>
-    <div class="p-2">Flex item 3</div>
+                        <div class="row mb-3 mx-1">
+                            <input type="text"
+                                   placeholder="Họ & Tên"
+                                   class=" col form-control rounded-3 custom-input me-2"
+                                   name="name" />
+
+                            <input type="email"
+                                   placeholder="Email"
+                                   class="col form-control rounded-3 custom-input "
+                                   name="email" />
+
+                        </div>
+                        <textarea class="form-control rounded-3 custom-review-field ms-1 me-2"
+                                  placeholder="Nhận xét review sản phẩm"
+                                  rows="2"
+                                  style="min-width: 100%"
+                                  name="comment"></textarea>
+
+                        <div class="hero">
+                            <label for="input-file" id="drop-area">
+                                <input type="file" accept="image/*" id="input-file" name="Image" hidden>
+                                <div id="img-view">
+                                    <img src="@Url.Content("~/Content/Icons/upload-icon.svg")" alt="" height=50>
+                                    <p>Kéo thả ảnh cần upload vào đây<br>hoặc</p>
+                                    <buton class="btn btn-primary rounded-4">Chọn ảnh</buton>
+                                </div>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-circle px-3" data-bs-dismiss="modal">
+                            <i class="bi bi-x fa-2x"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary rounded-pill py-3" style="width: 680px;">
+                            GỬI ĐÁNH GIÁ
+                        </button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+
+
+
+    <div class="row col-8">
+        @foreach (var item in ListRating)
+        {
+            <div class="col-6">
+                <!--Sao đánh giá-->
+                <div class="small-star rating">
+                    <div class="rating__average">
+                        <div class="star-outer">
+                            <div class="star-inner"
+                                 style="width: @((item.Star / 5.0) * 100.0)%"></div>
+                        </div>
+                    </div>
+                </div>
+                <p>@item.Users.Name</p>
+                <p style="font-size:13px; color: #808080;" class="fst-italic">
+                    @{
+                        int sizeRate = item.ProductSizeName.Value;
+                        string size = sizeRate.ToString();
+                        if (sizeRate >= 100)
+                        {
+                            int soMet = sizeRate / 100;
+                            int soDu = sizeRate % 100;
+
+                            if (soDu == 0)
+                            {
+                                size = $"{soMet}m";
+                            }
+                            else
+                            {
+                                size = $"{soMet}m{soDu.ToString("D2")}";
+                            }
+                        }
+                        else
+                        {
+                            size = sizeRate.ToString() + "cm";
+                        }
+                    }
+                    @size
+                </p>
+                <p>@item.Comment</p>
+                <p style="font-size: 13px;">@item.RatingDate.ToString("dd.MM.yyyy")</p>
+            </div>
+
+        }
+
+        @{
+            if (TempData["ListTempRating"] != null)
+            {
+                foreach (var item in TempData["ListTempRating"] as List<WebBanGauBong.Models.TempRating>)
+                {
+                    <div class="col-6">
+                        <!--Sao đánh giá-->
+                        <div class="small-star rating">
+                            <div class="rating__average">
+                                <div class="star-outer">
+                                    <div class="star-inner"
+                                         style="width: @((item.Star / 5.0) * 100.0)%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>@item.Name</p>
+                        <p style="font-size:13px; color: #808080;" class="fst-italic">
+                            Review
+                        </p>
+                        <p>@item.Comment</p>
+                        <img src="@Url.Content("~/Content/Images/" + item.Image)" alt="" height=165 class="rounded-4" />
+                        <p style="font-size: 13px;">@item.RateDate.ToString("dd.MM.yyyy")</p>
+                    </div>
+
+                }
+            }
+        }
+
+    </div>
+
+
 </div>
 
 
 <script>
-    // Sao đánh giá nhỏ
-    document.addEventListener("DOMContentLoaded", function () {
 
-        document.querySelector('.small-star .rating__average span').innerHTML = '(' + @starAvg + ')';
-
-        document.querySelector('.small-star .star-inner').style.width = (@starAvg / 5) * 100 + '%';
-
-    });
-
-    // Sao đánh giá nhỏ lớn
+    // Sao đánh giá lớn
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('.big-star .rating__average h1').innerHTML = @starAvg;
 
@@ -481,4 +627,38 @@
         document.querySelector('.big-star .star-inner').style.width = (@starAvg / 5) * 100 + '%';
     });
 
+    //input file ảnh
+    const dropArea = document.getElementById("drop-area");
+    const inputFile = document.getElementById("input-file");
+    const imageView = document.getElementById("img-view");
+    const imageShow = document.getElementById("img-show");
+
+    inputFile.addEventListener("change", uploadImage);
+
+    function uploadImage() {
+        let imgLink = URL.createObjectURL(inputFile.files[0]);
+        imageView.style.backgroundImage = `url(${imgLink})`;
+        imageView.textContent = "";
+        imageView.style.border = 0;
+    }
+
+    dropArea.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    })
+
+    dropArea.addEventListener("drop", function (e) {
+        e.preventDefault();
+        inputFile.files = e.dataTransfer.files;
+        uploadImage();
+    })
+
+    // click star
+    var ratingInputs = document.getElementsByName("rating");
+    ratingInputs.forEach(function (input) {
+        input.addEventListener("change", function () {
+            //var rating = input.value;
+
+            //console.log("Rating được chọn: ", rating);
+        });
+    });
 </script>

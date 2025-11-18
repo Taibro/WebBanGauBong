@@ -2,22 +2,22 @@
 --USE QL_THU_BONG
 --drop database QL_THU_BONG
 
-DROP TABLE IF EXISTS OrderDetail;
-DROP TABLE IF EXISTS ShoppingCartItem;
+--DROP TABLE IF EXISTS OrderDetail;
+--DROP TABLE IF EXISTS ShoppingCartItem;
 
-DROP TABLE IF EXISTS Rating;
-DROP TABLE IF EXISTS Discount;
-DROP TABLE IF EXISTS ProductImages;
-DROP TABLE IF EXISTS Product_Category;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS ShoppingCart;
-DROP TABLE IF EXISTS ProductSize;
+--DROP TABLE IF EXISTS Rating;
+--DROP TABLE IF EXISTS Discount;
+--DROP TABLE IF EXISTS ProductImages;
+--DROP TABLE IF EXISTS Product_Category;
+--DROP TABLE IF EXISTS Orders;
+--DROP TABLE IF EXISTS ShoppingCart;
+--DROP TABLE IF EXISTS ProductSize;
 
-DROP TABLE IF EXISTS Users;
+--DROP TABLE IF EXISTS Users;
 
-DROP TABLE IF EXISTS Product;
-DROP TABLE IF EXISTS Category;
-DROP TABLE IF EXISTS Roles;
+--DROP TABLE IF EXISTS Product;
+--DROP TABLE IF EXISTS Category;
+--DROP TABLE IF EXISTS Roles;
 GO
 
 go
@@ -103,12 +103,15 @@ CREATE TABLE Rating
 	RatingID int IDENTITY(1,1),
 	ProductID int,
 	UserID int,
-	Star float,
+	Star int,
 	Comment nvarchar(500),
+	ProductSizeName int,
+	RatingDate date,
 	primary key(RatingID),
 	foreign key(ProductID) references Product(ProductID),
 	foreign key(UserID) references Users(UserID)
 )
+
 go
 CREATE TABLE Orders
 (
@@ -635,99 +638,104 @@ values
 go
 
 go
-INSERT INTO Rating (ProductID, UserID, Star, Comment)
-VALUES
-(1, 2, 5, N'Stitch hồng cưng xỉu, lông mịn xịn xò.'),
-(2, 3, 5, N'Đỉnh chóp, cosplay monster chất lừ.'),
-(3, 2, 4, N'Nhìn lười y chang tui, oke la.'),
-(4, 3, 5, N'Em này mặc yếm iu hết nước chấm.'),
-(5, 2, 5, N'Tặng gấu bông hoa hồng này là uy tín luôn, bồ tui mê.'),
-(6, 3, 3, N'Hoa dâu cũng tạm, hơi ít bông.'),
-(7, 2, 4, N'Bó này xinh, tặng 8/3 là hết bài.'),
-(8, 3, 5, N'To vãi chưởng, bồ tui ôm k hết.'),
-(9, 2, 5, N'Vịt súp lơ nhìn hề vãi =))'),
-(10, 3, 4, N'Lông mịn thật sự, sờ sướng tay.'),
-(11, 2, 5, N'Capybara mặt bình thản iu xỉu, ôm thêm con vịt nữa.'),
-(12, 3, 5, N'Nhìn mlem mlem, muốn cắn.'),
-(13, 2, 5, N'Shin mông chổng lên trời, 10 điểm.'),
-(14, 3, 2, N'Màu galaxy hơi phèn, k đẹp như ảnh.'),
-(15, 2, 5, N'Mặt quạo y tui, mền xịn.'),
-(16, 3, 5, N'Vừa làm gấu vừa có mền, 10 điểm, capy cute.'),
-(17, 2, 4, N'Mền hơi mỏng, đc cái vịt xinh.'),
-(18, 3, 5, N'Classic, gấu teddy tặng ai cũng mê.'),
-(19, 2, 1, N'Lông rụng quá, toang.'),
-(20, 3, 4, N'Con này oke, ổn áp.'),
-(21, 2, 5, N'Mua tặng tốt nghiệp, cháy thật sự.'),
-(22, 3, 5, N'Bạn tui nhận quà mà iu xỉu.'),
-(23, 2, 4, N'Gối ôm dài, ngủ bao phẻ.'),
-(24, 3, 5, N'Mặt ngáo, lông mịn, ôm đã.'),
-(25, 2, 5, N'Mê chữ ê kéo dài, thơm mùi dâu.'),
-(26, 3, 3, N'Màu tím hơi sến.'),
-(27, 2, 5, N'Heo đội nón thỏ, cưng xỉu.'),
-(28, 3, 5, N'Nhìn mặt báo k chịu đc, hề hước.'),
-(29, 2, 4, N'Vừa ôm vừa đắp mền, tiện.'),
-(30, 3, 5, N'Mặt ngáo uy tín, lông mịn.'),
-(31, 2, 4, N'Ôm mát tay, gối ôm cánh cụt này đc.'),
-(32, 3, 5, N'Con này xịn xò, lông layer đẹp, đắt xắt ra miếng.'),
-(33, 2, 3, N'Trend tiktok thôi chứ bt, lông k đẹp lắm.'),
-(34, 3, 5, N'Nhìn xù xù mà cưng, rái cá chất.'),
-(35, 2, 4, N'Voi dâu, voi bơ... ý tưởng hay, cưng.'),
-(36, 3, 5, N'Panda auto 10 điểm, k nói nhiều.'),
-(37, 2, 5, N'Lại là mền 2in1, mặt ngáo, ưng.'),
-(38, 3, 4, N'Nhìn mlem quá, hải cẩu sushi.'),
-(39, 2, 5, N'Heo dưa hấu, con này cháy nhất shop.'),
-(40, 3, 1, N'Gai nhọn, ôm í ẹ, k thích lắm.'),
-(41, 2, 5, N'Shin này huyền thoại rồi, cute.'),
-(42, 3, 5, N'Fan Mon, mền ấm, uy tín.'),
-(43, 2, 5, N'Labubu đang hot, có mền nữa, đỉnh.'),
-(44, 3, 4, N'Loopy dâu, 2 trong 1, cũng đc.'),
-(45, 2, 5, N'Kuromi 100 điểm, mền xịn.'),
-(46, 3, 5, N'Con này chất lừ, kuromi mãi đỉnh.'),
-(47, 2, 2, N'Kết hợp hơi quê, k hợp.'),
-(48, 3, 5, N'Gối ôm melody màu galaxy đẹp, iu xỉu.'),
-(49, 2, 5, N'Mền 2in1, Cinnamoroll cưnggg.'),
-(50, 3, 4, N'Đi xe tiện, mà hơi nóng cổ.'),
-(51, 2, 5, N'Lotso thơm, mền xịn, hết nước chấm.'),
-(52, 3, 5, N'Mua tặng noel uy tín luôn, đút tay ấm.'),
-(1, 3, 4, N'Cũng đc, mà màu hồng hơi lợt.'),
-(2, 2, 1, N'Xấu, cosplay í ẹ, không giống hình.'),
-(5, 3, 5, N'Tặng sinh nhật oke la, giấu quà tiện.'),
-(11, 3, 5, N'Capy mặt bất biến, cưng vãi.'),
-(15, 3, 5, N'Mền ấm, mặt mèo bao quạo.'),
-(16, 2, 5, N'Đỉnh chóp, mua tặng SN là lemỏn.'),
-(21, 3, 5, N'Mua cho em gái, nó mê.'),
-(24, 2, 5, N'Gối ôm to, ngủ sướng, bao phẻ.'),
-(25, 3, 5, N'Thơm mùi dâu, iu xỉu, ôm đã.'),
-(28, 2, 5, N'Nhìn mặt báo đời =)) hài.'),
-(30, 2, 4, N'Lông mượt, ôm êm, giao hàng nhanh.'),
-(32, 2, 5, N'Con này cháy nhất shop, lông mượt thật.'),
-(36, 2, 5, N'Panda thì k chê đc, 10 điểm.'),
-(40, 2, 5, N'Fan sầu riêng, con này 10 điểm, nhìn cưng.'),
-(43, 3, 5, N'Labubu 2in1, hốt lẹ còn kịp.'),
-(45, 3, 5, N'Kuromi 2in1, hết nước chấm, mền to.'),
-(46, 2, 5, N'Chất, mua cho bồ, ưng ý.'),
-(48, 2, 4, N'Màu đẹp, hơi to so với giường.'),
-(49, 3, 5, N'Mền xịn, gấu cưng, 10 điểm.'),
-(51, 3, 5, N'Lotso thơm, mền 2in1 tiện, hết bài.'),
-(52, 2, 5, N'Ôm đút tay ấm, mùa đông đỉnh.'),
-(1, 2, 3, N'Bình thường, lông cũng k mịn lắm.'),
-(2, 3, 4, N'Cũng chất, con tui thích.'),
-(11, 2, 5, N'Capybara uy tín nhất hệ mặt trời.'),
-(12, 2, 4, N'Nhìn đói bụng ghê, cưng.'),
-(13, 3, 5, N'Mông xinh =)), mua vì cái mông.'),
-(15, 2, 5, N'Mền ấm, mặt mèo chuẩn quạu, 10 điểm.'),
-(19, 3, 5, N'Lông mềm, k rụng. oke la.'),
-(24, 3, 5, N'Ôm ngủ hết bài, lông mướt.'),
-(25, 2, 1, N'Mùi dâu hắc quá, toang.'),
-(28, 3, 5, N'Trùm báo =)), nhìn mặt là mắc cười.'),
-(30, 2, 5, N'Đẹp, lông mịn, uy tín.'),
-(36, 3, 4, N'Panda oke, giao nhanh.'),
-(44, 2, 5, N'Loopy hết nước chấm, cưng vãi.'),
-(46, 3, 5, N'10 điểm, kuromi chất.'),
-(48, 2, 5, N'Iu em này, gối ôm to, màu đẹp.'),
-(49, 3, 4, N'Tiện, nhưng mền hơi nhỏ.'),
-(51, 2, 5, N'Thơm, xịn, 2in1 quá tiện.');
 go
-
+go
+INSERT INTO Rating (ProductID, UserID, Star, Comment, ProductSizeName, RatingDate)
+VALUES
+(1, 2, 5, N'Stitch hồng cưng xỉu, lông mịn xịn xò.', 45, GETDATE()),
+(2, 3, 5, N'Đỉnh chóp, cosplay monster chất lừ.', 95, GETDATE()),
+(3, 2, 4, N'Nhìn lười y chang tui, oke la.', 50, GETDATE()),
+(4, 3, 5, N'Em này mặc yếm iu hết nước chấm.', 45, GETDATE()),
+(5, 2, 5, N'Tặng gấu bông hoa hồng này là uy tín luôn, bồ tui mê.', 40, GETDATE()),
+(6, 3, 3, N'Hoa dâu cũng tạm, hơi ít bông.', 40, GETDATE()),
+(7, 2, 4, N'Bó này xinh, tặng 8/3 là hết bài.', 30, GETDATE()),
+(8, 3, 5, N'To vãi chưởng, bồ tui ôm k hết.', 70, GETDATE()),
+(9, 2, 5, N'Vịt súp lơ nhìn hề vãi =))', 60, GETDATE()),
+(10, 3, 4, N'Lông mịn thật sự, sờ sướng tay.', 65, GETDATE()),
+(11, 2, 5, N'Capybara mặt bình thản iu xỉu, ôm thêm con vịt nữa.', 45, GETDATE()),
+(12, 3, 5, N'Nhìn mlem mlem, muốn cắn.', 70, GETDATE()),
+(13, 2, 5, N'Shin mông chổng lên trời, 10 điểm.', 55, GETDATE()),
+(14, 3, 2, N'Màu galaxy hơi phèn, k đẹp như ảnh.', 30, GETDATE()),
+(15, 2, 5, N'Mặt quạo y tui, mền xịn.', 45, GETDATE()),
+(16, 3, 5, N'Vừa làm gấu vừa có mền, 10 điểm, capy cute.', 45, GETDATE()),
+(17, 2, 4, N'Mền hơi mỏng, đc cái vịt xinh.', 40, GETDATE()),
+(18, 3, 5, N'Classic, gấu teddy tặng ai cũng mê.', 55, GETDATE()),
+(19, 2, 1, N'Lông rụng quá, toang.', 80, GETDATE()),
+(20, 3, 4, N'Con này oke, ổn áp.', 50, GETDATE()),
+(21, 2, 5, N'Mua tặng tốt nghiệp, cháy thật sự.', 40, GETDATE()),
+(22, 3, 5, N'Bạn tui nhận quà mà iu xỉu.', 40, GETDATE()),
+(23, 2, 4, N'Gối ôm dài, ngủ bao phẻ.', 80, GETDATE()),
+(24, 3, 5, N'Mặt ngáo, lông mịn, ôm đã.', 60, GETDATE()),
+(25, 2, 5, N'Mê chữ ê kéo dài, thơm mùi dâu.', 60, GETDATE()),
+(26, 3, 3, N'Màu tím hơi sến.', 90, GETDATE()),
+(27, 2, 5, N'Heo đội nón thỏ, cưng xỉu.', 35, GETDATE()),
+(28, 3, 5, N'Nhìn mặt báo k chịu đc, hề hước.', 70, GETDATE()),
+(29, 2, 4, N'Vừa ôm vừa đắp mền, tiện.', 40, GETDATE()),
+(30, 3, 5, N'Mặt ngáo uy tín, lông mịn.', 70, GETDATE()),
+(31, 2, 4, N'Ôm mát tay, gối ôm cánh cụt này đc.', 95, GETDATE()),
+(32, 3, 5, N'Con này xịn xò, lông layer đẹp, đắt xắt ra miếng.', 40, GETDATE()),
+(33, 2, 3, N'Trend tiktok thôi chứ bt, lông k đẹp lắm.', 40, GETDATE()),
+(34, 3, 5, N'Nhìn xù xù mà cưng, rái cá chất.', 65, GETDATE()),
+(35, 2, 4, N'Voi dâu, voi bơ... ý tưởng hay, cưng.', 35, GETDATE()),
+(36, 3, 5, N'Panda auto 10 điểm, k nói nhiều.', 35, GETDATE()),
+(37, 2, 5, N'Lại là mền 2in1, mặt ngáo, ưng.', 60, GETDATE()),
+(38, 3, 4, N'Nhìn mlem quá, hải cẩu sushi.', 40, GETDATE()),
+(39, 2, 5, N'Heo dưa hấu, con này cháy nhất shop.', 55, GETDATE()),
+(40, 3, 1, N'Gai nhọn, ôm í ẹ, k thích lắm.', 45, GETDATE()),
+(41, 2, 5, N'Shin này huyền thoại rồi, cute.', 35, GETDATE()),
+(42, 3, 5, N'Fan Mon, mền ấm, uy tín.', 45, GETDATE()),
+(43, 2, 5, N'Labubu đang hot, có mền nữa, đỉnh.', 55, GETDATE()),
+(44, 3, 4, N'Loopy dâu, 2 trong 1, cũng đc.', 50, GETDATE()),
+(45, 2, 5, N'Kuromi 100 điểm, mền xịn.', 55, GETDATE()),
+(46, 3, 5, N'Con này chất lừ, kuromi mãi đỉnh.', 50, GETDATE()),
+(47, 2, 2, N'Kết hợp hơi quê, k hợp.', 50, GETDATE()),
+(48, 3, 5, N'Gối ôm melody màu galaxy đẹp, iu xỉu.', 80, GETDATE()),
+(49, 2, 5, N'Mền 2in1, Cinnamoroll cưnggg.', 40, GETDATE()),
+(50, 3, 4, N'Đi xe tiện, mà hơi nóng cổ.', 35, GETDATE()),
+(51, 2, 5, N'Lotso thơm, mền xịn, hết nước chấm.', 35, GETDATE()),
+(52, 3, 5, N'Mua tặng noel uy tín luôn, đút tay ấm.', 40, GETDATE()),
+(1, 3, 4, N'Cũng đc, mà màu hồng hơi lợt.', 45, GETDATE()),
+(2, 2, 1, N'Xấu, cosplay í ẹ, không giống hình.', 95, GETDATE()),
+(5, 3, 5, N'Tặng sinh nhật oke la, giấu quà tiện.', 40, GETDATE()),
+(11, 3, 5, N'Capy mặt bất biến, cưng vãi.', 45, GETDATE()),
+(15, 3, 5, N'Mền ấm, mặt mèo bao quạo.', 45, GETDATE()),
+(16, 2, 5, N'Đỉnh chóp, mua tặng SN là lemỏn.', 45, GETDATE()),
+(21, 3, 5, N'Mua cho em gái, nó mê.', 40, GETDATE()),
+(24, 2, 5, N'Gối ôm to, ngủ sướng, bao phẻ.', 80, GETDATE()),
+(25, 3, 5, N'Thơm mùi dâu, iu xỉu, ôm đã.', 80, GETDATE()),
+(28, 2, 5, N'Nhìn mặt báo đời =)) hài.', 70, GETDATE()),
+(30, 2, 4, N'Lông mượt, ôm êm, giao hàng nhanh.', 85, GETDATE()),
+(32, 2, 5, N'Con này cháy nhất shop, lông mượt thật.', 80, GETDATE()),
+(36, 2, 5, N'Panda thì k chê đc, 10 điểm.', 35, GETDATE()),
+(40, 2, 5, N'Fan sầu riêng, con này 10 điểm, nhìn cưng.', 45, GETDATE()),
+(43, 3, 5, N'Labubu 2in1, hốt lẹ còn kịp.', 55, GETDATE()),
+(45, 3, 5, N'Kuromi 2in1, hết nước chấm, mền to.', 55, GETDATE()),
+(46, 2, 5, N'Chất, mua cho bồ, ưng ý.', 78, GETDATE()),
+(48, 2, 4, N'Màu đẹp, hơi to so với giường.', 100, GETDATE()),
+(49, 3, 5, N'Mền xịn, gấu cưng, 10 điểm.', 40, GETDATE()),
+(51, 3, 5, N'Lotso thơm, mền 2in1 tiện, hết bài.', 35, GETDATE()),
+(52, 2, 5, N'Ôm đút tay ấm, mùa đông đỉnh.', 40, GETDATE()),
+(1, 2, 3, N'Bình thường, lông cũng k mịn lắm.', 45, GETDATE()),
+(2, 3, 4, N'Cũng chất, con tui thích.', 95, GETDATE()),
+(11, 2, 5, N'Capybara uy tín nhất hệ mặt trời.', 55, GETDATE()),
+(12, 2, 4, N'Nhìn đói bụng ghê, cưng.', 20, GETDATE()),
+(13, 3, 5, N'Mông xinh =)), mua vì cái mông.', 75, GETDATE()),
+(15, 2, 5, N'Mền ấm, mặt mèo chuẩn quạu, 10 điểm.', 45, GETDATE()),
+(19, 3, 5, N'Lông mềm, k rụng. oke la.', 120, GETDATE()),
+(24, 3, 5, N'Ôm ngủ hết bài, lông mướt.', 110, GETDATE()),
+(25, 2, 1, N'Mùi dâu hắc quá, toang.', 110, GETDATE()),
+(28, 3, 5, N'Trùm báo =)), nhìn mặt là mắc cười.', 70, GETDATE()),
+(30, 2, 5, N'Đẹp, lông mịn, uy tín.', 70, GETDATE()),
+(36, 3, 4, N'Panda oke, giao nhanh.', 35, GETDATE()),
+(44, 2, 5, N'Loopy hết nước chấm, cưng vãi.', 110, GETDATE()),
+(46, 3, 5, N'10 điểm, kuromi chất.', 50, GETDATE()),
+(48, 2, 5, N'Iu em này, gối ôm to, màu đẹp.', 80, GETDATE()),
+(49, 3, 4, N'Tiện, nhưng mền hơi nhỏ.', 40, GETDATE()),
+(51, 2, 5, N'Thơm, xịn, 2in1 quá tiện.', 35, GETDATE());
+go
+go
+--DELETE FROM RATING
+go
+SELECT * FROM Rating
 SELECT * FROM Product_Category
 select * from ProductImages

@@ -25,12 +25,23 @@ namespace WebBanGauBong.Controllers
         {
             //ViewBag.Ten = id.ToUpper();
             ViewBag.Anh = image;
-
             Category loai = csdl.Category.FirstOrDefault(t => t.CategoryID.Equals(id));
+            List<Product> dssp = new List<Product>();
             if (loai != null)
             {
-                ViewBag.Ten = loai.CategoryName.ToUpper();
-                return PartialView(loai.Product.ToList());
+                ViewBag.Loai = loai;
+                if (loai.Product != null)
+                {
+                    dssp = dssp.Concat(loai.Product).ToList();
+                }
+                if (loai.Category1 != null)
+                {
+                    foreach (var c in loai.Category1)
+                    {
+                        dssp = dssp.Concat(c.Product).ToList();
+                    }
+                }
+                return PartialView(dssp);
             }    
 
             return PartialView(csdl.Product.ToList());

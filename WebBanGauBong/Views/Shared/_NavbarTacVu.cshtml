@@ -72,15 +72,13 @@
 </div>
 
 
-
-<button class="btn " type="button" data-toggle="popover-user">
+<a href="@Url.Action("LoginPage", "User")" class="btn" >
     <img src="@Url.Content("~/Content/Images/icon-account-white.svg")" alt="" />
-</button>
+</a>
 
-
-<button class="btn " type="button" data-toggle="popover">
+<button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#cartModal">
     <img src="@Url.Content("~/Content/Images/icon-cart-white.svg")" alt="" />
 </button>
-
+@Html.Action("CartPage", "Cart")
 
 

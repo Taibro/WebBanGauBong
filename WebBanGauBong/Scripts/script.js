@@ -49,28 +49,13 @@ $(document).ready(function () {
         if (discount != 0) {
             var targetPrice = '#' + rawTargetId;
             var newPriceAfterDiscount = newPrice * (100.0 - discount) / 100.0;
-            $(targetPrice).text(newPrice + 'đ');
+            $(targetPrice).text(newPrice.toLocaleString('vi-VN') + 'đ');
             $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
         }
         else {
             $(targetPriceAfterDiscount).text(newPrice.toLocaleString('vi-VN') + 'đ');
         }
     });
-});
-/////////////////////////////////////////
-// Popover
-const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-
-$(document).ready(function () {
-    $('[data-toggle="popover-user"]').popover({
-        trigger: 'hover',
-        html: true,
-        content: function () {
-            return '<img class="img-fluid" src="/Content/Images/desktop-quay-may-man.jpg" />';
-        },
-        title: 'Toolbox'
-    })
 });
 
 //////////////////////////////////////////
@@ -115,7 +100,7 @@ $(document).ready(function () {
 
         newPriceAfterDiscount = newPrice * (100 - discount) / 100;
         $(tagSizeDetail).text(size);
-        $(targetPrice).text(newPrice + 'đ');
+        $(targetPrice).text(newPrice.toLocaleString('vi-VN') + 'đ');
         $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
     });
 });

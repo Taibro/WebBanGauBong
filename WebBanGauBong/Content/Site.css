@@ -31,10 +31,15 @@ textarea {
 :root {
     --primary-color: #fe2e70;
     --secondary-color: #5d59f3;
+    --light-primary-color: #fcddec;
 }
 
 .color-theme {
     background-color: var(--primary-color) !important;
+}
+
+.light-color-theme {
+    background-color: var(--light-primary-color) !important;
 }
 
 .text-color-theme {
@@ -416,7 +421,7 @@ textarea {
     padding: 3px 8px 3px 8px;
     position: absolute;
     right: 0;
-    bottom: 27px;
+    bottom: 20px;
 }
 
 .card:hover .btn.rounded-circle {

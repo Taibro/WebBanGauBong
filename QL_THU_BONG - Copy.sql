@@ -94,9 +94,11 @@ CREATE TABLE Users
 	Name nvarchar(50),
 	SDT varchar(20),
 	Password varchar(255),
+	Email varchar(50),
 	primary key(UserID),
 	foreign key(RoleID) references Roles(RoleID)
 )
+
 go
 CREATE TABLE Rating
 (
@@ -632,13 +634,12 @@ go
 go
 INSERT INTO Users
 values
-(1, N'Nguyễn Thành Tài', '0933733336', 'admin123'), --1
-(2, N'Bích Ngọc', '0123456789', 'ngoc123'), --2
-(2, N'Minh Nguyệt', '024681012', 'nguyet123') --3
+(1, N'Nguyễn Thành Tài', '0933733336', 'admin123', 'ntai8448@gmail.com'), --1
+(2, N'Bích Ngọc', '0123456789', 'ngoc123', 'ngoc22@gmail.com'), --2
+(2, N'Minh Nguyệt', '024681012', 'nguyet123', 'nguyet33@gmail.com') --3
 go
+SELECT * FROM Users
 
-go
-go
 go
 INSERT INTO Rating (ProductID, UserID, Star, Comment, ProductSizeName, RatingDate)
 VALUES

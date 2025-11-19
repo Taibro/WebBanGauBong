@@ -27,8 +27,11 @@ namespace WebBanGauBong.Models
         [StringLength(20)]
         public string SDT { get; set; }
 
-        [StringLength(255)]
+        [StringLength(1000)]
         public string Password { get; set; }
+
+        [StringLength(50)]
+        public string Email { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }

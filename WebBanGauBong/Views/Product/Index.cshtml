@@ -26,8 +26,8 @@
                 var Size = item.ProductSize.ToList();
                 decimal discountRate = item.Discount.Count() != 0 ? (decimal)item.Discount.First().DiscountRate : 0;
 
-                <div class="col ">
-                    <div class="card h-100 w-100" style="border:none;">
+                <div class="col">
+                    <div class="card h-100 w-100 mb-2" style="border:none;">
                         <div class="image-link">
                             <a href="@Url.Action("Detail", "Product", new {id = item.ProductID})">
                                 <img src="@Url.Content("~/Content/Images/" + firstImage.ImageURL)" class="card-img-top rounded-top-4" alt="@item.ProductName" height=230>
@@ -111,7 +111,7 @@
 
                             <h6 class="card-title"><a href="@Url.Action("Detail", "Product", new {id = item.ProductID})">@item.ProductName</a></h6>
 
-                            <div class="d-flex flex-row ">
+                            <div class="d-flex flex-row align-items-center">
                                 @{
                                     decimal tienChuaGiam = Size[0].Price.Value;
                                     if (discountRate != 0)
@@ -119,12 +119,16 @@
                                         decimal tienSauGiam = tienChuaGiam * (100 - discountRate) / 100;
 
                                         <b id="after-@priceTargetId" style="font-weight:bold;"
-                                           class="text-color-theme">@tienSauGiam.ToString("N0")đ</b>
-                                        <span class="badge text-bg-secondary color-theme h-25">-@discountRate%</span>
-                                        <p style="text-decoration: line-through;" id="@priceTargetId"
-                                           >
+                                           class="text-color-theme me-2">
+                                            @tienSauGiam.ToString("N0")đ
+                                        </b>
+                                        <span class="badge text-bg-secondary p-1 color-theme h-25 me-2">
+                                            -@discountRate%
+                                        </span>
+                                        <span style="text-decoration: line-through; color: #808080; font-size: 13px; font-weight: 600;"
+                                              id="@priceTargetId">
                                             @tienChuaGiam.ToString("N0")đ
-                                        </p>
+                                        </span>
                                     }
                                     else
                                     {

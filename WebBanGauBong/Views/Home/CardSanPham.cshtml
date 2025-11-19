@@ -8,7 +8,7 @@
 }
 
 @model WebBanGauBong.Models.Product
-
+@*https://www.facebook.com/reel/1183939893681939*@
 
 <div class="col mb-4">
     <div class="card h-100" style="border:none;">
@@ -96,19 +96,23 @@
             <h6 class="card-title"><a href="@Url.Action("Detail", "Product", new {id = Model.ProductID})">@Model.ProductName</a></h6>
 
             <!--Tiền-->
-            <div class="d-flex flex-row">
+            <div class="d-flex flex-row align-items-center">
                 @{
                     decimal tienChuaGiam = Size[0].Price.Value;
                     if (discountRate != 0)
                     {
                         decimal tienSauGiam = tienChuaGiam * (100 - discountRate) / 100;
 
-                        <b id="after-@priceTargetId" style="font-weight:bold;"
-                           class="text-color-theme">@tienSauGiam.ToString("N0")đ</b>
-                        <span class="badge text-bg-secondary h-25 color-theme">-@discountRate%</span>
-                        <p style="text-decoration: line-through;" id="@priceTargetId">
+                        <b id="after-@priceTargetId"
+                           style="font-weight:bold;"
+                           class="text-color-theme me-2">
+                            @tienSauGiam.ToString("N0")đ
+                        </b>
+                        <span class="badge text-bg-secondary p-1 h-25 color-theme me-2">-@discountRate%</span>
+                        <span style="text-decoration: line-through; color:#808080; font-size:13px; font-weight: 600;"
+                           id="@priceTargetId">
                             @tienChuaGiam.ToString("N0")đ
-                        </p>
+                        </span>
                     }
                     else
                     {

@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "LoginPage";
+}
+
+<div class="row my-5">
+    <div class="col-6 border-end">
+        <h2>Tôi là khách hàng mới</h2>
+        <h5>Tạo một tài khoản và hưởng lợi từ nhiều lợi ích của một tài khoản người dùng</h5>
+
+        <a href="@Url.Action("RegisterPage", "User")" class="btn btn-primary">Đăng Ký</a>
+    </div>
+
+    <div class="col-6">
+        <h2>Bạn Đã Có Tài Khoản Khách Hàng?</h2>
+        <h5>Vui lòng đăng nhập bằng dữ liệu tài khoản của bạn và tiếp tục mua hàng.</h5>
+
+        <div class="mb-3">
+            <label for="inputEmail" class="form-label">Email *</label>
+            <input type="email" class="form-control" id="inputEmail" name="inputEmail">
+        </div>
+
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label">Password *</label>
+            <input type="password" class="form-control" id="inputPassword" name="inputPassword">
+        </div>
+
+        <div class="d-flex flex-column align-items-end">
+            <button class="btn " style="text-decoration: underline;">Quên mật khẩu?</button>
+        </div>
+
+        <a href="#" class="btn btn-primary">Đăng Nhập</a>
+    </div>
+</div>

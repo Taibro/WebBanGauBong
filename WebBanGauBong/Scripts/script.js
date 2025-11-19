@@ -49,7 +49,7 @@ $(document).ready(function () {
         if (discount != 0) {
             var targetPrice = '#' + rawTargetId;
             var newPriceAfterDiscount = newPrice * (100.0 - discount) / 100.0;
-            $(targetPrice).text(newPrice + 'đ');
+            $(targetPrice).text(newPrice.toLocaleString('vi-VN') + 'đ');
             $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
         }
         else {
@@ -115,7 +115,7 @@ $(document).ready(function () {
 
         newPriceAfterDiscount = newPrice * (100 - discount) / 100;
         $(tagSizeDetail).text(size);
-        $(targetPrice).text(newPrice + 'đ');
+        $(targetPrice).text(newPrice.toLocaleString('vi-VN') + 'đ');
         $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
     });
 });

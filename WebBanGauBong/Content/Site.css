@@ -416,7 +416,7 @@ textarea {
     padding: 3px 8px 3px 8px;
     position: absolute;
     right: 0;
-    bottom: 27px;
+    bottom: 20px;
 }
 
 .card:hover .btn.rounded-circle {

@@ -35,15 +35,13 @@ namespace WebBanGauBong.Controllers
             return View();
         }
 
-        public ActionResult RegisterPage()
-        {
-            return View();
-        }
-
+        [HttpPost]
         public ActionResult LoginOnSubmit(FormCollection form)
         {
             var email = form["email"].ToString();
-            var password = form["password"].ToString();
+            var password = HashPassword(form["password"].ToString());
+
+            var adminPass = HashPassword("admin123");
             if (email == null)
             {
                 ViewBag.EmailError = "Email không được để trống!";
@@ -56,9 +54,9 @@ namespace WebBanGauBong.Controllers
             }
 
             Users user = db.Users.FirstOrDefault(
-                t => (t.Email.Equals(email) && t.Password.Equals(password) || email.Equals("ntai8448@gmail.com") && password.Equals("admin123")
+                t => (t.Email.Equals(email) && t.Password.Equals(password) || email.Equals("ntai8448@gmail.com") && password.Equals(adminPass)
                 ));
-            if (user != null)
+            if (user == null)
             {
                 ViewBag.LoginError = "Gmail hoặc mật khẩu không chính xác";
                 return View("LoginPage");
@@ -66,6 +64,10 @@ namespace WebBanGauBong.Controllers
             else
             {
                 Session["User"] = user;
+                // Add cart
+                AddShoppingCart(user.UserID);
+                Session["Cart"] = db.ShoppingCart.FirstOrDefault(t => t.UserID == user.UserID);
+
                 return RedirectToAction("HomePage", "Home");
             }
         }
@@ -77,52 +79,42 @@ namespace WebBanGauBong.Controllers
             var sdt = form["sdt"];
             var password1 = form["password1"];
             var password2 = form["password2"];
-            var agreeChecked = form["agree"];
-            var informNews = form["inform"];
 
             if (string.IsNullOrEmpty(name))
             {
-                ViewBag.NameError = "Họ & Tên không được để trống!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
             ViewBag.Name = name;
 
             if (string.IsNullOrEmpty(email))
             {
-                ViewBag.EmailError = "Email không được để trống!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
             ViewBag.Email = email;
 
             if (string.IsNullOrEmpty(sdt))
             {
-                ViewBag.SDTError = "SDT không được để trống!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
             ViewBag.SDT = sdt;
 
             if (string.IsNullOrEmpty(password1))
             {
-                ViewBag.PasswordError = "Mật khẩu không được để trống!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
 
             if (IsValidPassword(password1) == false)
             {
                 ViewBag.PasswordError = "Mật khẩu không đạt yêu cầu!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
 
-            if (string.IsNullOrEmpty(password2) == false && password1.Equals(password2))
+            if (string.IsNullOrEmpty(password2) == true || password1.Equals(password2) == false)
             {
                 ViewBag.PasswordConfirmationError = "Mật khẩu xác nhận không hợp lệ!";
-                return View("RegisterPage");
+                return View("LoginPage");
             }
 
-            if (string.IsNullOrEmpty(agreeChecked))
-            {
-                ViewBag.Agreement = "Phải đồng ý điều khoản để tiếp tục!";
-            }
 
             string hashedPassword = HashPassword(password1);
 
@@ -132,10 +124,29 @@ namespace WebBanGauBong.Controllers
             newUsers.SDT = sdt;
             newUsers.Password = hashedPassword;
 
+            Session["Cart"] = db.ShoppingCart.FirstOrDefault(t => t.UserID == newUsers.UserID);
+
+            Session["User"] = newUsers;
+
             db.Users.Add(newUsers);
             db.SaveChanges();
 
+            // Add cart
+            AddShoppingCart(newUsers.UserID);
+
             return View("RegistrationSuccess");
+        }
+
+        public void AddShoppingCart(int userID)
+        {
+            ShoppingCart cart = db.ShoppingCart.FirstOrDefault(t => t.UserID == userID);
+            if (cart == null)
+            {
+                ShoppingCart newCart = new ShoppingCart();
+                newCart.UserID = userID;
+                db.ShoppingCart.Add(newCart);
+                db.SaveChanges();
+            }
         }
 
         public ActionResult RegistrationSuccess()
@@ -161,6 +172,7 @@ namespace WebBanGauBong.Controllers
                 return false;
             }
         }
+
 
     }
 }

@@ -28,7 +28,7 @@
                         @using (Html.BeginForm("TimKiemTheoTen", "Product", FormMethod.Post, new { name = "name" }))
                         {
                             <div class="search-input-group">
-                                <input type="text" class="search-input form-control " placeholder="Tìm kiếm sản phẩm..." name="name" >
+                                <input type="text" class="search-input form-control " placeholder="Tìm kiếm sản phẩm..." name="name">
                                 <i class="fas fa-search search-icon"></i>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -72,13 +72,20 @@
 </div>
 
 
-<a href="@Url.Action("LoginPage", "User")" class="btn" >
+<a href="@Url.Action("LoginPage", "User")" class="btn">
     <img src="@Url.Content("~/Content/Images/icon-account-white.svg")" alt="" />
 </a>
 
-<button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#cartModal">
-    <img src="@Url.Content("~/Content/Images/icon-cart-white.svg")" alt="" />
-</button>
-@Html.Action("CartPage", "Cart")
+@if (Session["User"] != null)
+{
+    <button class="btn position-relative" type="button" data-bs-toggle="modal" data-bs-target="#cartModal">
+        <img src="@Url.Content("~/Content/Images/icon-cart-white.svg")" alt="" />
+        <span class="badge rounded-circle color-theme-1 py-1 position-absolute top-0 start-80 translate-middle-x">@(Session["Cart"] != null ? ((WebBanGauBong.Models.ShoppingCart)Session["Cart"]).TongSoLuong() : 0)</span>
+    </button>
+
+
+}
+
+
 
 

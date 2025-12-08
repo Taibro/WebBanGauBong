@@ -89,6 +89,7 @@ $(document).ready(function () {
         $clickedButton.addClass('active');
 
         //Xử lý Cập nhật Giá 
+        var productSizeID = $clickedButton.data('id');
         var newPrice = $clickedButton.data('price');
         var rawTargetId = $clickedButton.data('target');
         var discount = $clickedButton.data('discount');
@@ -102,7 +103,56 @@ $(document).ready(function () {
         $(tagSizeDetail).text(size);
         $(targetPrice).text(newPrice.toLocaleString('vi-VN') + 'đ');
         $(targetPriceAfterDiscount).text(newPriceAfterDiscount.toLocaleString('vi-VN') + 'đ');
+        $('#productSizeID').val(productSizeID);
     });
 });
-/////////
+/////////////////////////////////
+//Nút tăng giảm
+$(document).ready(function () {
 
+    // Xử lý nút GIẢM (-)
+    $('.btn-decrease').on('click', function () {
+
+        var $container = $(this).closest('.quantity-container');
+
+        var $input = $container.find('.quantity-input');
+        var $display = $container.find('.quantity-display');
+
+        var currentVal = parseInt($input.val());
+
+        if (currentVal > 1) {
+            var newVal = currentVal - 1;
+            $input.val(newVal);
+            $display.text(newVal);
+        }
+    });
+
+    // Xử lý nút TĂNG (+)
+    $('.btn-increase').on('click', function () {
+        var $container = $(this).closest('.quantity-container');
+        var $input = $container.find('.quantity-input');
+        var $display = $container.find('.quantity-display');
+
+        var currentVal = parseInt($input.val());
+
+        var newVal = currentVal + 1;
+
+        $input.val(newVal);
+        $display.text(newVal);
+    });
+
+});
+
+////////////////////////////////////////////////
+// Scroll aware navbar
+let lastScrollTop = 0;
+navbar = document.getElementById("nav-full");
+window.addEventListener("scroll", function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop > lastScrollTop) {
+        navbar.classList.add('active');
+    } else {
+        navbar.classList.remove('active');
+    }
+    lastScrollTop = scrollTop;
+})

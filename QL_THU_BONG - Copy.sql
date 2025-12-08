@@ -151,12 +151,13 @@ CREATE TABLE ShoppingCartItem
 	ShoppingCartID int,
 	ProductSizeID int,
 	Quantity int,
+	UnitPrice money,
 	primary key(ShoppingCartID, ProductSizeID),
 	foreign key(ProductSizeID) references ProductSize(ProductSizeID),
 	foreign key(ShoppingCartID) references ShoppingCart(ShoppingCartID)
 )
-go
 
+go
 --------------------------------------------
 INSERT INTO Category
 values
@@ -734,9 +735,12 @@ VALUES
 (49, 3, 4, N'Tiện, nhưng mền hơi nhỏ.', 40, GETDATE()),
 (51, 2, 5, N'Thơm, xịn, 2in1 quá tiện.', 35, GETDATE());
 go
+
+
 go
 --DELETE FROM RATING
 go
 SELECT * FROM Rating
 SELECT * FROM Product_Category
-select * from ProductImages
+select * from ShoppingCart
+SELECT * FROM Users

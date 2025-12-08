@@ -19,6 +19,12 @@
 @model WebBanGauBong.Models.Product
 
 <div class="row mt-3">
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
     <!--Breadcrumb-->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -114,6 +120,7 @@
             </div>
         </div>
 
+        <!--Tien giam-->
         <div>
             @{
                 decimal tienChuaGiam = Size[0].Price.Value;
@@ -144,101 +151,108 @@
         </div>
         <div>Kích thước: <span id="tagSizeDetail">@Size[0].SizeName.Value.ToString()cm</span></div>
 
-        <!--Nút size đổi giá-->
-        <div class="size-scroll-container d-flex flex-nowrap mb-2">
-            <!--Nut size-->
-            @{
-                int s = int.Parse(Size[0].SizeName.ToString());
-                string sizeName = s.ToString();
-                if (s >= 100)
-                {
-                    int soMet = s / 100;
-                    int soDu = s % 100;
-
-                    if (soDu == 0)
+        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { productSizeID = "productSizeID" , quantity= "quantity" }))
+        {
+            <!--Nút size đổi giá-->
+            <div class="size-scroll-container d-flex flex-nowrap mb-2">
+                <!--Nut size-->
+                @{
+                    int s = int.Parse(Size[0].SizeName.ToString());
+                    string sizeName = s.ToString();
+                    if (s >= 100)
                     {
-                        sizeName = $"{soMet}m";
+                        int soMet = s / 100;
+                        int soDu = s % 100;
+
+                        if (soDu == 0)
+                        {
+                            sizeName = $"{soMet}m";
+                        }
+                        else
+                        {
+                            sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                        }
                     }
                     else
                     {
-                        sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                        sizeName = s.ToString() + "cm";
                     }
                 }
-                else
-                {
-                    sizeName = s.ToString() + "cm";
-                }
-            }
-            <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0 active"
-                    data-price="@Size[0].Price.Value"
-                    data-target="@priceTargetId"
-                    data-discount="@discountRate"
-                    data-size="@sizeName"
-                    style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
-                @sizeName
-            </button>
-
-            @foreach (var size in Size.Skip(1))
-            {
-                s = int.Parse(size.SizeName.ToString());
-                sizeName = s.ToString();
-                if (s >= 100)
-                {
-                    int soMet = s / 100;
-                    int soDu = s % 100;
-
-                    if (soDu == 0)
-                    {
-                        sizeName = $"{soMet}m";
-                    }
-                    else
-                    {
-                        sizeName = $"{soMet}m{soDu.ToString("D2")}";
-                    }
-                }
-                else
-                {
-                    sizeName = s.ToString() + "cm";
-                }
-                <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0"
-                        data-price="@size.Price.Value"
+                <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0 active"
+                        data-id="@Size[0].ProductSizeID"
+                        data-price="@Size[0].Price.Value"
                         data-target="@priceTargetId"
                         data-discount="@discountRate"
                         data-size="@sizeName"
                         style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
                     @sizeName
                 </button>
-            }
-        </div>
 
-        <!--Nút tăng giảm số lượng, thêm giỏ hàng, mua-->
-        <div class="d-flex flex-row">
-            <div class="d-flex flex-row mb-3 border rounded-pill">
-                <button type="button" class="btn">-</button>
-                <div class="p-2">1</div>
-                <button type="button" class="btn">+</button>
+                @foreach (var size in Size.Skip(1))
+                {
+                    s = int.Parse(size.SizeName.ToString());
+                    sizeName = s.ToString();
+                    if (s >= 100)
+                    {
+                        int soMet = s / 100;
+                        int soDu = s % 100;
+
+                        if (soDu == 0)
+                        {
+                            sizeName = $"{soMet}m";
+                        }
+                        else
+                        {
+                            sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                        }
+                    }
+                    else
+                    {
+                        sizeName = s.ToString() + "cm";
+                    }
+                    <button type="button" class="btn btn-primary btnSizeDetail flex-shrink-0"
+                            data-id="@size.ProductSizeID"
+                            data-price="@size.Price.Value"
+                            data-target="@priceTargetId"
+                            data-discount="@discountRate"
+                            data-size="@sizeName"
+                            style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                        @sizeName
+                    </button>
+                }
+                <input type="number" hidden name="productSizeID" id="productSizeID" value="@Size[0].ProductSizeID" />
             </div>
 
-            <button class="btn rounded-circle px-3" style="background-color:#b7b7b7;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-handbag" viewBox="0 0 16 16">
-                    <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
-                </svg>
-            </button>
+            <!--Nút tăng giảm số lượng, thêm giỏ hàng, mua-->
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-row mb-3 border rounded-pill quantity-container">
+                    <button type="button" class="btn btn-decrease rounded-circle">-</button>
+                    <div class="p-2 quantity-display">1</div>
+                    <input type="number" hidden name="quantity" class="quantity-input" value=1 />
+                    <button type="button" class="btn btn-increase rounded-circle">+</button>
+                </div>
 
-            <button class="btn color-theme px-5 rounded-pill text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
-                    <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A3 3 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43zM9 3h2.932l.023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z" />
-                </svg> Gửi Tặng
-            </button>
+                <!--Them vao gio hang-->
+                <button class="btn rounded-circle px-3" style="background-color:#b7b7b7;" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-handbag" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
+                    </svg>
+                </button>
 
-            <button class="btn color-theme-1 px-5 rounded-pill text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
-                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                </svg> Mua Ngay
-            </button>
-        </div>
+                <button class="btn color-theme px-5 rounded-pill text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-gift" viewBox="0 0 16 16">
+                        <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A3 3 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43zM9 3h2.932l.023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z" />
+                    </svg> Gửi Tặng
+                </button>
 
+                <button class="btn color-theme-1 px-5 rounded-pill text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5" />
+                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                    </svg> Mua Ngay
+                </button>
+            </div>
+        }
         <a href="https://id.zalo.me/account?continue=http%3A%2F%2Fzalo.me%2F0967110738">
             <img src="@Url.Content("~/Content/Icons/zalo.svg")" alt="" height=30 />
             Chat với Shop để được hỗ trợ / tư vấn <i class="bi bi-arrow-right"></i>
@@ -466,7 +480,7 @@
          tabindex="-1"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg ">
-            @using (Html.BeginForm("RatingOnSubmit", "Product", new { id = Model.ProductID }, FormMethod.Post, new{ enctype="multipart/form-data"}))
+            @using (Html.BeginForm("RatingOnSubmit", "Product", new { id = Model.ProductID }, FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="modal-content">
                     <div class="modal-header">
@@ -661,4 +675,6 @@
             //console.log("Rating được chọn: ", rating);
         });
     });
+
+
 </script>

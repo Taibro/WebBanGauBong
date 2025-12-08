@@ -3,6 +3,8 @@
     ViewBag.Title = "CartPage";
 }
 
+@model WebBanGauBong.Models.ShoppingCart
+
 <!-- Modal giỏ hàng -->
 <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
@@ -14,36 +16,40 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-5">
-                        <div class="d-flex flex-row">
-                            <img src="@Url.Content("~/Content/Images/cho-bong-om-hoa-1.jpg")" alt="" height=100 />
-                            <div>
-                                <h6>Móc Khóa Thỏ Đeo Túi Hoa</h6>
-                                <b>85.000đ</b>
-                                <button type="button" class="btn btnSizeCard flex-shrink-0"
-                                        data-price="50"
-                                        data-target="50"
-                                        data-discount="50"
-                                        data-size="50"
-                                        style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
-                                    50cm
-                                </button>
-
-                                <!--Chỉnh sửa sản phẩm trong giỏ-->
+                        @foreach (var item in Model.ShoppingCartItem)
+                        {
+                            <!--San pham-->
+                            <div class="d-flex flex-row">
+                                <img src="@Url.Content("~/Content/Images/" + item.ProductSize.Product.ProductImages.First().ImageURL)" alt="" height=100 />
                                 <div>
-                                    <button class="btn btn-secondary rounded-circle">
-                                        <i class="bi bi-trash-fill"></i>
+                                    <h6>@item.ProductSize.Product.ProductName</h6>
+                                    <b>@item.UnitPrice</b>
+                                    <button type="button" class="btn btnSizeCard flex-shrink-0"
+                                            data-price="50"
+                                            data-target="50"
+                                            data-discount="50"
+                                            data-size="50"
+                                            style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                                        @item.ProductSize.SizeName.ToString()cm
                                     </button>
+                                    <!--Chỉnh sửa sản phẩm trong giỏ-->
+                                    <div>
+                                        <!--Xoa-->
+                                        <a href="@Url.Action("DeleteProductInCart", "Cart", new {productSizeID=item.ProductSizeID})" class="btn btn-secondary rounded-circle">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
 
-                                    <div class="ms-auto rounded-pill" style="border: 1px solid var(--primary-color);">
-                                        <button class="btn rounded-circle">-</button>
-                                        <span class="text-color-theme">8</span>
-                                        <button class="btn rounded-circle">+</button>
+                                        <div class="ms-auto rounded-pill" style="border: 1px solid var(--primary-color);">
+                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=-1})" class="btn rounded-circle">-</a>
+                                            <span class="text-color-theme">@item.Quantity</span>
+                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=1})" class="btn rounded-circle">+</a>
+                                        </div>
                                     </div>
+
                                 </div>
-
-
                             </div>
-                        </div>
+                        }
+
 
                     </div>
 
@@ -73,7 +79,7 @@
                                 </div>
                                 <span>*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
                             </div>
-                            
+
                         </div>
                         <!--Số nhà-->
                         <input type="text" class="form-control" placeholder="Số nhà, tên đường *">
@@ -136,7 +142,7 @@
                         <!--Tính tiền-->
                         <div>
                             <span>Tạm tính</span>
-                            <span class="ms-auto">1.785.000đ</span>
+                            <span class="ms-auto">@Model.TongThanhTien().ToString("N0")đ</span>
                         </div>
                         <div>
                             <span>Voucher giảm giá</span>
@@ -152,10 +158,10 @@
                         <!--Nút đặt-->
                         <div class="d-flex flex-row-reverse mb-2">
                             <button type="submit" class="btn color-theme rounded-pill px-4">
-                                <img src="@Url.Content("~/Content/Icons/bag-heart.svg")" alt="" height=25/> Đặt đơn hàng
+                                <img src="@Url.Content("~/Content/Icons/bag-heart.svg")" alt="" height=25 /> Đặt đơn hàng
                             </button>
                             <div class="text-end me-3">
-                                <span>Thành tiền: <b class="text-color-theme">1.775.000đ</b></span><br />
+                                <span>Thành tiền: <b class="text-color-theme">@( (Model.TongThanhTien() + 60000).ToString("N0") )đ</b></span><br />
                                 <span style="font-size: 15px;">Tiết kiệm: <b>10.000đ</b></span>
                             </div>
                         </div>
@@ -169,3 +175,19 @@
         </div>
     </div>
 </div>
+
+@if (TempData["ShowCart"] != null && (bool)TempData["ShowCart"])
+{
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+                
+                if (typeof bootstrap !== 'undefined') {
+                    var myModal = new bootstrap.Modal(document.getElementById('cartModal'));
+                    myModal.show();
+                } else {
+ 
+                    $('#cartModal').modal('show');
+                }
+        });
+    </script>
+}

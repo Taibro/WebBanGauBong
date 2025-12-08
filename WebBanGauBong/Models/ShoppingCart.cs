@@ -5,10 +5,12 @@ namespace WebBanGauBong.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     [Table("ShoppingCart")]
     public partial class ShoppingCart
     {
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ShoppingCart()
         {
@@ -23,5 +25,20 @@ namespace WebBanGauBong.Models
         public virtual ICollection<ShoppingCartItem> ShoppingCartItem { get; set; }
 
         public virtual Users Users { get; set; }
+
+        
+        public int TongSoLuong()
+        {
+            return ShoppingCartItem.Sum(t => t.Quantity.Value);
+        }
+
+        public decimal TongThanhTien()
+        {
+            return ShoppingCartItem.Sum(t => t.ThanhTien);
+        }
+
+
+       
+        
     }
 }

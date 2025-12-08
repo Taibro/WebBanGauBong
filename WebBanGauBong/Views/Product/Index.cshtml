@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Index";
+    List<WebBanGauBong.Models.Category> dsLoai = ViewBag.DanhSachLoaiCon != null ? ViewBag.DanhSachLoaiCon as List<WebBanGauBong.Models.Category> : new List<WebBanGauBong.Models.Category>();
 }
 
 @model List<WebBanGauBong.Models.Product>
@@ -16,8 +17,34 @@
         <a href="" class="link-index">
             <h3 class="mb-3"><b>@ViewBag.TenLoai</b></h3>
         </a>
+        @if (ViewBag.DanhSachLoaiCon != null)
+        {
+            <!--Danh sach loai-->
+            <div class="slider">
+                <div class="form">
 
-        <div class="row row-cols-4 gx-2 gy-0">
+                    @foreach (var item in dsLoai)
+                    {
+
+                        <div class="item">
+                            <div class="content">
+                                <a href="@Url.Action("TimKiemTheoLoai", "Product", new {id=item.CategoryID})">
+                                    <img src="@Url.Content("~/Content/Images/" + item.CategoryImage)" alt="@item.CategoryName">
+                                    <div class="des">
+                                        <div>@item.CategoryName</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+            <hr />
+        }
+
+        <div class="row row-cols-4 gx-2 gy-0 mt-2">
             <!-- Card  -->
 
             @foreach (var item in Model)
@@ -185,3 +212,66 @@
     </main>
 
 </div>
+
+<script>
+    let slider = document.querySelector('.slider');
+    let form = document.querySelector('.form');
+    let mouseDownAt = 0;
+    let left = 0;
+
+    let isDragging = false;
+
+    slider.onmousedown = (e) => {
+        mouseDownAt = e.clientX;
+        isDragging = false; 
+        slider.style.cursor = 'grabbing';
+    }
+
+    slider.onmouseup = () => {
+        mouseDownAt = 0;
+        slider.style.cursor = 'grab';
+
+        form.style.pointerEvents = 'auto'; 
+
+        form.classList.remove('left');
+        form.classList.remove('right');
+    }
+
+    slider.onmousemove = e => {
+        if (mouseDownAt == 0) return;
+
+        isDragging = true;
+
+        form.style.pointerEvents = 'none';
+
+        if (e.clientX > mouseDownAt) {
+            form.classList.add('left');
+            form.classList.remove('right');
+        } else if (e.clientX < mouseDownAt) {
+            form.classList.add('right');
+            form.classList.remove('left');
+        }
+
+        let speed = 1;
+        let leftTemporary = left + ((e.clientX - mouseDownAt) / speed);
+
+        let leftLimit = form.offsetWidth - slider.offsetWidth;
+        
+        if (leftLimit < 0) leftLimit = 0;
+
+        if (leftTemporary <= 0 && Math.abs(leftTemporary) <= leftLimit) {
+            form.style.setProperty('--left', leftTemporary + 'px'); // Dùng leftTemporary thay vì left cũ
+            left = leftTemporary;
+            mouseDownAt = e.clientX;
+        }
+    }
+
+    const links = document.querySelectorAll('.form a');
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (isDragging) {
+                e.preventDefault(); 
+            }
+        });
+    });
+</script>

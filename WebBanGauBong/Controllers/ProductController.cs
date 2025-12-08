@@ -163,13 +163,13 @@ namespace WebBanGauBong.Controllers
             ViewBag.TenLoai = cat.CategoryName.ToUpper();
 
             ViewBag.DanhSachLoaiCon = null;
-            if (cat.Category2 != null)
-            {
-                ViewBag.DanhSachLoaiCon = cat.Category2.Category1.ToList();
-            }
-            else if (cat.Category1 != null)
+            if (cat.Category1 != null)
             {
                 ViewBag.DanhSachLoaiCon = cat.Category1.ToList();
+            }
+            else if (cat.Category2 != null)
+            {
+                ViewBag.DanhSachLoaiCon = cat.Category2.Category1.ToList();
             }
 
             if (cat.Product != null)
@@ -188,6 +188,7 @@ namespace WebBanGauBong.Controllers
 
             return View("Index", dssp);
         }
+
 
         public ActionResult Detail(int id)
         {

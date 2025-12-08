@@ -52,5 +52,23 @@ namespace WebBanGauBong.Controllers
             Product sp = csdl.Product.First(t => t.ProductID == id);
             return PartialView(sp);
         }
+
+        public ActionResult SanPhamNoiBat()
+        {
+            List<Product> ls = csdl.Product.ToList();
+            Random rnd = new Random();
+
+            List<Product> randomLs = new List<Product>();
+            int index = 0;
+            index = rnd.Next(ls.Count());
+            randomLs.Add(ls[index]);
+            index = rnd.Next(ls.Count());
+            randomLs.Add(ls[index]);
+            index = rnd.Next(ls.Count());
+            randomLs.Add(ls[index]);
+
+            return PartialView(randomLs);
+        }
+
     }
 }

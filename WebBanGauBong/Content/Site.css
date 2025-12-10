@@ -873,3 +873,215 @@ nav.pagination {
     transform: rotateY(1deg) scale(0.8);
 }
 
+/*--------------------Toast----------------------*/
+
+.notifications {
+    position: fixed;
+    top: 30px;
+    right: 20px;
+}
+
+.toast {
+    position: relative;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #fff;
+    width: 400px;
+    display: grid;
+    grid-template-columns: 70px 1fr 70px;
+    border-radius: 5px;
+    --color: #0abf30;
+    background-image: linear-gradient(to right, #0abf3055, #22242F 30%);
+    animation: show_toast 0.3s ease forwards;
+}
+
+    .toast i {
+        color: var(--color);
+    }
+
+    .toast .title {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    .toast i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: x-large;
+    }
+
+    .toast span,
+    .toast .close {
+        opacity: 0.6;
+        color: #fff
+    }
+
+@keyframes show_toast {
+    0% {
+        transform: translateX(100%);
+    }
+
+    40% {
+        transform: translateX(-5%);
+    }
+
+    80% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-10%);
+    }
+}
+
+.toast::before {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color);
+    box-shadow: 0 0 10px var(--color);
+    content: '';
+    width: 100%;
+    height: 3px;
+    animation: timeOut 5s linear 1 forwards;
+}
+
+@keyframes timeOut {
+    to {
+        width: 0%;
+    }
+}
+/* error */
+.toast.error {
+    --color: #f24d4c;
+    background-image: linear-gradient(to right, #f24d4c55, #22242F 30%);
+}
+/* warning */
+.toast.warning {
+    --color: #e9bd0c;
+    background-image: linear-gradient(to right, #e9bd0c55, #22242F 30%);
+}
+/* info */
+.toast.info {
+    --color: #3498db;
+    background-image: linear-gradient(to right, #3498db55, #22242F 30%);
+}
+/*------------------------Chat----------------------------*/
+
+.chat-section {
+    padding: 25px;
+    min-height: 300px;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.message-content {
+    max-width: 400px;
+}
+
+.message-bubble {
+    padding: 12px 18px;
+    border-radius: 18px;
+    line-height: 1.5;
+}
+
+.message-left .message-bubble {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.message-right {
+    flex-direction: row-reverse;
+    margin-left: auto;
+    justify-content: flex-start;
+}
+
+    .message-right .message-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .message-right .message-bubble {
+        background-color: #0084ff;
+        color: white;
+    }
+
+    .message-right .avatar {
+        background-color: #0084ff;
+    }
+
+.action-buttons {
+    padding: 20px 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.btn-social {
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-zalo {
+    background-color: #0068ff;
+    color: white;
+}
+
+    .btn-zalo:hover {
+        background-color: #0056d9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 104, 255, 0.3);
+    }
+
+.btn-facebook {
+    background-color: #0084ff;
+    color: white;
+}
+
+    .btn-facebook:hover {
+        background-color: #006bd9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 132, 255, 0.3);
+    }
+
+.btn-social i {
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .message-bubble {
+        font-size: 14px;
+    }
+}

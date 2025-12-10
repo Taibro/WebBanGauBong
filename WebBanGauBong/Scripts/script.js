@@ -39,6 +39,9 @@ $(document).ready(function () {
 
         $clickedButton.addClass('active');
 
+        var selectedSizeId = $clickedButton.data('id');
+        $cardBody.find('input[name="productSizeID"]').val(selectedSizeId);
+
         //Xử lý Cập nhật Giá 
         var newPrice = $clickedButton.data('price');
         var rawTargetId = $clickedButton.data('target');

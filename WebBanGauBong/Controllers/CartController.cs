@@ -30,7 +30,7 @@ namespace WebBanGauBong.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddToCart(int productSizeID, int quantity)
+        public ActionResult AddToCart(int productSizeID, int quantity = 1)
         {
             if (Session["User"] == null)
             {
@@ -139,8 +139,141 @@ namespace WebBanGauBong.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult DatHangOnSubmit(FormCollection form)
+        {
 
+            string name = string.IsNullOrEmpty(form["nameTang"].ToString()) == false ? form["nameTang"].ToString() : form["name"].ToString();
+            string sdt = string.IsNullOrEmpty(form["sdtTang"].ToString()) == false ? form["sdtTang"].ToString() : form["sdt"].ToString();
+            string diaChi = form["diaChi"].ToString();
+            decimal goiQua = string.IsNullOrEmpty(form["goiQua"].ToString()) == false ? decimal.Parse(form["goiQua"].ToString()) : 0;
+            string thanhToan = form["thanhToan"].ToString();
+            string khuyenMai = string.IsNullOrEmpty(form["khuyenMai"]) == false ? form["khuyenMai"].ToString() : "noDiscount";
 
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(sdt) || string.IsNullOrEmpty(diaChi))
+            {
+                TempData["ShowCart"] = true;
+                ViewBag.Error = "Vui lòng nhập đầy đủ thông tin";
+                return RedirectToAction("Index", "Product");
+            }
 
+            if (name.Length > 60 || sdt.Length > 20 || diaChi.Length > 255)
+            {
+                TempData["ShowCart"] = true;
+                ViewBag.Error = "Thông tin nhập không hợp lệ";
+                return RedirectToAction("Index", "Product");
+            }
+
+            try
+            {
+                Users user = Session["User"] as Users;
+                ShoppingCart cart = csdl.ShoppingCart.FirstOrDefault(t => t.UserID == user.UserID);
+                if (cart == null || cart.ShoppingCartItem.Count == 0)
+                {
+                    ViewBag.Error = "Giỏ hàng trống";
+                    TempData["ShowCart"] = true;
+                    return RedirectToAction("Index", "Product");
+                }
+
+                Orders order = new Orders();
+                order.UserID = user.UserID;
+                order.OrderDate = DateTime.Now;
+                order.Address = diaChi;
+                order.Status = "Đang chờ xác nhận";
+                order.UserPaymentMethod = thanhToan;
+                order.SDT = sdt;
+                order.NameUser = name;
+
+                csdl.Orders.Add(order);
+                csdl.SaveChanges();
+
+                foreach (var item in cart.ShoppingCartItem.ToList())
+                {
+                    OrderDetail od = new OrderDetail();
+                    od.OrderID = order.OrderID;
+                    od.ProductSizeID = item.ProductSizeID;
+                    od.Quantity = item.Quantity;
+                    od.UnitPrice = item.UnitPrice;
+
+                    csdl.OrderDetail.Add(od);
+
+                    csdl.ShoppingCartItem.Remove(item);
+                }
+
+                order.Discount = 0;
+                if (khuyenMai.Equals("giam50") && order.TamTinh() > 1000000)
+                {
+                    order.Discount = 50000 - goiQua;
+                }
+                else if (khuyenMai.Equals("giam30") && order.TamTinh() > 300000)
+                {
+                    order.Discount = 30000 - goiQua;
+                }
+
+                csdl.SaveChanges();
+
+                // Cờ hiệu
+                TempData["ShowOrder"] = true;
+                TempData["ShowCart"] = false;
+
+                Session["Order"] = order;
+                Session["Cart"] = csdl.ShoppingCart.FirstOrDefault(t => t.ShoppingCartID == cart.ShoppingCartID);
+
+                ViewBag.OrderSuccess = "Đặt hàng thành công!";
+                return RedirectToAction("Index", "Product");
+            }
+            catch(Exception e)
+            {
+                // Cờ hiệu
+                TempData["ShowOrder"] = false;
+                TempData["ShowCart"] = true;
+                ViewBag.Error = $"Đặt hàng thất bại {e.Message}";
+                return RedirectToAction("Index", "Product");
+            }
+        } 
+
+        public ActionResult OrderPage()
+        {
+            TempData["ShowCart"] = false;
+            Orders orderSession = Session["Order"] as Orders;
+            if (orderSession != null)
+            {
+                Orders order = csdl.Orders.FirstOrDefault(t => t.OrderID == orderSession.OrderID);
+                return PartialView(order);
+            }
+            return PartialView(new Orders { OrderDetail = new List<OrderDetail>() });
+        }
+
+        public ActionResult OrderHistory()
+        {
+            Users user = Session["User"] as Users;
+            if (user == null)
+            {
+                return RedirectToAction("LoginPage", "User");
+            }
+            List<Orders> orderHistory = csdl.Orders.ToList().FindAll(t => t.UserID == user.UserID).OrderByDescending(t => t.OrderDate).ToList();
+            if (orderHistory == null)
+            {
+                return View(new List<Orders>());
+            }
+            return View(orderHistory);
+        }
+
+        public ActionResult OrderDetail(int orderID)
+        {
+            Orders od = csdl.Orders.FirstOrDefault(t => t.OrderID == orderID);
+            return PartialView(od);
+        }
+
+        public ActionResult OrderDetailPage(int orderID)
+        {
+            if (Session["User"] == null)
+            {
+                return RedirectToAction("LoginPage", "User");
+            }
+
+            Orders od = csdl.Orders.FirstOrDefault(t => t.OrderID == orderID);
+            return View(od);
+        }
     }
 }

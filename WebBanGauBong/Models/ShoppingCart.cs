@@ -26,15 +26,20 @@ namespace WebBanGauBong.Models
 
         public virtual Users Users { get; set; }
 
-        
-        public int TongSoLuong()
+        [NotMapped]
+        public int TongSoLuong
         {
-            return ShoppingCartItem.Sum(t => t.Quantity.Value);
+            get
+            {
+                return ShoppingCartItem.Sum(t => t.Quantity.Value);
+            }
         }
-
-        public decimal TongThanhTien()
+        [NotMapped]
+        public decimal TongThanhTien
         {
-            return ShoppingCartItem.Sum(t => t.ThanhTien);
+            get {
+                return ShoppingCartItem.Sum(t => t.ThanhTien);
+            }
         }
 
 

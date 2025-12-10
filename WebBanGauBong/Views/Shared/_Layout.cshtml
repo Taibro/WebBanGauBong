@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Đơn Hàng</a>
+                                <a href="@Url.Action("OrderHistory", "Cart")" class="nav-link" >Đơn Hàng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Voucher</a>
@@ -432,7 +432,9 @@
         @if (Session["User"] != null)
         {
             @Html.Action("CartPage", "Cart")
+            @Html.Action("OrderPage", "Cart")
         }
+        @Html.Partial("_Modal_Search")
         <!--Button back to top-->
         <button type="button"
                 class="btn btn-floating bg-white rounded-circle"

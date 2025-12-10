@@ -61,113 +61,120 @@
                                 <img src="@Url.Content("~/Content/Images/product-footer.jpg")" alt="khuyến mãi" class="w-100 rounded-bottom-4" height=34 />
 
                             </a>
-                            <a href="#" class="btn rounded-4">
+                            <a href="@Url.Action("Detail", "Product", new {id = item.ProductID})" class="btn rounded-4">
                                 <i class="bi bi-bag-plus"></i> <span>Mua Ngay</span>
                             </a>
                         </div>
 
-                        <div class="card-body">
-                            @{
-                                string priceTargetId = "price-" + item.ProductID;
-                            }
-
-                            <div class="size-scroll-container d-flex flex-nowrap overflow-auto mb-2">
+                        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { productSizeID= "productSizeID" }))
+                        {
+                            <div class="card-body">
                                 @{
-                                    int s = int.Parse(Size[0].SizeName.ToString());
-                                    string sizeName = s.ToString();
-                                    if (s >= 100)
-                                    {
-                                        int soMet = s / 100;
-                                        int soDu = s % 100;
-
-                                        if (soDu == 0)
-                                        {
-                                            sizeName = $"{soMet}m";
-                                        }
-                                        else
-                                        {
-                                            sizeName = $"{soMet}m{soDu.ToString("D2")}";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        sizeName = s.ToString() + "cm";
-                                    }
+                                    string priceTargetId = "price-" + item.ProductID;
                                 }
-                                <button type="button" class="btn btnSizeCard flex-shrink-0 active"
-                                        data-price="@Size[0].Price.Value"
-                                        data-target="@priceTargetId"
-                                        data-discount="@discountRate"
-                                        data-size="@sizeName"
-                                        style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
-                                    @Size[0].SizeName.ToString()<span>cm</span>
-                                </button>
 
-                                @foreach (var size in Size.Skip(1))
-                                {
-                                    s = int.Parse(size.SizeName.ToString());
-                                    sizeName = s.ToString();
-                                    if (s >= 100)
-                                    {
-                                        int soMet = s / 100;
-                                        int soDu = s % 100;
-
-                                        if (soDu == 0)
+                                <div class="size-scroll-container d-flex flex-nowrap overflow-auto mb-2">
+                                    @{
+                                        int s = int.Parse(Size[0].SizeName.ToString());
+                                        string sizeName = s.ToString();
+                                        if (s >= 100)
                                         {
-                                            sizeName = $"{soMet}m";
+                                            int soMet = s / 100;
+                                            int soDu = s % 100;
+
+                                            if (soDu == 0)
+                                            {
+                                                sizeName = $"{soMet}m";
+                                            }
+                                            else
+                                            {
+                                                sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                                            }
                                         }
                                         else
                                         {
-                                            sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                                            sizeName = s.ToString() + "cm";
                                         }
                                     }
-                                    else
-                                    {
-                                        sizeName = s.ToString() + "cm";
-                                    }
-                                    <button type="button" class="btn btnSizeCard flex-shrink-0"
-                                            data-price="@size.Price.Value"
+                                    <button type="button" class="btn btnSizeCard flex-shrink-0 active"
+                                            data-id="@Size[0].ProductSizeID"
+                                            data-price="@Size[0].Price.Value"
                                             data-target="@priceTargetId"
                                             data-discount="@discountRate"
                                             data-size="@sizeName"
                                             style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
-                                        @sizeName
+                                        @Size[0].SizeName.ToString()<span>cm</span>
                                     </button>
-                                }
+
+                                    @foreach (var size in Size.Skip(1))
+                                    {
+                                        s = int.Parse(size.SizeName.ToString());
+                                        sizeName = s.ToString();
+                                        if (s >= 100)
+                                        {
+                                            int soMet = s / 100;
+                                            int soDu = s % 100;
+
+                                            if (soDu == 0)
+                                            {
+                                                sizeName = $"{soMet}m";
+                                            }
+                                            else
+                                            {
+                                                sizeName = $"{soMet}m{soDu.ToString("D2")}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            sizeName = s.ToString() + "cm";
+                                        }
+                                        <button type="button" class="btn btnSizeCard flex-shrink-0"
+                                                data-id="@size.ProductSizeID"
+                                                data-price="@size.Price.Value"
+                                                data-target="@priceTargetId"
+                                                data-discount="@discountRate"
+                                                data-size="@sizeName"
+                                                style="--bs-btn-padding-y: .22rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .70rem;">
+                                            @sizeName
+                                        </button>
+                                    }
+                                </div>
+
+                                <h6 class="card-title"><a href="@Url.Action("Detail", "Product", new {id = item.ProductID})">@item.ProductName</a></h6>
+
+                                <div class="d-flex flex-row align-items-center">
+                                    @{
+                                        decimal tienChuaGiam = Size[0].Price.Value;
+                                        if (discountRate != 0)
+                                        {
+                                            decimal tienSauGiam = tienChuaGiam * (100 - discountRate) / 100;
+
+                                            <b id="after-@priceTargetId" style="font-weight:bold;"
+                                               class="text-color-theme me-2">
+                                                @tienSauGiam.ToString("N0")đ
+                                            </b>
+                                            <span class="badge text-bg-secondary p-1 color-theme h-25 me-2">
+                                                -@discountRate%
+                                            </span>
+                                            <span style="text-decoration: line-through; color: #808080; font-size: 13px; font-weight: 600;"
+                                                  id="@priceTargetId">
+                                                @tienChuaGiam.ToString("N0")đ
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <b id="after-@priceTargetId">
+                                                @tienChuaGiam.ToString("N0")đ
+                                            </b>
+                                        }
+                                    }
+                                    <input hidden name="productSizeID" value="@Size[0].ProductSizeID" />
+                                    <!--Nút thêm giỏ hàng-->
+                                    <button type="submit" class="btn rounded-circle ms-auto"><i class="bi bi-bag-plus"></i></button>
+                                </div>
                             </div>
 
-                            <h6 class="card-title"><a href="@Url.Action("Detail", "Product", new {id = item.ProductID})">@item.ProductName</a></h6>
-
-                            <div class="d-flex flex-row align-items-center">
-                                @{
-                                    decimal tienChuaGiam = Size[0].Price.Value;
-                                    if (discountRate != 0)
-                                    {
-                                        decimal tienSauGiam = tienChuaGiam * (100 - discountRate) / 100;
-
-                                        <b id="after-@priceTargetId" style="font-weight:bold;"
-                                           class="text-color-theme me-2">
-                                            @tienSauGiam.ToString("N0")đ
-                                        </b>
-                                        <span class="badge text-bg-secondary p-1 color-theme h-25 me-2">
-                                            -@discountRate%
-                                        </span>
-                                        <span style="text-decoration: line-through; color: #808080; font-size: 13px; font-weight: 600;"
-                                              id="@priceTargetId">
-                                            @tienChuaGiam.ToString("N0")đ
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <b id="after-@priceTargetId">
-                                            @tienChuaGiam.ToString("N0")đ
-                                        </b>
-                                    }
-                                }
-                                <!--Nút thêm giỏ hàng-->
-                                <a href="#" class="btn rounded-circle ms-auto"><i class="bi bi-bag-plus"></i></a>
-                            </div>
-                        </div>
+                        }
 
                     </div>
                 </div>

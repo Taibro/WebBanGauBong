@@ -6,7 +6,7 @@
 @model WebBanGauBong.Models.ShoppingCart
 
 <!-- Modal giỏ hàng -->
-<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="cartModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -54,119 +54,126 @@
                     </div>
 
                     <div class="col-7">
-                        <div class="d-flex flex-row light-color-theme rounded-2 p-2">
-                            <img src="@Url.Content("~/Content/Icons/giftbox.png")" alt="" />
-                            <span>Tích điểm 3%/ĐH đã mua</span>
-                            <button class="btn color-theme rounded-pill ms-auto">Xem thêm</button>
-                        </div>
+                        @using (Html.BeginForm("DatHangOnSubmit", "Cart", FormMethod.Post))
+                        {
+                            <div class="notifications">
 
-                        <!--Thông tin người mua-->
-                        <div class="d-flex flex-row">
-                            <input type="text" class="form-control" placeholder="Họ và Tên *">
-                            <input type="text" class="form-control" placeholder="Số điện thoại *">
-                        </div>
-
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" data-bs-toggle="collapse" data-bs-target="#collapseExample">
-                            <label class="form-check-label" for="switchCheckDefault">Gửi Tặng Quà cho người khác?</label>
-                        </div>
-                        <div class="collapse" id="collapseExample">
-                            <!--Thông tin người tặng-->
-                            <div class="card card-body">
-                                <div class=" d-flex flex-row">
-                                    <input type="text" class="form-control" placeholder="Họ và Tên *">
-                                    <input type="text" class="form-control" placeholder="Số điện thoại *">
-                                </div>
-                                <span>*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
                             </div>
 
-                        </div>
-                        <!--Số nhà-->
-                        <input type="text" class="form-control" placeholder="Số nhà, tên đường *">
+                            <div class="d-flex flex-row light-color-theme rounded-2 p-2">
+                                <img src="@Url.Content("~/Content/Icons/giftbox.png")" alt="" />
+                                <span>Tích điểm 3%/ĐH đã mua</span>
+                                <button class="btn color-theme rounded-pill ms-auto">Xem thêm</button>
+                            </div>
 
-                        <b>Dịch vụ kèm theo để có 1 món quà gấu bông ấn tượng</b>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
-                            <label class="form-check-label" for="radioDefault1">
-                                Bọc Quà Miễn phí: Túi kính buộc nơ
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
-                            <label class="form-check-label" for="radioDefault2">
-                                Bọc Quà Có Phí: Bọc hộp giấy nơ lụa (20k - 100k)
-                            </label>
-                        </div>
-
-                        <!--Hình thức thanh toán-->
-                        <b>Hình thức thanh toán</b>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
-                            <label class="form-check-label" for="radioDefault1">
-                                Chuyển khoản ngân hàng
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
-                            <label class="form-check-label" for="radioDefault2">
-                                Trả tiền mặt khi nhận hàng (COD)
-                            </label>
-                        </div>
-
-                        <!--Voucher khuyến mãi-->
-                        <div class="d-flex flex-row">
+                            <!--Thông tin người mua-->
                             <div class="d-flex flex-row">
-                                <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
-                                <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
-                                    <div>
-                                        <b>GIAM50K</b>
-                                        <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 1tr</p>
+                                <input type="text" class="form-control" name="name" placeholder="Họ và Tên *" required>
+                                <input type="text" class="form-control" name="sdt" placeholder="Số điện thoại *" required>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+                                <label class="form-check-label" for="switchCheckDefault">Gửi Tặng Quà cho người khác?</label>
+                            </div>
+                            <div class="collapse" id="collapseExample">
+                                <!--Thông tin người tặng-->
+                                <div class="card card-body">
+                                    <div class=" d-flex flex-row">
+                                        <input type="text" class="form-control" name="nameTang" placeholder="Họ và Tên *">
+                                        <input type="text" class="form-control" name="sdtTang" placeholder="Số điện thoại *">
                                     </div>
-                                    <input type="radio" style="float:left;" />
+                                    <span>*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
+                                </div>
+
+                            </div>
+                            <!--Số nhà-->
+                            <input type="text" class="form-control" name="diaChi" placeholder="Số nhà, tên đường *" required>
+
+                            <!--Gói quà-->
+                            <b>Dịch vụ kèm theo để có 1 món quà gấu bông ấn tượng</b>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="goiQua" value="0" id="goi1">
+                                <label class="form-check-label" for="goi1">
+                                    Bọc Quà Miễn phí: Túi kính buộc nơ
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="goiQua" value="100000" id="goi2" checked>
+                                <label class="form-check-label" for="goi2">
+                                    Bọc Quà Có Phí: Bọc hộp giấy nơ lụa (20k - 100k)
+                                </label>
+                            </div>
+
+                            <!--Hình thức thanh toán-->
+                            <b>Hình thức thanh toán</b>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="thanhToan" id="nganHang" value="Chuyển khoản ngân hàng">
+                                <label class="form-check-label" for="nganHang">
+                                    Chuyển khoản ngân hàng
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="thanhToan" value="Trả tiền mặt khi nhận hàng (COD)" id="COD" checked>
+                                <label class="form-check-label" for="COD">
+                                    Trả tiền mặt khi nhận hàng (COD)
+                                </label>
+                            </div>
+
+                            <!--Voucher khuyến mãi-->
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-row">
+                                    <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
+                                    <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
+                                        <div>
+                                            <b>GIAM50K</b>
+                                            <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 1tr</p>
+                                        </div>
+                                        <input type="radio" class="form-check-input" style="float:left;" name="khuyenMai" value="giam50" />
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row ms-3">
+                                    <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
+                                    <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
+                                        <div>
+                                            <b>GIAM30K</b>
+                                            <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 300k</p>
+                                        </div>
+                                        <input type="radio" class="form-check-input" style="float:left;" name="khuyenMai" value="giam30" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-row ms-3">
-                                <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
-                                <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
-                                    <div>
-                                        <b>GIAM30K</b>
-                                        <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 300k</p>
-                                    </div>
-                                    <input type="radio" style="float:left;" />
+                            <hr />
+                            <!--Tính tiền-->
+                            <div>
+                                <span>Tạm tính</span>
+                                <span class="ms-auto">@Model.TongThanhTien.ToString("N0")đ</span>
+                            </div>
+                            <div>
+                                <span>Voucher giảm giá</span>
+                                <span class="ms-auto">10.000đ</span>
+                            </div>
+                            <div>
+                                <span>Phí giao hàng</span>
+                                <span class="ms-auto">60.000đ</span>
+                            </div>
+                            <p style="font-size:14px;">Nội thành HCM: hoả tốc 60p - 4h. Ngoại thành HCM: 2-4 ngày</p>
+
+                            <hr />
+                            <!--Nút đặt-->
+                            <div class="d-flex flex-row-reverse mb-2">
+                                <button type="submit" class="btn color-theme rounded-pill px-4">
+                                    <img src="@Url.Content("~/Content/Icons/bag-heart.svg")" alt="" height=25 /> Đặt đơn hàng
+                                </button>
+                                <div class="text-end me-3">
+                                    <span>Thành tiền: <b class="text-color-theme">@( (Model.TongThanhTien + 60000).ToString("N0") )đ</b></span><br />
+                                    <span style="font-size: 15px;">Tiết kiệm: <b>10.000đ</b></span>
                                 </div>
                             </div>
-                        </div>
-
-                        <hr />
-                        <!--Tính tiền-->
-                        <div>
-                            <span>Tạm tính</span>
-                            <span class="ms-auto">@Model.TongThanhTien().ToString("N0")đ</span>
-                        </div>
-                        <div>
-                            <span>Voucher giảm giá</span>
-                            <span class="ms-auto">10.000đ</span>
-                        </div>
-                        <div>
-                            <span>Phí giao hàng</span>
-                            <span class="ms-auto">60.000đ</span>
-                        </div>
-                        <p style="font-size:14px;">Nội thành HCM: hoả tốc 60p - 4h. Ngoại thành HCM: 2-4 ngày</p>
-
-                        <hr />
-                        <!--Nút đặt-->
-                        <div class="d-flex flex-row-reverse mb-2">
-                            <button type="submit" class="btn color-theme rounded-pill px-4">
-                                <img src="@Url.Content("~/Content/Icons/bag-heart.svg")" alt="" height=25 /> Đặt đơn hàng
-                            </button>
-                            <div class="text-end me-3">
-                                <span>Thành tiền: <b class="text-color-theme">@( (Model.TongThanhTien() + 60000).ToString("N0") )đ</b></span><br />
-                                <span style="font-size: 15px;">Tiết kiệm: <b>10.000đ</b></span>
-                            </div>
-                        </div>
-                        <p class="text-end" style="font-size: 13px;">*Tầm 15p Shop sẽ gọi điện đến A/c để Tổng & Xác nhận đơn</p>
-
+                            <p class="text-end" style="font-size: 13px;">*Tầm 15p Shop sẽ gọi điện đến A/c để Tổng & Xác nhận đơn</p>
+                        }
                     </div>
                 </div>
 
@@ -180,14 +187,53 @@
 {
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
-                
-                if (typeof bootstrap !== 'undefined') {
-                    var myModal = new bootstrap.Modal(document.getElementById('cartModal'));
-                    myModal.show();
-                } else {
- 
-                    $('#cartModal').modal('show');
-                }
+
+            if (typeof bootstrap !== 'undefined') {
+                var myModal = new bootstrap.Modal(document.getElementById('cartModal'));
+                myModal.show();
+            } else {
+
+                $('#cartModal').modal('show');
+            }
+        });
+    </script>
+}
+
+@if (ViewBag.Error != null)
+{
+    var errorMessage = ViewBag.Error.ToString();
+
+    <script>
+        let notifications = document.querySelector('.notifications');
+
+        function createToast(type, icon, title, text) {
+            let newToast = document.createElement('div');
+            newToast.innerHTML = `
+    <div class="toast ${type}">
+        <i class="${icon}"></i>
+        <div class="content">
+            <div class="title">${title}</div>
+            <span>${text}</span>
+        </div>
+        <i class="close fa-solid fa-xmark"
+        onclick="(this.parentElement).remove()"
+        ></i>
+    </div>`;
+
+            notifications.appendChild(newToast);
+
+            // Thêm chức năng tự xóa sau 5 giây (5000ms)
+            newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            let type = 'error';
+            let icon = 'fa-solid fa-circle-exclamation';
+            let title = 'Cảnh báo!';
+            let text = '@Html.Raw(errorMessage)'; 
+
+            createToast(type, icon, title, text);
         });
     </script>
 }

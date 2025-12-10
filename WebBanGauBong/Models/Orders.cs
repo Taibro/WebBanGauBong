@@ -5,6 +5,7 @@ namespace WebBanGauBong.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     public partial class Orders
     {
@@ -30,9 +31,27 @@ namespace WebBanGauBong.Models
         [StringLength(50)]
         public string UserPaymentMethod { get; set; }
 
+        [StringLength(20)]
+        public string SDT { get; set; }
+
+        [StringLength(60)]
+        public string NameUser { get; set; }
+
+        public decimal? Discount { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
 
         public virtual Users Users { get; set; }
+
+        public decimal TamTinh()
+        {
+            return (decimal)OrderDetail.Sum(t => t.Quantity * t.UnitPrice);
+        }
+        
+        public decimal ThanhTien() {
+            return TamTinh() - Discount.GetValueOrDefault();
+        }
+        
     }
 }

@@ -123,14 +123,18 @@ CREATE TABLE Orders
 	Address nvarchar(255),
 	Status nvarchar(50),
 	UserPaymentMethod nvarchar(50),
+	SDT varchar(20),
+	NameUser nvarchar(60),
+	Discount decimal,
 	primary key(OrderID),
 	foreign key(UserID) references Users(UserID)
 )
+
 go
 CREATE TABLE OrderDetail
 (
-	OrderID int IDENTITY(1,1),
-	ProductSizeID int,
+	OrderID int not null,
+	ProductSizeID int not null,
 	Quantity int,
 	UnitPrice decimal,
 	primary key(OrderID, ProductSizeID),
@@ -735,8 +739,6 @@ VALUES
 (49, 3, 4, N'Tiện, nhưng mền hơi nhỏ.', 40, GETDATE()),
 (51, 2, 5, N'Thơm, xịn, 2in1 quá tiện.', 35, GETDATE());
 go
-
-
 go
 --DELETE FROM RATING
 go
@@ -744,3 +746,7 @@ SELECT * FROM Rating
 SELECT * FROM Product_Category
 select * from ShoppingCart
 SELECT * FROM Users
+Select * From Orders
+select * from OrderDetail
+
+

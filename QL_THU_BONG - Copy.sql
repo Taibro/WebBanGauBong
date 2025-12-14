@@ -36,8 +36,10 @@ CREATE TABLE Product
 (
 	ProductID int IDENTITY(1,1),
 	ProductName nvarchar(100),
+	Isenabled int,
 	Primary key(ProductID)
 )
+
 go
 CREATE TABLE Product_Category
 (
@@ -212,7 +214,7 @@ values
 ('cinnamoroll',N'Thỏ Bông Cinnamoroll','gau-bong-Cinnamoroll-co-men-2in1-galaxy.jpg', 1, 'hoathinh'), --44
 ('babythree', N'Gấu Bông Baby Three','gau-bong-baby-three-cosplay-shiba-5.jpg', 1, 'hoathinh'), --45
 ('haicau', N'Gấu Bông Hải Cẩu','gau-bong-hai-cau-sushi-trang-2.jpg', 1, 'thunhoibong')
-go
+go 
 INSERT INTO Product
 values
 (N'Gấu Bông Stitch Hồng lông Smooth'),
@@ -274,6 +276,11 @@ values
 (N'Gối kê cổ Chữ U có nón – Thỏ Cinnamoroll'),
 (N'Gấu Bông Bánh Kem Lotso có mền 2in1'),
 (N'Gấu Bông Noel Gối ôm tròn đút tay Tuần Lộc Noel')
+
+UPDATE Product 
+SET Isenabled = 1
+WHERE Isenabled is null
+
 go
 INSERT INTO Product_Category
 values
@@ -747,6 +754,23 @@ SELECT * FROM Product_Category
 select * from ShoppingCart
 SELECT * FROM Users
 Select * From Orders
-select * from OrderDetail
+
+select OrderID, ProductName from OrderDetail od, ProductSize ps, Product pd
+WHERE od.ProductSizeID = ps.ProductSizeID and ps.ProductID = pd.ProductID
+
+SELECT * FROM ProductSize where ProductID = 1
+Select * from ProductImages where ProductID = 1
+select * from Product where ProductID = 1
+
+----------Admin-----------------
+SP_ADDROLE N'Admin'
+ALTER ROLE db_owner ADD MEMBER [Admin];
+
+SP_ADDLOGIN 'tai', '123'
+SP_ADDUSER 'tai', 'tai'
+SP_ADDROLEMEMBER [Admin], 'tai'
 
 
+SP_ADDROLE 'Nhân viên'
+
+SELECT IS_ROLEMEMBER('Admin');

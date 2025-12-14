@@ -1,4 +1,4 @@
-namespace WebBanGauBong.Models
+﻿namespace WebBanGauBong.Models
 {
     using System;
     using System.Collections.Generic;
@@ -20,10 +20,13 @@ namespace WebBanGauBong.Models
 
         public int? ProductID { get; set; }
 
+        [Range(10, 200, ErrorMessage = "Vui lòng nhập kích thước trong khoảng 10cm - 2m!")]
         public int? SizeName { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Vui lòng nhập giá tiền hợp lệ")]
         public decimal? Price { get; set; }
 
+        [Range(0, int.MaxValue, ErrorMessage = "Vui lòng nhập số lượng tồn kho hợp lệ")]
         public int? StockQuantity { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

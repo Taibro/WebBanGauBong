@@ -15,7 +15,7 @@ namespace WebBanGauBong.Controllers
         public ActionResult Index()
         {
             ViewBag.TenLoai = "GẤU BÔNG CAO CẤP";
-            return View(csdl.Product.ToList());
+            return View(csdl.Product.ToList().FindAll(t => t.Isenabled == 1));
         }
 
         public ActionResult HienThiMenu()
@@ -27,7 +27,8 @@ namespace WebBanGauBong.Controllers
         [HttpPost]
         public ActionResult TimKiemNangCao(FormCollection form)
         {
-            List<Product> sanPhamHienTai = Session["DanhSachSanPhamHienTai"] != null ? Session["DanhSachSanPhamHienTai"] as List<Product> : csdl.Product.ToList();
+            List<Product> sanPhamHienTai = Session["DanhSachSanPhamHienTai"] != null ? Session["DanhSachSanPhamHienTai"] as List<Product> : new List<Product>();
+            sanPhamHienTai = sanPhamHienTai.FindAll(t => t.Isenabled == 1);
             List<Product> sanPhamTheoLoai = new List<Product>();
             List<Product> sanPhamTheoGia = new List<Product>();
             List<Product> sanPhamTheoSize = new List<Product>();
@@ -56,7 +57,7 @@ namespace WebBanGauBong.Controllers
                 TempData["CheckedLoai"] = dsLoai;
                 foreach (var cat in csdl.Category.ToList().FindAll(t => dsLoai.Contains(t.CategoryID)))
                 {
-                    sanPhamTheoLoai = sanPhamTheoLoai.Concat(cat.Product).ToList();
+                    sanPhamTheoLoai = sanPhamTheoLoai.Concat(cat.Product.ToList().FindAll(t => t.Isenabled == 1)).ToList();
                 }
 
                 sanPhamTheoLoai = sanPhamTheoLoai.Concat(sanPhamHienTai).ToList();
@@ -108,8 +109,8 @@ namespace WebBanGauBong.Controllers
 
         public ActionResult TimKiemTheoTen(string name)
         {
-            List<Product> ds = csdl.Product.ToList().FindAll(sp => sp.ProductName.ToLower().Trim().Contains(name.ToLower().Trim()));
-            Session["DanhSachSanPhamHienTai"] = ds;
+            List<Product> ds = csdl.Product.ToList().FindAll(sp => sp.ProductName.ToLower().Trim().Contains(name.ToLower().Trim()) && sp.Isenabled == 1);
+            Session["DanhSachSanPhamHienTai"] = null;
             Session["Sizes"] = null;
 
             return View("Index", ds);
@@ -119,7 +120,7 @@ namespace WebBanGauBong.Controllers
         {
             List<Product> dsSP = new List<Product>();
             List<int> buttonSizeClicked = new List<int>();
-            foreach (var item in csdl.Product.ToList())
+            foreach (var item in csdl.Product.ToList().FindAll(t => t.Isenabled == 1))
             {
                 foreach (var size in item.ProductSize.ToList())
                 {
@@ -141,7 +142,7 @@ namespace WebBanGauBong.Controllers
             TempData["GiaMin"] = min;
 
             List<Product> ds = new List<Product>();
-            foreach (var item in csdl.Product.ToList())
+            foreach (var item in csdl.Product.ToList().FindAll(t => t.Isenabled == 1))
             {
                 foreach (var s in item.ProductSize.ToList())
                 {
@@ -174,13 +175,13 @@ namespace WebBanGauBong.Controllers
 
             if (cat.Product != null)
             {
-                dssp = dssp.Concat(cat.Product).ToList();
+                dssp = dssp.Concat(cat.Product.ToList().FindAll(t => t.Isenabled == 1)).ToList();
             }
             if (cat.Category1 != null)
             {
                 foreach (var c in cat.Category1)
                 {
-                    dssp = dssp.Concat(c.Product).ToList();
+                    dssp = dssp.Concat(c.Product.ToList().FindAll(t => t.Isenabled == 1)).ToList();
                 }
             }
 
@@ -219,6 +220,7 @@ namespace WebBanGauBong.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult RatingOnSubmit(FormCollection form, int id, HttpPostedFileBase Image)
         {
             List<TempRating> rateList = TempData["ListTempRating"] != null ? TempData["ListTempRating"] as List<TempRating> : new List<TempRating>();

@@ -53,5 +53,6 @@ namespace WebBanGauBong.Models
             return TamTinh() - Discount.GetValueOrDefault();
         }
         
+       
     }
 }

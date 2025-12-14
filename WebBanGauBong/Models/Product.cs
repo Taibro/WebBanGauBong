@@ -1,4 +1,4 @@
-namespace WebBanGauBong.Models
+﻿namespace WebBanGauBong.Models
 {
     using System;
     using System.Collections.Generic;
@@ -21,8 +21,11 @@ namespace WebBanGauBong.Models
 
         public int ProductID { get; set; }
 
-        [StringLength(100)]
+        [StringLength(100, ErrorMessage = "Tên sản phẩm không được quá 100 ký tự!")]
+        [Required(ErrorMessage ="Vui lòng nhập tên sản phẩm!")]
         public string ProductName { get; set; }
+
+        public int Isenabled { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Discount> Discount { get; set; }
@@ -38,5 +41,6 @@ namespace WebBanGauBong.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Category { get; set; }
+
     }
 }

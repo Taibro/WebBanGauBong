@@ -41,7 +41,7 @@ namespace WebBanGauBong.Controllers
                         dssp = dssp.Concat(c.Product).ToList();
                     }
                 }
-                return PartialView(dssp);
+                return PartialView(dssp.ToList().FindAll(t => t.Isenabled == 1));
             }    
 
             return PartialView(csdl.Product.ToList());
@@ -55,7 +55,7 @@ namespace WebBanGauBong.Controllers
 
         public ActionResult SanPhamNoiBat()
         {
-            List<Product> ls = csdl.Product.ToList();
+            List<Product> ls = csdl.Product.ToList().FindAll(t => t.Isenabled == 1);
             Random rnd = new Random();
 
             List<Product> randomLs = new List<Product>();

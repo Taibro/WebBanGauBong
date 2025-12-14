@@ -197,7 +197,17 @@ namespace WebBanGauBong.Controllers
 
                     csdl.OrderDetail.Add(od);
 
-                    csdl.ShoppingCartItem.Remove(item);
+                    ProductSize pd = csdl.ProductSize.FirstOrDefault(t => t.ProductSizeID == od.ProductSizeID);
+                    if (od.Quantity <= pd.StockQuantity)
+                    {
+                        pd.StockQuantity -= od.Quantity;
+                    }
+                    else
+                    {
+                        pd.StockQuantity = 0;
+                    }
+
+                        csdl.ShoppingCartItem.Remove(item);
                 }
 
                 order.Discount = 0;

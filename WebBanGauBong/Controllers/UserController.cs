@@ -106,12 +106,14 @@ namespace WebBanGauBong.Controllers
             if (IsValidPassword(password1) == false)
             {
                 ViewBag.PasswordError = "Mật khẩu không đạt yêu cầu!";
+                TempData["RegisterError"] = true;
                 return View("LoginPage");
             }
 
             if (string.IsNullOrEmpty(password2) == true || password1.Equals(password2) == false)
             {
                 ViewBag.PasswordConfirmationError = "Mật khẩu xác nhận không hợp lệ!";
+                TempData["RegisterError"] = true;
                 return View("LoginPage");
             }
 

@@ -236,7 +236,7 @@
                         </div>
                         <div class="info-row">
                             <span class="info-label">Giảm giá:</span>
-                            <span class="info-value"><strong>@Model.Discount%</strong></span>
+                            <span class="info-value"><strong>@Model.Discount.Value.ToString("N0")</strong></span>
                         </div>
                     </div>
 
@@ -299,21 +299,18 @@
 
                     <!-- Tổng Tiền -->
                     <div class="total-section">
-                        @{
-                            decimal discountAmount = (subtotal - Model.Discount).Value;
-                            decimal finalTotal = subtotal - discountAmount;
-                        }
+                        
                         <div class="total-row">
                             <span>Tạm tính:</span>
-                            <span>@string.Format("{0:N0}", subtotal)₫</span>
+                            <span>@string.Format("{0:N0}", Model.TamTinh())₫</span>
                         </div>
                         <div class="total-row">
-                            <span>Giảm giá (@Model.Discount%):</span>
-                            <span>-@string.Format("{0:N0}", discountAmount)₫</span>
+                            <span>Giảm giá:</span>
+                            <span>@string.Format("{0:N0}", Model.Discount)₫</span>
                         </div>
                         <div class="total-row final">
                             <span>Tổng cộng:</span>
-                            <span>@string.Format("{0:N0}", finalTotal)₫</span>
+                            <span>@string.Format("{0:N0}", Model.ThanhTien())₫</span>
                         </div>
                     </div>
 

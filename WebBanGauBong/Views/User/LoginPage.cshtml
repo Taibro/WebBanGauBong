@@ -7,7 +7,7 @@
     .container-login {
         position: relative;
         width: 850px;
-        height: 660px;
+        height: 800px;
         background: #fff;
         border-radius: 30px;
         box-shadow: 0 0 30px rgba(0, 0, 0, .2);
@@ -387,9 +387,19 @@
         container.classList.add('active');
     });
 
-
     loginBtn.addEventListener('click', () => {
         container.classList.remove('active');
     });
 
 </script>
+
+@if (TempData["RegisterError"] != null && (bool)TempData["RegisterError"] == true)
+{
+    <script>
+        const containerReg = document.querySelector('.container-login');
+
+        if (containerReg) {
+            containerReg.classList.add('active');
+        }
+    </script>
+}

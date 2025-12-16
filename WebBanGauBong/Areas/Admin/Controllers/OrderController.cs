@@ -43,6 +43,22 @@ namespace WebBanGauBong.Areas.Admin.Controllers
                 return RedirectToAction("OrderPage");
             }
         }
+
+        public ActionResult TimKiemDonHang(string keyword, string status)
+        {
+            if (string.IsNullOrEmpty(status))
+            {
+                List<Orders> ds = csdl.Orders.ToList().FindAll(t => (t.OrderID.ToString().Equals(keyword) || t.Users.Name.ToLower().Contains(keyword.ToLower())));
+                return View("OrderPage", ds);
+            }
+            else
+            {
+                List<Orders> ds = csdl.Orders.ToList().FindAll(t => (t.OrderID.ToString().Equals(keyword) || t.Users.Name.ToLower().Contains(keyword.ToLower()) && t.Status.Equals(status)));
+                return View("OrderPage", ds);
+            }
+        }
+
+
     }
 
 

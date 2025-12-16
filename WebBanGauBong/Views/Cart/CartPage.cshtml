@@ -19,11 +19,11 @@
                         @foreach (var item in Model.ShoppingCartItem)
                         {
                             <!--San pham-->
-                            <div class="d-flex flex-row">
-                                <img src="@Url.Content("~/Content/Images/" + item.ProductSize.Product.ProductImages.First().ImageURL)" alt="" height=100 />
-                                <div>
+                            <div class="d-flex flex-row mb-3">
+                                <img src="@Url.Content("~/Content/Images/" + item.ProductSize.Product.ProductImages.First().ImageURL)" alt="" height=120 class="rounded-3 me-2" />
+                                <div class="w-100">
                                     <h6>@item.ProductSize.Product.ProductName</h6>
-                                    <b>@item.UnitPrice</b>
+                                    <b>@item.UnitPrice.Value.ToString("N0")đ</b>
                                     <button type="button" class="btn btnSizeCard flex-shrink-0"
                                             data-price="50"
                                             data-target="50"
@@ -33,16 +33,18 @@
                                         @item.ProductSize.SizeName.ToString()cm
                                     </button>
                                     <!--Chỉnh sửa sản phẩm trong giỏ-->
-                                    <div>
+                                    <div class="d-flex justify-content-between w-100">
                                         <!--Xoa-->
-                                        <a href="@Url.Action("DeleteProductInCart", "Cart", new {productSizeID=item.ProductSizeID})" class="btn btn-secondary rounded-circle">
-                                            <i class="bi bi-trash-fill"></i>
+                                        <a href="@Url.Action("DeleteProductInCart", "Cart", new {productSizeID=item.ProductSizeID})" class="btn btn-secondary rounded-circle align-items-center px-3">
+                                            <i class="bi bi-trash-fill fs-5"></i>
                                         </a>
 
-                                        <div class="ms-auto rounded-pill" style="border: 1px solid var(--primary-color);">
-                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=-1})" class="btn rounded-circle">-</a>
+                                        <div class="d-flex justify-content-between ms-auto align-items-center rounded-pill p-1" style="border: 1px solid var(--primary-color); width: 120px;">
+                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=-1})" class="btn rounded-circle light-color-theme" style="color: var(--primary-color)">-</a>
+
                                             <span class="text-color-theme">@item.Quantity</span>
-                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=1})" class="btn rounded-circle">+</a>
+
+                                            <a href="@Url.Action("UpdateQuantity", "Cart", new {productSizeID = item.ProductSizeID, type=1})" class="btn rounded-circle light-color-theme" style="color: var(--primary-color)">+</a>
                                         </div>
                                     </div>
 
@@ -60,35 +62,35 @@
 
                             </div>
 
-                            <div class="d-flex flex-row light-color-theme rounded-2 p-2">
-                                <img src="@Url.Content("~/Content/Icons/giftbox.png")" alt="" />
-                                <span>Tích điểm 3%/ĐH đã mua</span>
-                                <button class="btn color-theme rounded-pill ms-auto">Xem thêm</button>
+                            <div class="d-flex align-items-center light-color-theme rounded-2 p-1">
+                                <img src="@Url.Content("~/Content/Icons/giftbox.png")" alt="" height=26 class="me-2" />
+                                <span class="text-color-theme">Tích điểm 3%/ĐH đã mua</span>
+                                <button style="font-size: 13px;" class="btn color-theme rounded-pill ms-auto p-1 text-white" data-bs-toggle="modal" data-bs-target="#tichDiemModal">Xem thêm</button>
                             </div>
 
                             <!--Thông tin người mua-->
-                            <div class="d-flex flex-row">
-                                <input type="text" class="form-control" name="name" placeholder="Họ và Tên *" required>
+                            <div class="d-flex flex-row my-2">
+                                <input type="text" class="form-control me-2" name="name" placeholder="Họ và Tên *" required>
                                 <input type="text" class="form-control" name="sdt" placeholder="Số điện thoại *" required>
                             </div>
 
-                            <div class="form-check form-switch">
+                            <div class="form-check form-switch my-2">
                                 <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault" data-bs-toggle="collapse" data-bs-target="#collapseExample">
                                 <label class="form-check-label" for="switchCheckDefault">Gửi Tặng Quà cho người khác?</label>
                             </div>
                             <div class="collapse" id="collapseExample">
                                 <!--Thông tin người tặng-->
-                                <div class="card card-body">
-                                    <div class=" d-flex flex-row">
-                                        <input type="text" class="form-control" name="nameTang" placeholder="Họ và Tên *">
+                                <div class="card card-body p-3">
+                                    <div class="d-flex flex-row">
+                                        <input type="text" class="form-control me-2" name="nameTang" placeholder="Họ và Tên *">
                                         <input type="text" class="form-control" name="sdtTang" placeholder="Số điện thoại *">
                                     </div>
-                                    <span>*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
+                                    <span style="color: #bbbbbb; font-size: 13px;">*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
                                 </div>
 
                             </div>
                             <!--Số nhà-->
-                            <input type="text" class="form-control" name="diaChi" placeholder="Số nhà, tên đường *" required>
+                            <input type="text" class="form-control my-2" name="diaChi" placeholder="Số nhà, tên đường *" required>
 
                             <!--Gói quà-->
                             <b>Dịch vụ kèm theo để có 1 món quà gấu bông ấn tượng</b>
@@ -120,42 +122,48 @@
                                 </label>
                             </div>
 
-                            <!--Voucher khuyến mãi-->
-                            <div class="d-flex flex-row">
-                                <div class="d-flex flex-row">
-                                    <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
-                                    <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
-                                        <div>
-                                            <b>GIAM50K</b>
-                                            <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 1tr</p>
-                                        </div>
-                                        <input type="radio" class="form-check-input" style="float:left;" name="khuyenMai" value="giam50" />
-                                    </div>
-                                </div>
+                            <!--Voucher mã khuyến mãi-->
+                            <div class="d-flex flex-row my-3 flex-wrap">
 
-                                <div class="d-flex flex-row ms-3">
-                                    <img src="@Url.Content("/Content/Icons/voucher.png")" alt="" height=50 />
-                                    <div style="border: 1px solid var(--primary-color); height:50px;" class="d-flex flex-row rounded-end-2">
-                                        <div>
-                                            <b>GIAM30K</b>
-                                            <p style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 300k</p>
+                                <label class="voucher-card">
+                                    <input type="radio" name="khuyenMai" value="giam50" />
+
+                                    <div class="voucher-content">
+                                        <img src="@Url.Content("/Content/Icons/voucher.png")" alt="voucher" class="voucher-img" />
+
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <b style="color: var(--primary-color);">GIAM50K</b>
+                                            <span style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 1tr</span>
                                         </div>
-                                        <input type="radio" class="form-check-input" style="float:left;" name="khuyenMai" value="giam30" />
                                     </div>
-                                </div>
+                                </label>
+
+                                <label class="voucher-card">
+                                    <input type="radio" name="khuyenMai" value="giam30" />
+
+                                    <div class="voucher-content">
+                                        <img src="@Url.Content("/Content/Icons/voucher.png")" alt="voucher" class="voucher-img" />
+
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <b class="text-color-theme">GIAM30K</b>
+                                            <span style="font-size: 12px; font-weight:600; color:#808080;">Đơn > 300k</span>
+                                        </div>
+                                    </div>
+                                </label>
+
                             </div>
 
                             <hr />
                             <!--Tính tiền-->
-                            <div>
+                            <div class="d-flex flex-row justify-content-between">
                                 <span>Tạm tính</span>
-                                <span class="ms-auto">@Model.TongThanhTien.ToString("N0")đ</span>
+                                <span>@Model.TongThanhTien.ToString("N0")đ</span>
                             </div>
-                            <div>
+                            <div class="d-flex flex-row justify-content-between">
                                 <span>Voucher giảm giá</span>
                                 <span class="ms-auto">10.000đ</span>
                             </div>
-                            <div>
+                            <div class="d-flex flex-row justify-content-between">
                                 <span>Phí giao hàng</span>
                                 <span class="ms-auto">60.000đ</span>
                             </div>
@@ -164,8 +172,8 @@
                             <hr />
                             <!--Nút đặt-->
                             <div class="d-flex flex-row-reverse mb-2">
-                                <button type="submit" class="btn color-theme rounded-pill px-4">
-                                    <img src="@Url.Content("~/Content/Icons/bag-heart.svg")" alt="" height=25 /> Đặt đơn hàng
+                                <button type="submit" class="btn color-theme text-white rounded-pill px-4">
+                                    <i class="fa-solid fa-bag-shopping me-2"></i> Đặt đơn hàng
                                 </button>
                                 <div class="text-end me-3">
                                     <span>Thành tiền: <b class="text-color-theme">@( (Model.TongThanhTien + 60000).ToString("N0") )đ</b></span><br />
@@ -199,41 +207,68 @@
     </script>
 }
 
-@if (ViewBag.Error != null)
+@if (TempData["OrderSuccess"] != null)
 {
-    var errorMessage = ViewBag.Error.ToString();
+    var successMessage = TempData["OrderSuccess"].ToString(); 
 
     <script>
-        let notifications = document.querySelector('.notifications');
-
-        function createToast(type, icon, title, text) {
-            let newToast = document.createElement('div');
-            newToast.innerHTML = `
-    <div class="toast ${type}">
-        <i class="${icon}"></i>
-        <div class="content">
-            <div class="title">${title}</div>
-            <span>${text}</span>
-        </div>
-        <i class="close fa-solid fa-xmark"
-        onclick="(this.parentElement).remove()"
-        ></i>
-    </div>`;
-
-            notifications.appendChild(newToast);
-
-            // Thêm chức năng tự xóa sau 5 giây (5000ms)
-            newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
-        }
-
         document.addEventListener("DOMContentLoaded", function () {
-            
-            let type = 'error';
-            let icon = 'fa-solid fa-circle-exclamation';
-            let title = 'Cảnh báo!';
-            let text = '@Html.Raw(errorMessage)'; 
+           
+            const notifications = document.querySelector(".notifications");
 
-            createToast(type, icon, title, text);
+            if(!notifications) {
+                 console.error("Không tìm thấy class .notifications trong DOM");
+                 return;
+            }
+
+            const toastDetails = {
+                timer: 5000,
+                success: {
+                    icon: 'fa-circle-check',
+                    text: '@Html.Raw(successMessage)', 
+                    title: 'Thành công',
+                },
+                error: {
+                    icon: 'fa-circle-xmark',
+                    text: 'Thất bại',
+                    title: 'Lỗi',
+                },
+                warning: {
+                    icon: 'fa-triangle-exclamation',
+                    text: 'Cảnh báo',
+                    title: 'Cảnh báo',
+                },
+                info: {
+                    icon: 'fa-circle-info',
+                    text: 'Thông tin',
+                    title: 'Thông tin',
+                }
+            }
+
+            const removeToast = (toast) => {
+                toast.classList.add("hide");
+                if (toast.timeoutId) clearTimeout(toast.timeoutId);
+                setTimeout(() => toast.remove(), 500);
+            }
+
+            const createToast = (id) => {
+                const { icon, text, title } = toastDetails[id];
+                const toast = document.createElement("li");
+                toast.className = `toast ${id}`;
+                toast.innerHTML = `<div class="column">
+                                     <i class="fa-solid ${icon}"></i>
+                                     <div>
+                                         <span>${title}</span>
+                                         <span>${text}</span>
+                                      </div>
+                                   </div>
+                                   <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+                notifications.appendChild(toast);
+                toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+            }
+
+            // Gọi hàm tạo Toast thành công
+            createToast("success");
         });
     </script>
 }

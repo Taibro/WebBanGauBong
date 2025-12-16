@@ -229,7 +229,7 @@ namespace WebBanGauBong.Controllers
                 Session["Order"] = order;
                 Session["Cart"] = csdl.ShoppingCart.FirstOrDefault(t => t.ShoppingCartID == cart.ShoppingCartID);
 
-                ViewBag.OrderSuccess = "Đặt hàng thành công!";
+                TempData["OrderSuccess"] = "Đặt hàng thành công!";
                 return RedirectToAction("Index", "Product");
             }
             catch(Exception e)
@@ -237,7 +237,7 @@ namespace WebBanGauBong.Controllers
                 // Cờ hiệu
                 TempData["ShowOrder"] = false;
                 TempData["ShowCart"] = true;
-                ViewBag.Error = $"Đặt hàng thất bại {e.Message}";
+                TempData["OrderError"] = $"Đặt hàng thất bại {e.Message}";
                 return RedirectToAction("Index", "Product");
             }
         } 

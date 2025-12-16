@@ -57,6 +57,20 @@
             white-space: nowrap;
         }
 
+        .table thead tr {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .table thead th {
+            background-color: transparent !important;
+            font-weight: 600;
+            color: white !important;
+            border-bottom: none;
+            padding: 15px;
+            white-space: nowrap;
+        }
+
         .table td {
             vertical-align: middle;
             padding: 15px;
@@ -132,7 +146,7 @@
             box-shadow: 0 4px 12px rgba(23,162,184,0.4);
         }
 
-    
+
     .filter-section {
         background: #f8f9fa;
         padding: 15px;
@@ -178,7 +192,7 @@
                 <div class="col-md-4">
                     <select class="filter-select" name="status" id="ddlStatus">
                         <option value="">Tất cả trạng thái</option>
-                        <option value="Chờ xác nhận">Chờ xác nhận</option>
+                        <option value="Đang chờ xác nhận">Đang chờ xác nhận</option>
                         <option value="Đã xác nhận">Đã xác nhận</option>
                         <option value="Đang giao">Đang giao</option>
                         <option value="Đã giao">Đã giao</option>

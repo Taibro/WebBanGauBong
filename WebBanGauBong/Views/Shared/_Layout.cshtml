@@ -19,6 +19,8 @@
     <link href="~/Content/range_slider.css" rel="stylesheet" />
 </head>
 <body>
+    <ul class="notifications"></ul>
+
     <header id="nav-full">
         <div class="nav-first">
             <nav class="navbar navbar-expand-lg color-theme-1" style="padding-left: 100px; padding-right: 100px;">
@@ -57,7 +59,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="@Url.Action("OrderHistory", "Cart")" class="nav-link" >Đơn Hàng</a>
+                                <a href="@Url.Action("OrderHistory", "Cart")" class="nav-link">Đơn Hàng</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Voucher</a>
@@ -435,6 +437,8 @@
             @Html.Action("OrderPage", "Cart")
         }
         @Html.Partial("_Modal_Search")
+        @Html.Partial("_StaticModal")
+
         <!--Button back to top-->
         <button type="button"
                 class="btn btn-floating bg-white rounded-circle"

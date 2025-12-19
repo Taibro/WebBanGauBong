@@ -192,87 +192,115 @@ namespace WebBanGauBong.Areas.Admin.Controllers
             {
                 try
                 {
-                    if (ModelState.IsValid)
+                    // Kiểm tra lỗi Model
+                    if (!ModelState.IsValid)
                     {
-                        Product updateProduct = csdl.Product.FirstOrDefault(t => t.ProductID == product.ProductID);
-                        bool productEqual = product.ProductName == updateProduct.ProductName && product.Isenabled == updateProduct.Isenabled;
-                        if (productEqual == false)
-                        {
-                            updateProduct.ProductName = product.ProductName;
-                            updateProduct.Isenabled = product.Isenabled;
-                            csdl.SaveChanges();
-                        }
-
-                        // Xoa anh cu
-                        List<ProductImages> lsProductImg = csdl.ProductImages.ToList().FindAll(t => t.ProductID == product.ProductID);
-
-                        if (images.Count() != 1)
-                        {
-                            csdl.ProductImages.RemoveRange(lsProductImg);
-                            csdl.SaveChanges();
-
-                            // Them anh moi
-                            string FileName = "";
-                            string path = "";
-                            string dir = "/Content/Images/";
-                            string physicalDir = Server.MapPath(dir);
-                            if (Directory.Exists(physicalDir) == false)
-                            {
-                                Directory.CreateDirectory(physicalDir);
-                            }
-
-                            foreach (var file in images)
-                            {
-                                if (file != null && file.ContentLength > 0)
-                                {
-                                    FileName = Path.GetFileName(file.FileName);
-
-                                    path = Path.Combine(physicalDir, FileName);
-                                    file.SaveAs(path);
-
-                                    ProductImages pi = new ProductImages();
-                                    pi.ProductID = product.ProductID;
-                                    pi.ImageURL = FileName;
-                                    csdl.ProductImages.Add(pi);
-                                }
-                            }
-                            csdl.SaveChanges();
-
-                        }
-
-                        // Xoa size cu
-                        var oldSizes = csdl.ProductSize.Where(t => t.ProductID == product.ProductID).ToList();
-                        if (oldSizes.Count > 0)
-                        {
-                            csdl.ProductSize.RemoveRange(oldSizes);
-                            csdl.SaveChanges();
-                        }
-
-                        if (product.ProductSize != null && product.ProductSize.Count > 0)
-                        {
-                            foreach (var item in product.ProductSize)
-                            {
-                                ProductSize ps = new ProductSize();
-                                ps.ProductID = product.ProductID;
-                                ps.SizeName = item.SizeName;
-                                ps.Price = item.Price;
-                                ps.StockQuantity = item.StockQuantity;
-
-                                csdl.ProductSize.Add(ps);
-
-                            }
-                            csdl.SaveChanges();
-                        }
-
-                        transaction.Commit();
+                        
+                        var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                        TempData["UpdateError"] = "Dữ liệu không hợp lệ: " + string.Join(", ", errors);
+                        TempData["ShowModalUpdateProduct"] = true; 
+                        return RedirectToAction("ProductPage");
                     }
+
+                    Product updateProduct = csdl.Product.FirstOrDefault(t => t.ProductID == product.ProductID);
+
+                   
+                    if (updateProduct != null)
+                    {
+                        updateProduct.ProductName = product.ProductName;
+                        updateProduct.Isenabled = product.Isenabled;
+                    }
+
+                    
+                    // Kiểm tra xem có upload ảnh mới 
+                    bool hasNewImage = images != null && images.Any(f => f != null && f.ContentLength > 0);
+
+                    if (hasNewImage)
+                    {
+                        // Xóa ảnh cũ 
+                        var oldImages = csdl.ProductImages.Where(t => t.ProductID == product.ProductID).ToList();
+                        csdl.ProductImages.RemoveRange(oldImages);
+
+                        
+
+                        // Thêm ảnh mới
+                        string physicalDir = Server.MapPath("/Content/Images/");
+                        if (!Directory.Exists(physicalDir)) Directory.CreateDirectory(physicalDir);
+
+                        foreach (var file in images)
+                        {
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                string fileName = Path.GetFileName(file.FileName);
+                               
+                                string path = Path.Combine(physicalDir, fileName);
+                                file.SaveAs(path);
+
+                                ProductImages pi = new ProductImages
+                                {
+                                    ProductID = product.ProductID,
+                                    ImageURL = fileName
+                                };
+                                csdl.ProductImages.Add(pi);
+                            }
+                        }
+                    }
+                    
+                    // Xóa hết size cũ
+                    var oldSizes = csdl.ProductSize.Where(t => t.ProductID == product.ProductID).ToList();
+                    var formSizes = product.ProductSize ?? new List<ProductSize>();
+
+                    foreach (var item in formSizes)
+                    {
+                        if (item.ProductSizeID > 0)
+                        {
+                            // Cập nhật thông tin
+                            var sizeInDb = oldSizes.FirstOrDefault(s => s.ProductSizeID == item.ProductSizeID);
+                            if (sizeInDb != null)
+                            {
+                                sizeInDb.SizeName = item.SizeName;
+                                sizeInDb.Price = item.Price;
+                                sizeInDb.StockQuantity = item.StockQuantity;
+                            }
+                        }
+                        else
+                        {
+                            // thêm size
+                            item.ProductID = product.ProductID;
+                            csdl.ProductSize.Add(item);
+                        }
+                    }
+
+                    //// Thêm size mới 
+                    //if (product.ProductSize != null && product.ProductSize.Count > 0)
+                    //{
+                    //    foreach (var item in product.ProductSize)
+                    //    {
+                            
+                    //        if (!string.IsNullOrEmpty(item.SizeName.ToString()) && item.Price > 0)
+                    //        {
+                    //            ProductSize ps = new ProductSize
+                    //            {
+                    //                ProductID = product.ProductID,
+                    //                SizeName = item.SizeName,
+                    //                Price = item.Price,
+                    //                StockQuantity = item.StockQuantity
+                    //            };
+                    //            csdl.ProductSize.Add(ps);
+                    //        }
+                    //    }
+                    //}
+
+                    csdl.SaveChanges();
+                    transaction.Commit();
+
                     TempData["UpdateSuccess"] = "Cập nhật sản phẩm thành công";
                     return RedirectToAction("ProductPage");
                 }
                 catch (Exception e)
                 {
                     transaction.Rollback();
-                    TempData["UpdateError"] = $"Cập nhật sản phẩm thất bại {e.Message}";
+                    TempData["UpdateError"] = $"Lỗi hệ thống: {e.Message}";
                     TempData["ShowModalUpdateProduct"] = true;
                     return RedirectToAction("ProductPage");
                 }

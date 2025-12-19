@@ -256,9 +256,8 @@
                         <div class="size-price-row" id="sizeRow_@i">
                             <input type="hidden" name="ProductSize.Index" value="@i" />
 
-                            <button type="button" class="btn-remove-size me-3">
-                                <i class="fas fa-times"></i>
-                            </button>
+                            <input type="hidden" name="ProductSize[@i].ProductSizeID" value="@item.ProductSizeID" />
+                            
                             <div class="row mb-4">
                                 <div class="col-md-4">
                                     <label class="form-label">Kích thước (cm)</label>
@@ -358,7 +357,7 @@
 
 </script>
 
-@*@if (TempData["ShowModalAddProduct"] != null && (bool)TempData["ShowModalAddProduct"])
+@if (TempData["ShowModalUpdateProduct"] != null && (bool)TempData["ShowModalUpdateProduct"])
     {
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function () {
@@ -372,6 +371,6 @@
                 }
             });
         </script>
-    }*@
+    }
 
 

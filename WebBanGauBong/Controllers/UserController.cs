@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using WebBanGauBong.Models;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using WebBanGauBong.Models;
+
 
 namespace WebBanGauBong.Controllers
 {
@@ -174,6 +178,114 @@ namespace WebBanGauBong.Controllers
                 return false;
             }
         }
+        // Google Login
+        public void LoginGoogle()
+        {
+            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
+            authManager.Challenge(new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleLoginCallback", "User")
+            }, "Google");
+        }
+
+        public async Task<ActionResult> GoogleLoginCallback()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            var loginInfo = await authManager.GetExternalLoginInfoAsync();
+
+            if (loginInfo == null)
+            {
+                return RedirectToAction("LoginPage"); // Lỗi thì quay về trang login
+            }
+
+            // Lấy thông tin Google
+            string email = loginInfo.Email;
+            string name = loginInfo.ExternalIdentity.Name;
+            
+            
+            Users user = db.Users.FirstOrDefault(t => t.Email.Equals(email));
+            if (user != null)
+            {
+                Session["User"] = user;
+
+                // Add cart
+                AddShoppingCart(user.UserID);
+            }
+            else
+            {
+                Users newUser = new Users();
+                newUser.Email = email;
+                newUser.Name = name;
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                // Add cart
+                AddShoppingCart(newUser.UserID);
+
+                Session["User"] = db.Users.FirstOrDefault(t => t.Email.Equals(email));
+            }
+              
+            return RedirectToAction("HomePage", "Home");
+        }
+
+        // Github login
+        [AllowAnonymous]
+        public void LoginGitHub()
+        {
+            HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GitHubLoginCallback", "User")
+            }, "GitHub");
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> GitHubLoginCallback()
+        {
+            var authManager = HttpContext.GetOwinContext().Authentication;
+            var loginInfo = await authManager.GetExternalLoginInfoAsync(); 
+
+            if (loginInfo == null)
+            {
+                ViewBag.SocialLoginError = "Không thể lấy thông tin từ nhà cung cấp. Vui lòng thử lại.";
+                return View("LoginPage");
+            }
+
+            // Lấy thông tin từ GitHub
+            string githubId = loginInfo.Login.ProviderKey; 
+            string email = loginInfo.Email; 
+            string name = loginInfo.ExternalIdentity.Name;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                ViewBag.SocialLoginError = "Lỗi đăng nhập bằng Github";
+                return View("LoginPage");
+            }
+
+            Users user = db.Users.FirstOrDefault(t => t.Email.Equals(email));
+            if (user != null)
+            {
+                Session["User"] = user;
+
+                // Add cart
+                AddShoppingCart(user.UserID);
+            }
+            else
+            {
+                Users newUser = new Users();
+                newUser.Email = email;
+                newUser.Name = name;
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                // Add cart
+                AddShoppingCart(newUser.UserID);
+
+                Session["User"] = db.Users.FirstOrDefault(t => t.Email.Equals(email));
+            }
+
+            return RedirectToAction("HomePage", "Home");
+        }
+
 
 
     }

@@ -774,3 +774,4 @@ SP_ADDROLEMEMBER [Admin], 'tai'
 SP_ADDROLE 'Nhân viên'
 
 SELECT IS_ROLEMEMBER('Admin');
+

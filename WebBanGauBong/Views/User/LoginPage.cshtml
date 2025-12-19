@@ -288,11 +288,17 @@
                 <button type="submit" class="btn">Đăng nhập</button>
                 <p>hoặc đăng nhập bằng</p>
                 <div class="social-icons">
-                    <a href="#"><i class="bi bi-google"></i></a>
+                    <a href="@Url.Action("LoginGoogle", "User")"><i class="bi bi-google"></i></a>
                     <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-github"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="@Url.Action("LoginGitHub", "User")"><i class="bi bi-github"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
                 </div>
+                if (ViewBag.SocialLoginError != null)
+                {
+                    <p class="text-danger fs-6">
+                        @ViewBag.SocialLoginError
+                    </p>
+                }
             }
         </div>
 
@@ -354,7 +360,7 @@
                     <a href="#"><i class="bi bi-google"></i></a>
                     <a href="#"><i class="bi bi-facebook"></i></a>
                     <a href="#"><i class="bi bi-github"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
                 </div>
             }
         </div>

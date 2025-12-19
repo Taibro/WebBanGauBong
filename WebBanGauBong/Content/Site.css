@@ -833,14 +833,14 @@ nav.pagination {
         transform: translateX(var(--left));
     }
 
-.form .item {
-    width: 170px;
-    height: 260px;
-    display: inline-block;
-    margin-right: 20px;
-    transform: perspective(10px);
-    transform-style: preserve-3d;
-}
+        .category-slider .form .item {
+            width: 170px;
+            height: 260px;
+            display: inline-block;
+            margin-right: 20px;
+            transform: perspective(10px);
+            transform-style: preserve-3d;
+        }
 
 .category-slider .form .item .content {
     width: 100%;

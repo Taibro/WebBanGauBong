@@ -632,6 +632,19 @@ nav.pagination {
             font-weight: bold;
         }
 
+    .pagination li.active span,
+    .pagination li.active a {
+        background-color: var(--secondary-color); /* Màu xanh giống nút đăng nhập của bạn */
+        color: white;
+        border: 1px solid var(--secondary-color);
+        cursor: default;
+    }
+
+    .pagination li a:hover:not(.active) {
+        background-color: var(--primary-color);
+        color: black;
+    }
+
 /*---------------------Detail----------------------------*/
 /*---------------------Image slider---------------*/
 .carousel-indicators img {

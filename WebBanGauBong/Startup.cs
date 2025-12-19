@@ -3,10 +3,11 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
-using Owin.Security.Providers.GitHub;
 using Owin;
+using Owin.Security.Providers.GitHub;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -33,15 +34,15 @@ namespace WebBanGauBong
             // Cấu hình Google Login
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "585058597994-ag4qgumm1ms17uljsb5u90k2eh8uveku.apps.googleusercontent.com",
-                ClientSecret = "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",
+                ClientId = ConfigurationManager.AppSettings["GoogleClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"],
             });
 
             // Cấu hình GitHub Login
             var githubOptions = new Owin.Security.Providers.GitHub.GitHubAuthenticationOptions
             {
-                ClientId = "Ov23liLGLrsib2XXQXfq",
-                ClientSecret = "44ced703d1cfe0015e1e85ccfec9a864cc608c2d",
+                ClientId = ConfigurationManager.AppSettings["GithubClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GithubClientSecret"],
                 Provider = new GitHubAuthenticationProvider
                 {
                     OnAuthenticated = async context =>

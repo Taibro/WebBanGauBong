@@ -33,6 +33,11 @@ namespace WebBanGauBong.Models
         [StringLength(50)]
         public string Email { get; set; }
 
+        [StringLength(100)]
+        public string ResetPasswordCode { get; set; }
+
+        public DateTime? ResetPasswordExpiry { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
 

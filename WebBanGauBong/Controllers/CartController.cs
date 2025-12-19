@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebBanGauBong.Models;
-using System.Data.Entity;
-using System.Data.SqlTypes;
+using WebBanGauBong.Services;
 
 namespace WebBanGauBong.Controllers
 {
@@ -285,5 +288,40 @@ namespace WebBanGauBong.Controllers
             Orders od = csdl.Orders.FirstOrDefault(t => t.OrderID == orderID);
             return View(od);
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult> PaymentWithMoMo(int orderId, long amount)
+        //{
+            
+        //    string partnerCode = ConfigurationManager.AppSettings["MoMoPartnerCode"];
+        //    string accessKey = ConfigurationManager.AppSettings["MoMoAccessKey"];
+        //    string secretKey = ConfigurationManager.AppSettings["MoMoSecretKey"];
+
+           
+        //    string orderInfo = "Thanh toán đơn hàng #" + orderId;
+        //    string requestId = Guid.NewGuid().ToString(); // Mã yêu cầu duy nhất
+
+            
+        //    string payUrl = await MoMoService.CreatePaymentRequest(partnerCode, accessKey, secretKey, amount, orderId.ToString(), requestId, orderInfo);
+
+            
+        //    return Redirect(payUrl);
+        //}
+
+        //public ActionResult MoMoReturn(MoMoResponse response)
+        //{
+        //    if (response.resultCode == 0) // resultCode = 0 là thành công
+        //    {
+        //        ViewBag.Message = "Thanh toán đơn hàng thành công!";
+        //        // Cập nhật Database tại đây
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Message = "Thanh toán thất bại: " + response.message;
+        //    }
+        //    return View();
+        //}
+
+
     }
 }

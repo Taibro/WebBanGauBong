@@ -100,6 +100,9 @@ CREATE TABLE Users
 	primary key(UserID),
 	foreign key(RoleID) references Roles(RoleID)
 )
+ALTER TABLE Users 
+ADD ResetPasswordCode NVARCHAR(100) NULL,
+    ResetPasswordExpiry DATETIME NULL;
 
 go
 CREATE TABLE Rating

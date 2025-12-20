@@ -23,6 +23,7 @@ namespace WebBanGauBong.Areas.Admin.Controllers
 
         public ActionResult _ModalThemSanPham()
         {
+            ViewBag.DanhSachLoai = csdl.Category.ToList();
             return PartialView();
         }
 
@@ -123,12 +124,13 @@ namespace WebBanGauBong.Areas.Admin.Controllers
         public ActionResult _ModalSuaSanPham(int productID)
         {
             Product pd = csdl.Product.FirstOrDefault(t => t.ProductID == productID);
+            ViewBag.DanhSachLoai = csdl.Category.ToList();
             return PartialView(pd);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddProductOnSubmit(Product product, IEnumerable<HttpPostedFileBase> images)
+        public ActionResult AddProductOnSubmit(Product product, IEnumerable<HttpPostedFileBase> images, string SelectedCategoryID)
         {
             using (var transaction = csdl.Database.BeginTransaction())
             {
@@ -138,6 +140,15 @@ namespace WebBanGauBong.Areas.Admin.Controllers
                     {
                         csdl.Product.Add(product);
                         csdl.SaveChanges();
+
+                        var newCategory = csdl.Category.Find(SelectedCategoryID);
+
+                        if (newCategory != null)
+                        {
+                            // Thêm danh mục mới 
+                            product.Category.Add(newCategory);
+                        }
+
 
                         string FileName = "";
                         string path = "";
@@ -186,7 +197,7 @@ namespace WebBanGauBong.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateSanPhamOnSubmit(Product product, IEnumerable<HttpPostedFileBase> images)
+        public ActionResult UpdateSanPhamOnSubmit(Product product, IEnumerable<HttpPostedFileBase> images, string SelectedCategoryID)
         {
             using (var transaction = csdl.Database.BeginTransaction())
             {
@@ -202,13 +213,28 @@ namespace WebBanGauBong.Areas.Admin.Controllers
                         return RedirectToAction("ProductPage");
                     }
 
-                    Product updateProduct = csdl.Product.FirstOrDefault(t => t.ProductID == product.ProductID);
+                    Product updateProduct = csdl.Product.Include("Category").FirstOrDefault(t => t.ProductID == product.ProductID);
 
                    
                     if (updateProduct != null)
                     {
                         updateProduct.ProductName = product.ProductName;
                         updateProduct.Isenabled = product.Isenabled;
+
+                        // Category
+                        if (!string.IsNullOrEmpty(SelectedCategoryID))
+                        {
+                            // Xóa tất cả các danh mục hiện tại 
+                            updateProduct.Category.Clear();
+
+                            var newCategory = csdl.Category.Find(SelectedCategoryID);
+
+                            if (newCategory != null)
+                            {
+                                // Thêm danh mục mới 
+                                updateProduct.Category.Add(newCategory);
+                            }
+                        }
                     }
 
                     

@@ -254,6 +254,19 @@
                         </button>
                     </div>
 
+                    <!--Category-->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Trạng Thái</label>
+                        <select class="form-select" name="SelectedCategoryID">
+                            <option value="" selected>--Loại sản phẩm--</option>
+                            @foreach (var item in ViewBag.DanhSachLoai as List<WebBanGauBong.Models.Category>)
+                            {
+                                <option value="@item.CategoryID">@item.CategoryName</option>
+                            }
+
+                        </select>
+                    </div>
+
                     <!-- Product Status -->
                     <div class="mb-4">
                         <label class="form-label fw-bold">Trạng Thái</label>

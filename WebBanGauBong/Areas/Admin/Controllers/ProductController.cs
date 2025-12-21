@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebBanGauBong.Areas.Admin.Security;
 using WebBanGauBong.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace WebBanGauBong.Areas.Admin.Controllers
 {
@@ -15,10 +17,10 @@ namespace WebBanGauBong.Areas.Admin.Controllers
     {
         // GET: Admin/Product
         QL_THU_BONG csdl = new QL_THU_BONG();
-        public ActionResult ProductPage()
+        public ActionResult ProductPage(int? page)
         {
             List<Product> ds = csdl.Product.ToList();
-            return View(ds);
+            return View(ds.ToPagedList(page ?? 1, 10));
         }
 
         public ActionResult _ModalThemSanPham()
@@ -41,7 +43,7 @@ namespace WebBanGauBong.Areas.Admin.Controllers
                 ds = csdl.Product.ToList().FindAll(t => (t.ProductName.ToLower().Trim().Contains(keyword.ToLower().Trim()) || t.ProductID.ToString().Equals(keyword)) && t.Isenabled == IsEnabled);
             }
 
-            return View("ProductPage", ds);
+            return View("ProductPage", ds.ToPagedList(1, 10));
         }
 
         public ActionResult DisableSanPham(int productID, int type)

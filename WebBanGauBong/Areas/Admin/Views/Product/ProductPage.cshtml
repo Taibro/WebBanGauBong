@@ -205,8 +205,11 @@
         gap: 5px;
         flex-wrap: wrap;
     }
+    
 </style>
-@model List<WebBanGauBong.Models.Product>
+@using PagedList;
+@using PagedList.Mvc; 
+@model PagedList<WebBanGauBong.Models.Product>
 
 <!-- Content Card -->
 <div class="content-card" id="products">
@@ -218,6 +221,24 @@
             <i class="fas fa-plus"></i> Thêm Sản Phẩm
         </button>
     </div>
+
+    <!--Phân trang-->
+    <div class="my-3">
+        <nav aria-label="pagination" class="pagination">
+            @Html.PagedListPager(Model, page => Url.Action("ProductPage", "Product", new { page }),
+            new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = true,
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                LiElementClasses = new[] { "page-item" }
+            })
+        </nav>
+    </div>
+
     @using (Html.BeginForm("TimKiemSanPham", "Product", FormMethod.Post, new { keyword = "keyword", status = "status", area = "admin", id = "formTimKiem" }))
     {
         <div class="mb-3 d-flex justify-content-between align-items-center">

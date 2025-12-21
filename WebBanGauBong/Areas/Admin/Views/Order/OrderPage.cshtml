@@ -168,8 +168,9 @@
             box-shadow: 0 0 10px rgba(255,64,129,0.2);
         }
 </style>
-
-@model List<WebBanGauBong.Models.Orders>
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList<WebBanGauBong.Models.Orders>
 
 <!-- Content Card -->
 <div class="content-card" id="products">
@@ -177,6 +178,23 @@
         <h4 class="page-title">
             <i class="fas fa-shopping-cart"></i> Quản Lý Đơn Hàng
         </h4>
+    </div>
+
+    <!--Phân trang-->
+    <div class="my-3">
+        <nav aria-label="pagination" class="pagination">
+            @Html.PagedListPager(Model, page => Url.Action("OrderPage", "Order", new { page }),
+            new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayPageCountAndCurrentLocation = true,
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                LiElementClasses = new[] { "page-item" }
+            })
+        </nav>
     </div>
 
     @using (Html.BeginForm("TimKiemDonHang", "Order", FormMethod.Post, new { area = "admin", id = "formTimKiem" }))

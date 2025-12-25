@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "CartPage";
+    List<WebBanGauBong.Models.ShoppingCartItem> dsItem = Model.ShoppingCartItem != null ? Model.ShoppingCartItem.ToList() : new List<WebBanGauBong.Models.ShoppingCartItem>();
 }
 
 @model WebBanGauBong.Models.ShoppingCart
@@ -16,7 +17,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-5">
-                        @foreach (var item in Model.ShoppingCartItem)
+                        @foreach (var item in dsItem)
                         {
                             <!--San pham-->
                             <div class="d-flex flex-row mb-3">
@@ -85,7 +86,7 @@
                                         <input type="text" class="form-control me-2" name="nameTang" placeholder="Họ và Tên *">
                                         <input type="text" class="form-control" name="sdtTang" placeholder="Số điện thoại *">
                                     </div>
-                                    <span style="color: #bbbbbb; font-size: 13px;">*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
+                                    <span style="color: #bbbbbb; font-size: 13px;" class="mt-2">*Shop sẽ gọi điện / zalo đến người mua trước để xác nhận đơn & gửi STK (Nếu A/c cần thanh toán trước để gửi tặng)</span>
                                 </div>
 
                             </div>

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebBanGauBong.Models;
+using PagedList.Mvc;
+using PagedList;
 
 namespace WebBanGauBong.Controllers
 {
@@ -12,10 +14,10 @@ namespace WebBanGauBong.Controllers
     {
         // GET: Product
         QL_THU_BONG csdl = new QL_THU_BONG();
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             ViewBag.TenLoai = "GẤU BÔNG CAO CẤP";
-            return View(csdl.Product.ToList().FindAll(t => t.Isenabled == 1));
+            return View(csdl.Product.ToList().FindAll(t => t.Isenabled == 1).ToPagedList(page ?? 1, 12));
         }
 
         public ActionResult HienThiMenu()
@@ -27,8 +29,7 @@ namespace WebBanGauBong.Controllers
         [HttpPost]
         public ActionResult TimKiemNangCao(FormCollection form)
         {
-            List<Product> sanPhamHienTai = Session["DanhSachSanPhamHienTai"] != null ? Session["DanhSachSanPhamHienTai"] as List<Product> : new List<Product>();
-            sanPhamHienTai = sanPhamHienTai.FindAll(t => t.Isenabled == 1);
+            List<Product> sanPhamHienTai = Session["DanhSachSanPhamHienTai"] != null ? Session["DanhSachSanPhamHienTai"] as List<Product> : csdl.Product.Where(t => t.Isenabled == 1).ToList();
             List<Product> sanPhamTheoLoai = new List<Product>();
             List<Product> sanPhamTheoGia = new List<Product>();
             List<Product> sanPhamTheoSize = new List<Product>();
@@ -104,7 +105,7 @@ namespace WebBanGauBong.Controllers
 
             List<Product> finals = sanPhamTheoSize.Intersect(sanPhamTheoGia).ToList();
 
-            return View("Index", finals);
+            return View("Index", finals.ToPagedList(1, 12));
         }
 
         public ActionResult TimKiemTheoTen(string name)
@@ -113,7 +114,7 @@ namespace WebBanGauBong.Controllers
             Session["DanhSachSanPhamHienTai"] = null;
             Session["Sizes"] = null;
 
-            return View("Index", ds);
+            return View("Index", ds.ToPagedList(1, 12));
         }
 
         public ActionResult TimKiemTheoSize(int min, int max)
@@ -133,7 +134,7 @@ namespace WebBanGauBong.Controllers
             }
             Session["DanhSachSanPhamHienTai"] = dsSP;
             Session["Sizes"] = buttonSizeClicked;
-            return View("Index", dsSP);
+            return View("Index", dsSP.ToPagedList(1, 12));
         }
 
         public ActionResult TimKiemTheoGia(int min, int max)
@@ -154,7 +155,7 @@ namespace WebBanGauBong.Controllers
                 }
             }
             Session["DanhSachSanPhamHienTai"] = ds;
-            return View("Index", ds);
+            return View("Index", ds.ToPagedList(1, 12));
         }
 
         public ActionResult TimKiemTheoLoai(string id)
@@ -186,8 +187,9 @@ namespace WebBanGauBong.Controllers
             }
 
             Session["DanhSachSanPhamHienTai"] = dssp;
+            //Session["Sizes"] = null;
 
-            return View("Index", dssp);
+            return View("Index", dssp.ToPagedList(1, 12));
         }
 
 
@@ -216,7 +218,7 @@ namespace WebBanGauBong.Controllers
             {
                 TempData["ListTempRating"] = null;
             }
-                return View(sp);
+            return View(sp);
         }
 
         [HttpPost]
@@ -257,7 +259,7 @@ namespace WebBanGauBong.Controllers
                 rateList.Add(rate);
                 TempData["ListTempRating"] = rateList;
             }
-            return RedirectToAction("Detail", new {id = id});
+            return RedirectToAction("Detail", new { id = id });
         }
 
     }

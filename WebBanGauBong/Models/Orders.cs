@@ -50,7 +50,7 @@ namespace WebBanGauBong.Models
         }
         
         public decimal ThanhTien() {
-            return TamTinh() - Discount.GetValueOrDefault();
+            return TamTinh() + Discount.GetValueOrDefault();
         }
         
        

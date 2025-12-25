@@ -4,7 +4,10 @@
     List<WebBanGauBong.Models.Category> dsLoai = ViewBag.DanhSachLoaiCon != null ? ViewBag.DanhSachLoaiCon as List<WebBanGauBong.Models.Category> : new List<WebBanGauBong.Models.Category>();
 }
 
-@model List<WebBanGauBong.Models.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList<WebBanGauBong.Models.Product>
+
 <div class="row mt-2">
     <!-- Menu trái -->
     <aside class="col-md-4 col-lg-3 mb-4">
@@ -44,6 +47,8 @@
             <hr />
         }
 
+        <p style="font-weight: 600;">@Model.Count() sản phẩm</p>
+
         <div class="row row-cols-4 gx-2 gy-0 mt-2">
             <!-- Card  -->
 
@@ -66,7 +71,7 @@
                             </a>
                         </div>
 
-                        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { productSizeID= "productSizeID" }))
+                        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { productSizeID = "productSizeID" }))
                         {
                             <div class="card-body">
                                 @{
@@ -185,43 +190,59 @@
         <!--Phân trang-->
         <div class="my-4">
             <nav aria-label="pagination" class="pagination">
-                <ul class="pagination">
-                    <li>
-                        <a href="">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="visuallyhidden">previous set of pages</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href=""><span class="visuallyhidden">page </span>1</a>
-                    </li>
-                    <li>
-                        <a href="" aria-current="page">
-                            <span class="visuallyhidden">page </span>2
-                        </a>
-                    </li>
-                    <li>
-                        <a href=""> <span class="visuallyhidden">page </span>3 </a>
-                    </li>
-                    <li>
-                        <a href=""> <span class="visuallyhidden">page </span>4 </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <span class="visuallyhidden">next set of pages</span><span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+                @*<ul class="pagination">
+                        <li>
+                            <a href="">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="visuallyhidden">previous set of pages</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href=""><span class="visuallyhidden">page </span>1</a>
+                        </li>
+                        <li>
+                            <a href="" aria-current="page">
+                                <span class="visuallyhidden">page </span>2
+                            </a>
+                        </li>
+                        <li>
+                            <a href=""> <span class="visuallyhidden">page </span>3 </a>
+                        </li>
+                        <li>
+                            <a href=""> <span class="visuallyhidden">page </span>4 </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <span class="visuallyhidden">next set of pages</span><span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>*@
+
+                @Html.PagedListPager(Model, page => Url.Action("Index", "Product", new { page }),
+                new PagedListRenderOptions
+                {
+                    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayPageCountAndCurrentLocation = true,
+                    UlElementClasses = new[] { "pagination", "justify-content-center" },
+                    LiElementClasses = new[] { "page-item" }
+                })
             </nav>
 
+
         </div>
+
+
+
 
     </main>
 
 </div>
 
 <script>
-    let slider = document.querySelector('.slider');
+    let slider = document.querySelector('.category-slider');
     let form = document.querySelector('.form');
     let mouseDownAt = 0;
     let left = 0;
@@ -230,7 +251,7 @@
 
     slider.onmousedown = (e) => {
         mouseDownAt = e.clientX;
-        isDragging = false; 
+        isDragging = false;
         slider.style.cursor = 'grabbing';
     }
 
@@ -238,7 +259,7 @@
         mouseDownAt = 0;
         slider.style.cursor = 'grab';
 
-        form.style.pointerEvents = 'auto'; 
+        form.style.pointerEvents = 'auto';
 
         form.classList.remove('left');
         form.classList.remove('right');
@@ -263,7 +284,7 @@
         let leftTemporary = left + ((e.clientX - mouseDownAt) / speed);
 
         let leftLimit = form.offsetWidth - slider.offsetWidth;
-        
+
         if (leftLimit < 0) leftLimit = 0;
 
         if (leftTemporary <= 0 && Math.abs(leftTemporary) <= leftLimit) {
@@ -277,7 +298,7 @@
     links.forEach(link => {
         link.addEventListener('click', (e) => {
             if (isDragging) {
-                e.preventDefault(); 
+                e.preventDefault();
             }
         });
     });

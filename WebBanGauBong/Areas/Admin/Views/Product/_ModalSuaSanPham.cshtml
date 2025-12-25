@@ -243,50 +243,63 @@
                     </div>
 
                     <!-- Product Sizes & Prices -->
-            <div class="mb-4">
-                <label class="form-label fw-bold">Kích Thước, Giá & Tồn Kho</label>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Kích Thước, Giá & Tồn Kho</label>
 
-                <div id="sizeContainer">
-                    @{
-                        int i = 0;
-                    }
-                    @foreach (var item in Model.ProductSize)
-                    {
-                        <!-- Size Row 1 -->
-                        <div class="size-price-row" id="sizeRow_@i">
-                            <input type="hidden" name="ProductSize.Index" value="@i" />
+                        <div id="sizeContainer">
+                            @{
+                                int i = 0;
+                            }
+                            @foreach (var item in Model.ProductSize)
+                            {
+                                <!-- Size Row 1 -->
+                                <div class="size-price-row" id="sizeRow_@i">
+                                    <input type="hidden" name="ProductSize.Index" value="@i" />
 
-                            <button type="button" class="btn-remove-size me-3">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <label class="form-label">Kích thước (cm)</label>
-                                    <input type="number" name="ProductSize[@i].SizeName" class="form-control" value=@item.SizeName required>
-                                    @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).SizeName, "", new { @class = "text-danger" })
+                                    <input type="hidden" name="ProductSize[@i].ProductSizeID" value="@item.ProductSizeID" />
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Kích thước (cm)</label>
+                                            <input type="number" name="ProductSize[@i].SizeName" class="form-control" value=@item.SizeName required>
+                                            @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).SizeName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Giá (VNĐ)</label>
+                                            <input type="number" name="ProductSize[@i].Price" class="form-control" value=@item.Price required>
+                                            @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).Price, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Tồn kho</label>
+                                            <input type="number" name="ProductSize[@i].StockQuantity" class="form-control" value=@item.StockQuantity required>
+                                            @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).StockQuantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Giá (VNĐ)</label>
-                                    <input type="number" name="ProductSize[@i].Price" class="form-control" value=@item.Price required>
-                                    @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).Price, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Tồn kho</label>
-                                    <input type="number" name="ProductSize[@i].StockQuantity" class="form-control" value=@item.StockQuantity required>
-                                    @Html.ValidationMessageFor(model => model.ProductSize.ElementAt(i).StockQuantity, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-
+                                i++;
+                            }
                         </div>
-                        i++;
-                    }
-                </div>
 
-                <button type="button" class="btn btn-outline-primary mt-2" onclick="addSizeRow()">
-                    <i class="fas fa-plus"></i> Thêm Kích Thước
-                </button>
-            </div>
+                        <button type="button" class="btn btn-outline-primary mt-2" onclick="addSizeRow()">
+                            <i class="fas fa-plus"></i> Thêm Kích Thước
+                        </button>
+                    </div>
+
+                    <!--Category-->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Danh mục sản phẩm</label>
+                        <select class="form-select" name="SelectedCategoryID">
+                            @foreach (var item in ViewBag.DanhSachLoai as List<WebBanGauBong.Models.Category>)
+                            {
+                                <option value="@item.CategoryID"
+                                        @(Model.Category != null && Model.Category.Any(c => c.CategoryID == item.CategoryID) ? "selected" : "")>
+                                    @item.CategoryName
+                                </option>
+                            }
+                        </select>
+                    </div>
 
                     <!-- Product Status -->
                     <div class="mb-4">
@@ -358,20 +371,20 @@
 
 </script>
 
-@*@if (TempData["ShowModalAddProduct"] != null && (bool)TempData["ShowModalAddProduct"])
-    {
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function () {
+@if (TempData["ShowModalUpdateProduct"] != null && (bool)TempData["ShowModalUpdateProduct"])
+{
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
 
-                if (typeof bootstrap !== 'undefined') {
-                    var myModal = new bootstrap.Modal(document.getElementById('productUpdateModal'));
-                    myModal.show();
-                } else {
+            if (typeof bootstrap !== 'undefined') {
+                var myModal = new bootstrap.Modal(document.getElementById('productUpdateModal'));
+                myModal.show();
+            } else {
 
-                    $('#productUpdateModal').modal('show');
-                }
-            });
-        </script>
-    }*@
+                $('#productUpdateModal').modal('show');
+            }
+        });
+    </script>
+}
 
 

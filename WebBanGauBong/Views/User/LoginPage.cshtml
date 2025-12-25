@@ -27,8 +27,7 @@
         width: 50%;
         height: 100%;
         background: #fff;
-        display: flex;
-        align-items: center;
+        /*display: flex;*/
         align-items: center;
         color: #333;
         text-align: center;
@@ -89,15 +88,6 @@
             color: #888;
         }
 
-    .forgot-link {
-        margin: -15px 0 15px;
-    }
-
-        .forgot-link a {
-            font-size: 14.5px;
-            color: #333;
-            text-decoration: none;
-        }
 
     .container-login .btn {
         width: 100%;
@@ -259,25 +249,46 @@
             font-size: 30px;
         }
     }
+
+    .btnForgot {
+        color: black;
+        font-size: 15px;
+        border: none;
+        background-color: white;
+        width: 150px;
+    }
+
+        .btnForgot:hover {
+            color: purple;
+        }
 </style>
 
 <center>
     <div class="container-login">
-        <div class="form-box login">
+        <div class="form-box login" style="margin-top: 150px;">
             @using (Html.BeginForm("LoginOnSubmit", "User", FormMethod.Post))
             {
                 <h1>Đăng nhập</h1>
+
                 <div class="input-box">
                     <input type="email" placeholder="Email" name="email" required>
                     <i class='bxr  bx-user'></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Mật khẩu" name="password" required>
+                    <input type="password" placeholder="Mật khẩu" name="password">
                     <i class='bxr  bx-lock'></i>
                 </div>
-                <div class="forgot-link">
-                    <a href="#">Quên mật khẩu</a>
+                <div>
+                    <button class="btnForgot mb-3"
+                            formaction="@Url.Action("ForgotPassword", "User")" 
+                            formnovalidate
+                            type="submit">Quên mật khẩu</button>
+                    @if (ViewBag.Message != null)
+                {
+                    <p class="text-color-theme" style="font-size: 14px">@ViewBag.Message</p>
+                }
                 </div>
+
                 if (ViewBag.LoginError != null)
                 {
                     <p class="text-danger fs-6">
@@ -288,11 +299,17 @@
                 <button type="submit" class="btn">Đăng nhập</button>
                 <p>hoặc đăng nhập bằng</p>
                 <div class="social-icons">
-                    <a href="#"><i class="bi bi-google"></i></a>
+                    <a href="@Url.Action("LoginGoogle", "User")"><i class="bi bi-google"></i></a>
                     <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-github"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="@Url.Action("LoginGitHub", "User")"><i class="bi bi-github"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
                 </div>
+                if (ViewBag.SocialLoginError != null)
+                {
+                    <p class="text-danger fs-6">
+                        @ViewBag.SocialLoginError
+                    </p>
+                }
             }
         </div>
 
@@ -316,6 +333,12 @@
                     <input type="email" placeholder="Email" name="email" required>
                     <i class='bxr  bx-envelope-alt'></i>
                 </div>
+                if (ViewBag.EmailError != null)
+                {
+                    <p class="text-danger fs-6">
+                        <i class="bi bi-exclamation-triangle"></i> @ViewBag.EmailError
+                    </p>
+                }
 
                 <div class="input-box">
                     <input type="password" placeholder="Mật khẩu" name="password1" required>
@@ -349,13 +372,13 @@
 
                 <button type="submit" class="btn">Đăng ký</button>
 
-                <p>hoặc đăng ký với</p>
+                @*<p>hoặc đăng ký với</p>
                 <div class="social-icons">
                     <a href="#"><i class="bi bi-google"></i></a>
                     <a href="#"><i class="bi bi-facebook"></i></a>
                     <a href="#"><i class="bi bi-github"></i></a>
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-                </div>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>*@
             }
         </div>
 
